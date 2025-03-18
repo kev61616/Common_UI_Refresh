@@ -14,7 +14,7 @@ interface SavedReviewState {
   };
 }
 
-export default function BySetPage() {
+export default function ReviewPage() {
   const [savedState, setSavedState] = useState<SavedReviewState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -62,4 +62,4 @@ export default function BySetPage() {
       />
     </div>
   )
-}
+} 

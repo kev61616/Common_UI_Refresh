@@ -18,6 +18,12 @@ export interface QuestionWithMetadata {
   setType?: string;
   dateCompleted: string;
   partiallyCorrect?: boolean;
+
+  // Fields for individual question view
+  userAnswer?: string;
+  correctAnswer?: string;
+  masteryLevel?: number;
+  attempts?: number;
 }
 
 export interface QuestionViewProps {

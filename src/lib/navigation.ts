@@ -18,8 +18,7 @@ export const navigation = [
   {
     title: 'Review',
     links: [
-      { title: 'By Set', href: '/review/by-set' },
-      { title: 'By Question', href: '/review/by-question' },
+      { title: 'Review', href: '/review' },
     ],
   },
   {

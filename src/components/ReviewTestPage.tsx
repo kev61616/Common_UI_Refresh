@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/Button'
 import { mockPracticeSets, PracticeSet } from '@/lib/mockData'
+import { SetView } from '@/components/review/SetView'
 import { TimelineInspiredListView } from '@/components/review/timeline-view-variants/TimelineInspiredListView'
 import { ModifiedStorytellingTimeline } from '@/components/review/timeline-view-variants/ModifiedStorytellingTimeline'
 // Import both filter bars - ModularFilterBar is the new recommended approach
@@ -45,6 +46,9 @@ export function ReviewTestPage({
   onStateChange
 }: ReviewTestPageProps) {
   
+  // Add console logs to check data
+  console.log('mockPracticeSets length:', mockPracticeSets.length);
+  
   // State for views, selected set, and panel visibility
   const [viewType, setViewType] = useState<ViewType>(
     initialState?.viewType || initialViewType
@@ -54,6 +58,10 @@ export function ReviewTestPage({
   )
   const [isPanelOpen, setIsPanelOpen] = useState(false)
   const [filteredSets, setFilteredSets] = useState<PracticeSet[]>(mockPracticeSets)
+  
+  // Add console log after state initialization
+  console.log('filteredSets length:', filteredSets.length);
+  console.log('filteredSets data (first item):', filteredSets[0] || 'No items');
   
   // Add ESC key listener for panel dismissal
   useEffect(() => {
@@ -257,8 +265,9 @@ export function ReviewTestPage({
     });
   }
   
-  // Clear all filters
+  // Clear all filters and reset to default state
   const handleClearFilters = () => {
+    console.log('Clearing all filters');
     setFilters({
       subject: [],
       type: [],
@@ -270,7 +279,14 @@ export function ReviewTestPage({
         new Date()
       ],
       dates: [],
-    })
+    });
+    // Reset to default sort
+    setSortConfig({
+      key: 'dateCompleted',
+      direction: 'desc'
+    });
+    // Force a re-render of filtered sets with all mock data
+    setFilteredSets([...mockPracticeSets]);
   }
   
   // State for scroll status to add visual effects to sticky header
@@ -425,13 +441,7 @@ export function ReviewTestPage({
       {/* Main content area with spacing for sticky header */}
       <div className="mt-4 w-full">
         {viewType === 'set' ? (
-          <TimelineInspiredListView 
-            practiceSets={filteredSets}
-            onSelectSet={handleSelectSet}
-            selectedSetId={selectedSetId}
-            sortConfig={sortConfig}
-            onSortChange={handleSortChange}
-          />
+          <SetView />
         ) : viewType === 'timeline' ? (
           <ModifiedStorytellingTimeline 
             practiceSets={filteredSets}

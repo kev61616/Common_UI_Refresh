@@ -8,7 +8,6 @@ export interface PracticeSet {
   pace: 'Fast' | 'Normal' | 'Slow';
   dateCompleted: string;
   questions: Question[];
-  // Additional data for advanced features
   difficulty: 'Easy' | 'Medium' | 'Hard';
   timeOfDay: 'Morning' | 'Afternoon' | 'Evening';
   mistakeTypes: {
@@ -32,6 +31,9 @@ export interface Question {
   answered: boolean;
   correct: boolean;
   timeSpent: number; // in seconds
+  userAnswer?: string;
+  correctAnswer?: string;
+  attempts?: number;
 }
 
 // Define subject subcategories

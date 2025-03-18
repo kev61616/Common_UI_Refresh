@@ -1,0 +1,125 @@
+import React, { useState } from 'react'
+import { mockPracticeSets } from '@/lib/mockData';
+import { extractQuestionsWithMetadata } from './utils';
+
+interface IndividualQuestionViewProps {
+  questionId: string;
+}
+
+export const IndividualQuestionView = ({ questionId }: IndividualQuestionViewProps) => {
+  const questions = extractQuestionsWithMetadata(mockPracticeSets);
+  const question = questions.find(q => q.id === questionId);
+
+  if (!question) {
+    return <div>Question not found</div>;
+  }
+
+  const [showMasteryTable, setShowMasteryTable] = useState(false);
+
+  const masteryLevels = [
+    { level: 1, description: 'Not Started', color: 'bg-slate-100 text-slate-700' },
+    { level: 2, description: 'Familiar', color: 'bg-blue-100 text-blue-700' },
+    { level: 3, description: 'Proficient', color: 'bg-green-100 text-green-700' },
+    { level: 4, description: 'Mastered', color: 'bg-purple-100 text-purple-700' },
+    { level: 5, description: 'Expert', color: 'bg-yellow-100 text-yellow-700' }
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Question Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+            {question.topic}
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            {question.subject} • {question.difficulty}
+          </p>
+        </div>
+        <button
+          onClick={() => setShowMasteryTable(!showMasteryTable)}
+          className="px-3 py-1.5 text-sm font-medium rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700/70"
+        >
+          Mastery Levels
+        </button>
+      </div>
+
+      {/* Mastery Table */}
+      {showMasteryTable && (
+        <div className="bg-white rounded-lg border border-slate-200 dark:bg-slate-800 dark:border-slate-700 overflow-hidden">
+          <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+            <thead className="bg-slate-50 dark:bg-slate-800/50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  Level
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  Description
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+              {masteryLevels.map((level) => (
+                <tr key={level.level} className={level.level === question.masteryLevel ? 'bg-slate-50 dark:bg-slate-700/50' : ''}>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${level.color} dark:bg-opacity-20`}>
+                      Level {level.level}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">
+                    {level.description}
+                  </td>
+                  <td className="px-4 py-3">
+                    {level.level === question.masteryLevel ? (
+                      <span className="text-green-600 dark:text-green-400 text-sm font-medium">
+                        Current Level
+                      </span>
+                    ) : level.level < question.masteryLevel ? (
+                      <span className="text-slate-400 dark:text-slate-500 text-sm">
+                        Completed
+                      </span>
+                    ) : (
+                      <span className="text-slate-400 dark:text-slate-500 text-sm">
+                        Locked
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Question Content */}
+      <div className="bg-white rounded-lg border border-slate-200 p-6 dark:bg-slate-800 dark:border-slate-700">
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2">
+              Your Answer
+            </h3>
+            <div className="p-3 bg-slate-50 rounded-md dark:bg-slate-700/50">
+              <p className="text-slate-900 dark:text-white">
+                {question.userAnswer}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700">
+            <div className="text-sm text-slate-500 dark:text-slate-400">
+              Attempts: {question.attempts}
+            </div>
+            <button
+              className="px-4 py-2 text-sm font-medium rounded-full bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-800"
+            >
+              Reattempt Question
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}; 

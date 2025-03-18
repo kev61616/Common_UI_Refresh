@@ -196,7 +196,7 @@ export function CompactFilterBar({
           <Dropdown
             trigger={
               <button 
-                className={`px-2.5 py-1.5 text-xs font-medium rounded-full border transition-colors duration-200 flex items-center gap-1.5 
+                className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors duration-200 flex items-center gap-1.5 
                 ${activeDropdown === 'subject' 
                   ? 'bg-indigo-50 text-indigo-600 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:border-indigo-800' 
                   : 'bg-white text-slate-600 border-slate-200 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-400'

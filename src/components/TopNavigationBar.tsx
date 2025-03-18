@@ -38,7 +38,7 @@ export function TopNavigationBar() {
   return (
     <div className="border-b border-slate-200 dark:border-slate-800 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-900/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-10 items-center overflow-x-auto hide-scrollbar">
+        <div className="flex h-8 items-center overflow-x-auto hide-scrollbar">
           {/* Only show breadcrumb if not on homepage */}
           <nav aria-label="Breadcrumb" className="flex items-center space-x-1 text-sm">
             <ol className="flex items-center space-x-1">
@@ -46,7 +46,7 @@ export function TopNavigationBar() {
               <li>
                 <Link
                   href="/"
-                  className="flex items-center justify-center w-6 h-6 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 dark:hover:bg-slate-800 transition-all duration-200 transform hover:scale-110"
+                  className="flex items-center justify-center w-6 h-6 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 dark:hover:bg-slate-800 transition-colors"
                 >
                   <HomeIcon className="h-3.5 w-3.5" />
                   <span className="sr-only">Home</span>
@@ -72,7 +72,7 @@ export function TopNavigationBar() {
                       return (
                         <Link
                           href={sectionLink}
-                          className="px-1.5 py-0.5 rounded-md hover:bg-slate-100 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/70 transition-all duration-200 hover:shadow-sm"
+                          className="px-1.5 py-0.5 rounded-md hover:bg-slate-100 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/70 transition-colors"
                         >
                           {parentTitle}
                         </Link>

@@ -70,7 +70,7 @@ export const groupQuestions = (
     
     switch (groupBy) {
       case 'subject':
-        groupKey = question.setSubject
+        groupKey = question.subject
         break
       case 'difficulty':
         groupKey = question.difficulty
@@ -105,18 +105,43 @@ export const extractQuestionsWithMetadata = (practiceSets: any[]): QuestionWithM
   
   practiceSets.forEach(set => {
     set.questions.forEach((question: any) => {
+      // Calculate mastery level based on attempts and correctness
+      const attempts = question.attempts || 0;
+      const masteryLevel = calculateMasteryLevel(attempts, question.correct);
+      
       extractedQuestions.push({
-        ...question,
+        id: question.id,
+        topic: question.topic,
+        subtopic: question.subtopic,
+        difficulty: question.difficulty,
+        answered: question.answered,
+        correct: question.correct,
+        timeSpent: question.timeSpent,
         setId: set.id,
-        setSubject: set.subject,
+        setTitle: `${set.subject} - ${set.type}`,
+        subject: set.subject,
         setType: set.type,
         dateCompleted: set.dateCompleted,
-        difficulty: question.difficulty || set.difficulty,
+        userAnswer: question.userAnswer || '',
+        correctAnswer: question.correctAnswer || '',
+        masteryLevel,
+        attempts,
+        partiallyCorrect: question.partiallyCorrect || false
       })
     })
   })
   
   return extractedQuestions
+}
+
+// Helper function to calculate mastery level
+const calculateMasteryLevel = (attempts: number, isCorrect: boolean): number => {
+  if (attempts === 0) return 1; // Not Started
+  if (attempts === 1 && isCorrect) return 2; // Familiar
+  if (attempts >= 2 && isCorrect) return 3; // Proficient
+  if (attempts >= 3 && isCorrect) return 4; // Mastered
+  if (attempts >= 4 && isCorrect) return 5; // Expert
+  return 1; // Default to Not Started
 }
 
 // Analyze error patterns from questions
