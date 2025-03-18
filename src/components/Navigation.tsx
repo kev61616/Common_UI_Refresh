@@ -14,7 +14,7 @@ export function Navigation({
   let pathname = usePathname()
 
   return (
-    <nav className={clsx('text-base lg:text-sm', className)}>
+    <nav className={clsx('text-lg lg:text-base', className)}>
       <ul role="list" className="space-y-6">
         {navigation.map((section) => (
           <li key={section.title}>
@@ -31,10 +31,10 @@ export function Navigation({
                     href={link.href}
                     onClick={onLinkClick}
                     className={clsx(
-                      'block w-full pl-3.5 before:pointer-events-none before:absolute before:top-1/2 before:-left-1 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full',
+                      'block w-auto mr-4 py-1 px-2 before:pointer-events-none before:absolute before:top-1/2 before:-left-1 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full transition-all duration-200',
                       link.href === pathname
-                        ? 'font-semibold text-sky-500 before:bg-sky-500'
-                        : 'text-slate-500 before:hidden before:bg-slate-300 hover:text-slate-600 hover:before:block dark:text-slate-400 dark:before:bg-slate-700 dark:hover:text-slate-300',
+                        ? 'font-semibold text-sky-600 before:bg-sky-500 rounded-full bg-sky-100 dark:bg-sky-900/40 dark:text-sky-300'
+                        : 'text-slate-500 before:hidden before:bg-slate-300 hover:bg-purple-50 hover:text-purple-600 hover:rounded-full hover:before:block dark:text-slate-400 dark:before:bg-slate-700 dark:hover:text-purple-400 dark:hover:bg-purple-900/30',
                     )}
                   >
                     {link.title}

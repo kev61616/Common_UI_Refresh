@@ -3,11 +3,10 @@
 import { Suspense, useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { Dialog, DialogPanel, Disclosure } from '@headlessui/react'
-import clsx from 'clsx'
+import { Dialog, DialogPanel } from '@headlessui/react'
 
 import { Logomark } from '@/components/Logo'
-import { navigation } from '@/lib/navigation'
+import { Navigation } from '@/components/Navigation'
 
 function MenuIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -39,21 +38,6 @@ function CloseIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   )
 }
 
-function ChevronDownIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      strokeWidth="2"
-      strokeLinecap="round"
-      {...props}
-    >
-      <path d="M19 9l-7 7-7-7" />
-    </svg>
-  )
-}
-
 function CloseOnNavigation({ close }: { close: () => void }) {
   let pathname = usePathname()
   let searchParams = useSearchParams()
@@ -65,63 +49,8 @@ function CloseOnNavigation({ close }: { close: () => void }) {
   return null
 }
 
-function MobileNavigationItem({ 
-  section,
-  pathname,
-  onLinkClick
-}: {
-  section: {
-    title: string
-    links: { title: string; href: string }[]
-  }
-  pathname: string
-  onLinkClick?: React.MouseEventHandler<HTMLAnchorElement>
-}) {
-  const isActive = section.links.some(link => link.href === pathname)
-  
-  return (
-    <Disclosure as="div" className="py-2">
-      {({ open }) => (
-        <>
-          <Disclosure.Button className={clsx(
-            "flex w-full items-center justify-between px-3 py-2 text-base font-medium",
-            isActive ? "text-sky-500" : "text-slate-700 dark:text-slate-300"
-          )}>
-            <span>{section.title}</span>
-            <ChevronDownIcon 
-              className={clsx(
-                "h-5 w-5 transition-transform duration-150",
-                open ? 'rotate-180 transform' : ''
-              )} 
-            />
-          </Disclosure.Button>
-          
-          <Disclosure.Panel className="mt-1 space-y-1">
-            {section.links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={onLinkClick}
-                className={clsx(
-                  'block pl-8 pr-3 py-2 text-base',
-                  link.href === pathname
-                    ? 'font-medium text-sky-500'
-                    : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
-                )}
-              >
-                {link.title}
-              </Link>
-            ))}
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
-  )
-}
-
 export function MobileNavigation() {
   let [isOpen, setIsOpen] = useState(false)
-  let pathname = usePathname()
   let close = useCallback(() => setIsOpen(false), [setIsOpen])
 
   function onLinkClick(event: React.MouseEvent<HTMLAnchorElement>) {
@@ -166,17 +95,7 @@ export function MobileNavigation() {
               <Logomark className="h-9 w-9" />
             </Link>
           </div>
-          
-          <div className="mt-5 divide-y divide-slate-100 dark:divide-slate-800">
-            {navigation.map((section) => (
-              <MobileNavigationItem
-                key={section.title}
-                section={section}
-                pathname={pathname}
-                onLinkClick={onLinkClick}
-              />
-            ))}
-          </div>
+          <Navigation className="mt-5 px-1" onLinkClick={onLinkClick} />
         </DialogPanel>
       </Dialog>
     </>

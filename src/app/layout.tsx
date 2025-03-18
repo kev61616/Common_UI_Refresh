@@ -7,6 +7,7 @@ import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
+import '@/styles/custom-animations.css'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,11 +24,11 @@ const lexend = localFont({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s - Docs',
-    default: 'CacheAdvance - Never miss the cache again.',
+    template: '%s - BrainBox SAT',
+    default: 'BrainBox SAT - Master your SAT preparation',
   },
   description:
-    'Cache every single thing your app could ever do ahead of time, so your code never even has to run at all.',
+    'Comprehensive SAT preparation platform with analytics, personalized insights, and expert study recommendations.',
 }
 
 export default function RootLayout({

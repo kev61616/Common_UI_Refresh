@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './prism.css';
+@import './custom-animations.css';
 
 @plugin '@tailwindcss/typography';
 

@@ -1,0 +1,203 @@
+/* Global styles for advanced view variants in review-alt page */
+
+/* 3D transforms and perspective effects */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.selected-card .preserve-3d {
+  transform: rotateY(180deg);
+}
+
+/* Animation for pulsing effects */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Timeline scroll styling */
+.timeline-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.timeline-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.timeline-scrollbar::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 10px;
+}
+.timeline-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
+.dark .timeline-scrollbar::-webkit-scrollbar-track {
+  background: #2d3748;
+}
+.dark .timeline-scrollbar::-webkit-scrollbar-thumb {
+  background: #4a5568;
+}
+.dark .timeline-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #718096;
+}
+
+/* Enhanced shadow effects */
+.shadow-hover {
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+.shadow-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  transform: translateY(-2px);
+}
+
+/* Enhanced card transitions */
+.card-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-transition:hover {
+  transform: translateY(-4px);
+}
+
+/* Panel slide-in animation */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-blue-purple {
+  background: linear-gradient(135deg, #4f46e5, #7e22ce);
+}
+.bg-gradient-green-blue {
+  background: linear-gradient(135deg, #10b981, #3b82f6);
+}
+.bg-gradient-orange-pink {
+  background: linear-gradient(135deg, #f59e0b, #ec4899);
+}
+
+/* Text gradients */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.text-gradient-blue-purple {
+  background-image: linear-gradient(135deg, #4f46e5, #7e22ce);
+}
+.text-gradient-green-blue {
+  background-image: linear-gradient(135deg, #10b981, #3b82f6);
+}
+.text-gradient-orange-pink {
+  background-image: linear-gradient(135deg, #f59e0b, #ec4899);
+}
+
+/* Enhanced focus styles */
+.focus-ring {
+  transition: box-shadow 0.2s ease;
+}
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.6);
+}
+
+/* Steampunk Machinery View Animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-medium {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-erratic {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(100deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(280deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  20% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-15px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(1.5);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 10s linear infinite;
+}
+
+.animate-spin-medium {
+  animation: spin-medium 6s linear infinite;
+}
+
+.animate-spin-erratic {
+  animation: spin-erratic 8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.animate-steam {
+  animation: steam 2s ease-out forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .sm-text-center {
+    text-align: center;
+  }
+  .sm-flex-col {
+    flex-direction: column;
+  }
+}

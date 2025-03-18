@@ -3,31 +3,31 @@ export const navigation = [
     title: 'Overview',
     links: [
       { title: 'Dashboard', href: '/' },
-      { title: 'Reading', href: '/docs/reading' },
-      { title: 'Writing', href: '/docs/writing' },
-      { title: 'Math', href: '/docs/math' },
+      { title: 'Reading', href: '/overview/reading' },
+      { title: 'Writing', href: '/overview/writing' },
+      { title: 'Math', href: '/overview/math' },
     ],
   },
   {
     title: 'Test',
     links: [
-      { title: 'Mock Test', href: '/docs/mock-test' },
-      { title: 'Question Bank', href: '/docs/question-bank' },
+      { title: 'Mock Test', href: '/test/mock-test' },
+      { title: 'Question Bank', href: '/test/question-bank' },
     ],
   },
   {
     title: 'Review',
     links: [
-      { title: 'By Set', href: '/docs/by-set' },
-      { title: 'By Question', href: '/docs/by-question' },
+      { title: 'By Set', href: '/review/by-set' },
+      { title: 'By Question', href: '/review/by-question' },
     ],
   },
   {
     title: 'Course',
     links: [
-      { title: 'Course overview', href: '/docs/course-overview' },
-      { title: 'Schedule', href: '/docs/schedule' },
-      { title: 'Materials', href: '/docs/materials' },
+      { title: 'Course overview', href: '/course/course-overview' },
+      { title: 'Schedule', href: '/course/schedule' },
+      { title: 'Materials', href: '/course/materials' },
     ],
   },
 ]

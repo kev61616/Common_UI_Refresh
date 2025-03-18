@@ -1,0 +1,89 @@
+/* 
+ * Dropdown menu system
+ * This file contains styles for dropdown menus to ensure consistent rendering across the app
+ */
+
+/* Base dropdown container */
+.dropdown-container {
+  position: relative;
+}
+
+/* The dropdown menu itself */
+.dropdown-menu {
+  position: absolute;
+  z-index: 1000; /* High z-index to ensure it appears above other content */
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0.5rem 0 0;
+  color: var(--text-primary);
+  text-align: left;
+  list-style: none;
+  background-color: var(--bg-surface);
+  background-clip: padding-box;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Ensure 100% opacity */
+  opacity: 1;
+}
+
+/* Light mode - fully opaque background */
+:root:not(.dark) .dropdown-menu {
+  background-color: white;
+}
+
+/* Dark mode - fully opaque background */
+:root.dark .dropdown-menu {
+  background-color: #1e293b; /* slate-800 */
+}
+
+/* Dropdown menu with more emphasis (higher elevation) */
+.dropdown-menu-elevated {
+  z-index: 9999; /* Much higher z-index for problematic cases */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Container that should allow overflow for dropdowns */
+.overflow-for-dropdown {
+  overflow: visible !important;
+}
+
+/* For dropdown within a scrolling container */
+.scrolling-parent-with-dropdown {
+  isolation: isolate; /* Create a new stacking context */
+  position: relative;
+}
+
+/* Fix for absolute positioning */
+.dropdown-portal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+  pointer-events: none; /* Allow clicks to pass through except on content */
+}
+
+.dropdown-portal-content {
+  pointer-events: auto; /* Re-enable pointer events for the actual dropdown */
+  position: absolute;
+  /* Positioning to be set via JavaScript */
+  /* Ensure dropdown content is fully clickable */
+  z-index: 10000;
+}
+
+/* Animation for dropdowns */
+@keyframes dropdown-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-menu-animated {
+  animation: dropdown-fade-in 0.2s ease-out forwards;
+}
