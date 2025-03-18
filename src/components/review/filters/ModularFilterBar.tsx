@@ -143,10 +143,18 @@ export function ModularFilterBar({
     }
   };
   
+  // Pass through the onClearFilters callback to the FilterContext
+  const handleResetFilters = () => {
+    if (onClearFilters) {
+      onClearFilters();
+    }
+  };
+  
   return (
     <FilterProvider 
       initialState={propInitialFilters}
       onFiltersChanged={handleFiltersChanged}
+      onResetFilters={handleResetFilters}
     >
       <FilterButtons />
     </FilterProvider>

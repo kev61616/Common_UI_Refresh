@@ -1,23 +1,23 @@
 'use client'
 
 import React from 'react'
-import { QuestionViewProps } from './types'
-import { QuestionWithMetadata } from '../question-view/types'
-import { EnhancedMatrixGrid } from '../enhanced-matrix/components/EnhancedMatrixGrid'
+import { QuestionViewProps } from './question-view-variants/types'
+import { QuestionWithMetadata } from './question-view/types'
+import { EnhancedMatrixGrid } from './enhanced-matrix/components/EnhancedMatrixGrid'
 import { getDataWithFallback } from '@/lib/dataUtils'
-import { distributeQuestionsAcrossMasteryLevels } from '../enhanced-matrix/utils/dataUtils'
+import { distributeQuestionsAcrossMasteryLevels } from './enhanced-matrix/utils/dataUtils'
 import { PracticeSet } from '@/lib/mockData'
 
 /**
- * Enhanced Matrix Grid View for the By Question tab
+ * GeneralView - A matrix grid view of all data
  * 
  * A fully-featured matrix view that organizes questions by topic and difficulty
  * with comprehensive filtering capabilities and ensured data distribution
  * across all mastery levels (Very Weak, Weak, Not Attempted, Emerging, Proficient, Mastered)
  */
-export function EnhancedMatrixGridView(props: QuestionViewProps) {
+export function GeneralView(props: QuestionViewProps) {
   // Debug data loading
-  console.log('EnhancedMatrixGridView received practiceSets:', props.practiceSets?.length);
+  console.log('GeneralView received practiceSets:', props.practiceSets?.length);
   
   // Get the base data with fallback
   const fallbackData = getDataWithFallback(props.practiceSets);
@@ -30,7 +30,7 @@ export function EnhancedMatrixGridView(props: QuestionViewProps) {
       const questionsWithSetInfo = set.questions.map((q: any) => ({
         ...q,
         setId: set.id,
-        setTitle: set.title
+        setTitle: set.type || 'Practice Set'
       }));
       allQuestions = [...allQuestions, ...questionsWithSetInfo];
     }
@@ -43,16 +43,12 @@ export function EnhancedMatrixGridView(props: QuestionViewProps) {
   // but with our enhanced distribution that ensures all mastery levels have data
   const enhancedPracticeSet: PracticeSet = {
     id: 'matrix-data',
-    // Title is used for display purposes within components but isn't in PracticeSet
-    // so we'll add it to the questions instead
     questions: distributedQuestions,
-    // Date will be represented through dateCompleted
-    subject: 'Math', // Using a valid subject from the enum
+    subject: 'Math',
     type: 'Matrix View',
     accuracy: 65,
     timeUsed: 0,
-    difficulty: 'Medium', // Using a valid difficulty from the enum
-    // Adding the missing fields
+    difficulty: 'Medium',
     pace: 'Normal',
     dateCompleted: new Date().toISOString(),
     timeOfDay: 'Afternoon',

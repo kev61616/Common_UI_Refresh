@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ReviewTestPage } from '@/components/ReviewTestPage'
+import { ReviewPage } from '@/components/review/ReviewPage'
+import '@/styles/components/set-view.css'
 
 // Define the saved state interface
 interface SavedReviewState {
@@ -14,7 +15,11 @@ interface SavedReviewState {
   };
 }
 
-export default function ReviewPage() {
+/**
+ * Production review page that uses the standalone implementation
+ * with the SetViewTable component (timeline-inspired table view)
+ */
+export default function ReviewIndexPage() {
   const [savedState, setSavedState] = useState<SavedReviewState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -36,7 +41,7 @@ export default function ReviewPage() {
     setIsLoading(false);
   }, []);
 
-  // Save state handler to pass to ReviewTestPage
+  // Save state handler to pass to ReviewPage component
   const handleSaveState = (state: SavedReviewState) => {
     try {
       localStorage.setItem('reviewPageState', JSON.stringify(state));
@@ -56,10 +61,10 @@ export default function ReviewPage() {
 
   return (
     <div className="px-[2%]">
-      <ReviewTestPage 
+      <ReviewPage 
         initialState={savedState}
         onStateChange={handleSaveState}
       />
     </div>
   )
-} 
+}

@@ -1,121 +1,74 @@
-# BrainBox Study Platform
+# Syntax Learning Platform
 
-This project is a Next.js-based study and review platform designed to help students track their performance and review study materials.
+## Overview
 
-## Tech Stack
+Syntax is a next-generation learning platform that provides advanced data visualization and analysis for educational content. The platform uses React 19, Next.js 15, and Tailwind CSS 4 to deliver a responsive and interactive user experience.
 
-- **Frontend Framework**: Next.js 15.2.1 with App Router
-- **UI Framework**: React 19.0.0
-- **Styling**: TailwindCSS 4.0
-- **Language**: TypeScript
-- **Linting**: ESLint 9
+## Features
 
-## Key Features
+### Question View - General View
 
-- Interactive dashboard with performance insights
-- Multiple view options for reviewing study materials
-- Advanced filtering system with sticky navigation
-- Timeline-based visualization of study progress
-- Dark/light mode support
+The General View provides a comprehensive matrix grid that organizes questions by topic and mastery level:
 
-## Modular Filter System
+- **Data Distribution**: Questions are evenly distributed across all 6 mastery columns (Very Weak, Weak, Not Attempted, Emerging, Proficient, Mastered)
+- **Challenge Icons**: Each cell includes a challenge icon that allows users to practice questions to improve their mastery level
+- **Expandable Categories**: Clicking on main topics (e.g., "Algebra Fundamentals") expands to show subcategories for more detailed analysis
+- **Visual Progress Indicators**: Color-coded cells and progress bars indicate mastery levels and performance metrics
 
-The filtering system has been modularized for better maintainability and performance. The new system includes:
+## Technical Implementation
 
-### Core Components
+### App Router Architecture
 
-- `FilterContext.tsx` - Context provider for managing filter state
-- `filterData.ts` - Centralized data structures and utility functions
-- `FilterButton.tsx` - Reusable button component with standardized styles
+This project exclusively uses the Next.js App Router for routing. The app router provides:
 
-### Filter Components
+- Improved performance through React Server Components
+- Built-in data loading capabilities
+- Simplified API route creation
+- Enhanced SEO functionality
 
-- `SubjectFilter.tsx` - Filter for subject categories (Reading, Writing, Math)
-- `TypeFilter.tsx` - Complex filter for specific topic types with category-based organization
-- `DateFilter.tsx` - Date range presets for filtering by time period
-- `RangeSliderFilter.tsx` - Dual-handle slider for numeric range filtering (Accuracy, Time)
+### Component Structure
 
-### Main Container
+- `/src/components/review/` - Contains all review-related components
+- `/src/components/review/enhanced-matrix/` - Contains the matrix grid components for the General View
+  - `/components/` - UI components like MatrixCell, MatrixRow, etc.
+  - `/hooks/` - Custom hooks for data management
+  - `/utils/` - Utility functions for data processing
+  - `/types/` - TypeScript type definitions
 
-- `ModularFilterBar.tsx` - Container component that assembles all filters into a cohesive UI
+### Data Flow
 
-### Benefits of the New System
-
-- **Improved Maintainability**: Each filter is now a separate component
-- **Better State Management**: Centralized state via React Context
-- **Enhanced User Experience**: More intuitive and responsive filtering
-- **Type Safety**: Fully typed with TypeScript interfaces
-- **Consistent Styling**: Standardized visual language across all filters
-
-## Sticky Navigation System
-
-The platform features a sticky navigation system that enhances the user experience by keeping important controls accessible while scrolling.
-
-### Features
-
-- **Persistent Controls**: View toggles and filter controls remain visible when scrolling through content
-- **Visual Feedback**: Shadow and backdrop blur effects indicate when navigation is in sticky mode
-- **Responsive Design**: Adapts to different screen sizes with specialized mobile layout
-- **CSS Variables**: Uses CSS custom properties for consistent spacing and positioning
-- **Performance Optimized**: Smooth transitions and minimal re-renders during scroll events
-
-### Mobile Experience
-
-- **Collapsible Filters**: Filters can be toggled on/off via a dedicated mobile button
-- **Space Efficiency**: Compact interfaces for small screens
-- **Touch-Friendly**: Larger tap targets for mobile interactions
-- **Visual Indicators**: Badge counters show number of active filters at a glance
-
-## Navigation Improvements
-
-The main navigation has been optimized with:
-
-- **Integrated Logo**: Logo component is now embedded directly in the navigation bar
-- **Consistent Height**: Fixed navbar height via CSS variables for a stable UI
-- **Improved Dropdowns**: Enhanced dropdown menu interactions and visibility
-- **Responsive Adaptations**: Proper sizing and spacing across all device sizes
+1. Raw question data is processed through `useMatrixData` hook
+2. Data is distributed across mastery levels using `distributeQuestionsAcrossMasteryLevels`
+3. UI components render the data with interactive elements
+4. Challenge system tracks user progress and updates mastery levels
 
 ## Development Guidelines
 
-1. Always use the App Router for routing - Page Router is not supported
-2. Include helpful comments for complex logic
-3. Follow TypeScript best practices for type safety
-4. Ensure components are responsive for all device sizes
-5. Maintain dark/light mode compatibility
-6. Use CSS variables for consistent sizing and spacing
+1. Only use App Router, not Page Router
+2. Include descriptive comments for complex logic
+3. Follow the existing component structure and naming conventions
+4. Use Tailwind CSS for styling to maintain consistency
+5. Test all interactive elements for proper functionality
+
+## Technologies
+
+- React 19
+- Next.js 15.2.1
+- TypeScript 5
+- Tailwind CSS 4
+- ESLint 9
 
 ## Getting Started
 
-1. Clone the repository
-2. Install dependencies with `npm install`
-3. Run the development server with `npm run dev`
-4. Open [http://localhost:3000](http://localhost:3000) to see the application
+```bash
+# Install dependencies
+npm install
 
-## File Structure
+# Run development server
+npm run dev
 
-```
-src/
-├── app/            # App Router pages and layouts
-├── components/     # Reusable components
-│   ├── common/     # Shared UI components
-│   ├── dashboard/  # Dashboard-specific components
-│   ├── review/     # Review-related components
-│   │   ├── filters/        # Modular filter components
-│   │   ├── enhanced-matrix/# Matrix view components
-│   │   └── timeline-view-variants/ # Timeline visualizations
-├── lib/            # Utility functions and data
-├── styles/         # Global styles and theme configuration
-│   ├── custom-animations.css # Animation and CSS variable definitions
-│   ├── dropdown.css          # Dropdown-specific styles
-│   └── tailwind.css          # Tailwind configuration and imports
-```
+# Build for production
+npm run build
 
-## Contributing
-
-When contributing to this repository, please follow these best practices:
-
-1. Create a feature branch for your changes
-2. Write comprehensive tests for new features
-3. Update documentation to reflect any changes
-4. Follow the established code style and formatting
-5. Submit a pull request for review
+# Start production server
+npm start

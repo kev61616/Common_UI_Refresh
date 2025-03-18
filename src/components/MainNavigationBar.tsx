@@ -3,10 +3,84 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { ThemeSelector } from '@/components/ThemeSelector'
 import { ChevronRightIcon, HomeIcon } from '@/components/icons/BreadcrumbIcons'
 import { navigation } from '@/lib/navigation'
+
+// Navigation icons using outlines only (per feedback)
+const NavigationIcons: Record<string, JSX.Element> = {
+  // Overview section
+  'Dashboard': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+    </svg>
+  ),
+  'Reading': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+    </svg>
+  ),
+  'Writing': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+    </svg>
+  ),
+  'Math': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+    </svg>
+  ),
+  
+  // Test section
+  'Mock Test': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+  ),
+  'Question Bank': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  ),
+  
+  // Review section
+  'Question View': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+    </svg>
+  ),
+  'Matrix View': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+    </svg>
+  ),
+  'Timeline View': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8 13v-1m4 1v-3m4 3V8M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+    </svg>
+  ),
+  
+  // Course section
+  'Course overview': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path d="M12 14l9-5-9-5-9 5 9 5z" />
+      <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+    </svg>
+  ),
+  'Schedule': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>
+  ),
+  'Materials': (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+    </svg>
+  )
+};
 
 // Integrated Logo components directly into this file as requested
 function Logomark(props: React.ComponentPropsWithoutRef<'div'>) {
@@ -42,6 +116,7 @@ function Logo(props: React.ComponentPropsWithoutRef<'div'>) {
 
 export function MainNavigationBar() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const navbarRef = useRef<HTMLDivElement>(null)
@@ -117,7 +192,7 @@ export function MainNavigationBar() {
             ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-md' 
             : 'bg-white dark:bg-slate-900'
         }`}
-        style={{ height: 'var(--navbar-height, 4.75rem)' }} // Set fixed height for consistency
+        style={{ paddingTop: '2%', paddingBottom: '10px' }} // As per feedback: top padding 2%, bottom 10px
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-full items-center justify-between">
@@ -160,11 +235,11 @@ export function MainNavigationBar() {
                       </svg>
                     </div>
                     
-                    {/* Animated underline indicator */}
+                    {/* Simple underline indicator - removed diamond effect/shadow per feedback */}
                     <span 
-                      className={`absolute -bottom-1 left-0 w-full h-1 rounded-full transform transition-all duration-300 ${
+                      className={`absolute -bottom-1 left-0 w-full h-1 rounded-full transform transition-all duration-200 ${
                         activeSection === section.title 
-                          ? 'bg-gradient-to-r from-sky-500 to-indigo-500 scale-x-100 opacity-100 underline-animation shadow-lg shadow-sky-200/40 dark:shadow-sky-900/20' 
+                          ? 'bg-sky-500 scale-x-100 opacity-100' 
                           : 'bg-sky-500 scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-50'
                       }`}
                     />
@@ -181,28 +256,50 @@ export function MainNavigationBar() {
                       {/* Decorative arrow pointing up */}
                       <div className="absolute top-0 left-7 w-4 h-4 bg-white dark:bg-slate-700 transform rotate-45 border-t border-l border-slate-200 dark:border-slate-600 -mt-2 z-0"></div>
                       
+                      {/* Dropdown uses same color as primary button background when active */}
                       <div className="rounded-lg shadow-xl border border-slate-200 dark:border-slate-600 overflow-hidden">
-                        <div className="relative bg-white dark:bg-slate-700 py-2">
+                        <div className={`relative py-2 ${
+                          activeSection === section.title 
+                            ? 'bg-sky-50 dark:bg-sky-900/10' 
+                            : 'bg-white dark:bg-slate-700'
+                        }`}>
                           {section.links.map((link) => (
                             <Link
                               key={link.href}
                               href={link.href}
-                              className={`flex items-center px-4 py-2.5 text-sm transition-colors duration-200 ${
-                                pathname === link.href
-                                  ? 'bg-sky-50 text-sky-600 font-medium dark:bg-sky-900/30 dark:text-sky-300'
-                                  : 'text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-600'
+                              className={`flex items-center px-4 py-2.5 text-sm transition-all duration-200 ${
+                                (pathname === link.href || 
+                                  (pathname === '/review' && link.href.includes('/review') && 
+                                    (link.href.includes(`view=${searchParams?.get('view')}`) || 
+                                     (!searchParams?.get('view') && link.title === 'Question View'))))
+                                  ? 'bg-sky-100 text-sky-600 font-medium dark:bg-sky-900/50 dark:text-sky-300'
+                                  : 'text-slate-700 hover:bg-sky-50 hover:text-sky-600 dark:text-slate-200 dark:hover:bg-sky-900/30 dark:hover:text-sky-300'
                               }`}
                               onClick={() => setActiveSection(null)}
                             >
+                              {/* Icon for menu item */}
+                              <div className="w-6 flex-shrink-0 mr-3 flex items-center justify-center">
+                                {NavigationIcons[link.title] || (
+                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+                                  </svg>
+                                )}
+                              </div>
+                              
+                              {/* Title */}
+                              <span>{link.title}</span>
+                              
                               {/* Add checkmark for selected item */}
-                              <div className="w-5 flex-shrink-0 mr-2">
-                                {pathname === link.href && (
+                              <div className="w-5 flex-shrink-0 ml-auto">
+                                {(pathname === link.href || 
+                                  (pathname === '/review' && link.href.includes('/review') && 
+                                   (link.href.includes(`view=${searchParams?.get('view')}`) || 
+                                    (!searchParams?.get('view') && link.title === 'Question View')))) && (
                                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                   </svg>
                                 )}
                               </div>
-                              {link.title}
                             </Link>
                           ))}
                         </div>

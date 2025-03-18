@@ -2,43 +2,29 @@
 
 import { useState } from 'react'
 import { PracticeSet } from '@/lib/mockData'
-import { getDataWithFallback } from '@/lib/dataUtils'
 
 interface SetViewProps {
   practiceSets: PracticeSet[];
-  onSelectSet?: (id: string) => void;
-  selectedSetId?: string | null;
+  onSelectSet: (id: string) => void;
+  selectedSetId: string | null;
 }
 
 /**
- * SetView - A clean, tabular view of practice sets with detailed performance metrics
- * Based on the Timeline Inspired View
- * 
- * Features:
- * - Structured table layout with sortable columns
- * - Color-coded performance indicators
- * - Subject and type grouping
- * - Difficulty and pace badges
- * - Pagination with results count
+ * Set View - Table-based visualization of practice sets
+ * Adapted from ListView3 (Timeline Inspired View) for use as a dedicated Set View
  */
 export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewProps) {
-  // Debug data loading
-  console.log('SetView received practiceSets:', practiceSets?.length);
-  
-  // Use the utility function to get data with fallback
-  const sets = getDataWithFallback(practiceSets);
-  
   // For pagination
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
   
   // Calculate total pages
-  const totalPages = Math.ceil(sets.length / itemsPerPage)
+  const totalPages = Math.ceil(practiceSets.length / itemsPerPage)
   
   // Get current items
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = sets.slice(indexOfFirstItem, indexOfLastItem)
+  const currentItems = practiceSets.slice(indexOfFirstItem, indexOfLastItem)
   
   // Format time from seconds to MM:SS
   const formatTime = (seconds: number) => {
@@ -62,13 +48,6 @@ export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewPro
     if (accuracy >= 90) return 'text-green-600 dark:text-green-400'
     if (accuracy >= 70) return 'text-yellow-600 dark:text-yellow-400'
     return 'text-red-600 dark:text-red-400'
-  }
-  
-  // Get progress bar color based on accuracy
-  const getProgressBarColor = (accuracy: number) => {
-    if (accuracy >= 90) return 'bg-green-500 dark:bg-green-400'
-    if (accuracy >= 70) return 'bg-yellow-500 dark:bg-yellow-400'
-    return 'bg-red-500 dark:bg-red-400'
   }
   
   // Get badge for difficulty
@@ -99,29 +78,8 @@ export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewPro
     }
   }
   
-  // Get subject icon or identifier
-  const getSubjectIcon = (subject: string) => {
-    switch (subject) {
-      case 'Math':
-        return <div className="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 flex items-center justify-center">M</div>
-      case 'Reading':
-        return <div className="flex-shrink-0 h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 flex items-center justify-center">R</div>
-      case 'Writing':
-        return <div className="flex-shrink-0 h-10 w-10 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 flex items-center justify-center">W</div>
-      default:
-        return <div className="flex-shrink-0 h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">{subject.charAt(0)}</div>
-    }
-  }
-  
   // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
-  
-  // Handle set selection
-  const handleSelectSet = (id: string) => {
-    if (onSelectSet) {
-      onSelectSet(id);
-    }
-  }
   
   return (
     <div className="p-4">
@@ -155,7 +113,7 @@ export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewPro
               currentItems.map((set) => (
                 <tr 
                   key={set.id}
-                  onClick={() => handleSelectSet(set.id)}
+                  onClick={() => onSelectSet(set.id)}
                   className={`hover:bg-slate-50 dark:hover:bg-slate-800/70 cursor-pointer transition-colors duration-150 ${
                     selectedSetId === set.id 
                     ? 'bg-sky-50 dark:bg-sky-900/20 border-l-4 border-sky-500' 
@@ -164,7 +122,9 @@ export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewPro
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      {getSubjectIcon(set.subject)}
+                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        {set.subject.charAt(0)}
+                      </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-slate-900 dark:text-white">
                           {set.subject}
@@ -179,38 +139,30 @@ export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewPro
                     <div className="text-sm text-slate-900 dark:text-white">{formatDate(set.dateCompleted)}</div>
                     <div className="text-sm text-slate-500 dark:text-slate-400">{set.timeOfDay}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex flex-col items-center">
-                      <div className={`text-xl font-semibold ${getAccuracyStyle(set.accuracy)}`}>
-                        {set.accuracy}%
-                      </div>
-                      <div className="w-full bg-slate-200 dark:bg-slate-700 h-1.5 mt-1.5 rounded-full overflow-hidden">
-                        <div 
-                          className={`h-full rounded-full ${getProgressBarColor(set.accuracy)}`}
-                          style={{ width: `${set.accuracy}%` }}
-                        ></div>
-                      </div>
-                      <div className="flex items-center justify-center mt-1 space-x-1">
-                        {set.mistakeTypes.conceptual > 0 && (
-                          <span className="text-xs text-slate-600 dark:text-slate-400">
-                            {set.mistakeTypes.conceptual}c
-                          </span>
-                        )}
-                        {set.mistakeTypes.careless > 0 && (
-                          <span className="text-xs text-slate-600 dark:text-slate-400">
-                            {set.mistakeTypes.careless}l
-                          </span>
-                        )}
-                        {set.mistakeTypes.timeManagement > 0 && (
-                          <span className="text-xs text-slate-600 dark:text-slate-400">
-                            {set.mistakeTypes.timeManagement}t
-                          </span>
-                        )}
-                      </div>
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                    <div className={`text-xl font-semibold ${getAccuracyStyle(set.accuracy)}`}>
+                      {set.accuracy}%
+                    </div>
+                    <div className="flex items-center justify-center mt-1 space-x-1">
+                      {set.mistakeTypes.conceptual > 0 && (
+                        <span className="text-xs text-slate-600 dark:text-slate-400">
+                          {set.mistakeTypes.conceptual}c
+                        </span>
+                      )}
+                      {set.mistakeTypes.careless > 0 && (
+                        <span className="text-xs text-slate-600 dark:text-slate-400">
+                          {set.mistakeTypes.careless}l
+                        </span>
+                      )}
+                      {set.mistakeTypes.timeManagement > 0 && (
+                        <span className="text-xs text-slate-600 dark:text-slate-400">
+                          {set.mistakeTypes.timeManagement}t
+                        </span>
+                      )}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
-                    <div className="text-sm font-medium text-slate-900 dark:text-white">{formatTime(set.timeUsed)}</div>
+                    <div className="text-sm text-slate-900 dark:text-white">{formatTime(set.timeUsed)}</div>
                     {set.sessionFatigue.earlyAccuracy - set.sessionFatigue.lateAccuracy > 15 && (
                       <div className="text-xs text-red-600 dark:text-red-400 mt-1">Fatigue: -{(set.sessionFatigue.earlyAccuracy - set.sessionFatigue.lateAccuracy)}%</div>
                     )}
@@ -243,8 +195,8 @@ export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewPro
         <div className="flex justify-between items-center mt-5 px-2">
           <div className="text-sm text-slate-600 dark:text-slate-400">
             Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to{' '}
-            <span className="font-medium">{Math.min(indexOfLastItem, sets.length)}</span> of{' '}
-            <span className="font-medium">{sets.length}</span> results
+            <span className="font-medium">{Math.min(indexOfLastItem, practiceSets.length)}</span> of{' '}
+            <span className="font-medium">{practiceSets.length}</span> results
           </div>
           
           <nav className="inline-flex shadow-sm -space-x-px">

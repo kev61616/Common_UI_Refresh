@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { PracticeSet } from '@/lib/mockData'
 import { getDataWithFallback } from '@/lib/dataUtils'
 
-interface SetViewProps {
+interface SetViewTimelineProps {
   practiceSets: PracticeSet[];
   onSelectSet?: (id: string) => void;
   selectedSetId?: string | null;
@@ -12,7 +12,6 @@ interface SetViewProps {
 
 /**
  * SetView - A clean, tabular view of practice sets with detailed performance metrics
- * Based on the Timeline Inspired View
  * 
  * Features:
  * - Structured table layout with sortable columns
@@ -21,7 +20,7 @@ interface SetViewProps {
  * - Difficulty and pace badges
  * - Pagination with results count
  */
-export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewProps) {
+export function SetViewTimeline({ practiceSets, onSelectSet, selectedSetId }: SetViewTimelineProps) {
   // Debug data loading
   console.log('SetView received practiceSets:', practiceSets?.length);
   

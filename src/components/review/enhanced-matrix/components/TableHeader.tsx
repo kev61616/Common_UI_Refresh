@@ -35,7 +35,7 @@ export function TableHeader({
   showTopicFilter,
   setShowTopicFilter
 }: TableHeaderProps) {
-  // New mastery levels and their colors
+  // Mastery levels and their colors
   const masteryLevels = [
     { name: 'Very Weak', color: 'text-red-600 dark:text-red-400 bg-red-50/50 dark:bg-red-900/10' },
     { name: 'Weak', color: 'text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/10' },
@@ -53,10 +53,9 @@ export function TableHeader({
         </div>
       </th>
       
-      {masteryLevels.map((level, index) => {
-        // Using the existing difficulties data structure for compatibility
-        const difficulty = difficulties[index % difficulties.length];
-        const total = difficultyTotals.find(d => d.difficulty === difficulty);
+      {masteryLevels.map((level) => {
+        // Use the matching difficulty total for this mastery level
+        const total = difficultyTotals.find(d => d.difficulty === level.name);
         
         return (
           <th 
@@ -67,7 +66,7 @@ export function TableHeader({
               <span>{level.name}</span>
             </div>
             <div className="text-xs font-normal mt-1 text-slate-500 dark:text-slate-400">
-              {index < difficultyTotals.length ? (total?.count || 0) : 0} questions
+              {total ? total.count : 0} questions
             </div>
           </th>
         )

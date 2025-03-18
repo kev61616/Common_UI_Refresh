@@ -1,15 +1,15 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import { QuestionViewProps } from './types'
-import { PracticeSet, Question } from '@/lib/mockData'
+import { QuestionViewProps } from './question-view-variants/types'
+import { Question } from '@/lib/mockData'
 import { getDataWithFallback } from '@/lib/dataUtils'
 
 /**
- * QuestionKanbanView - Displays questions in a Kanban board style layout
+ * KanbanView - Displays questions in a Kanban board style layout
  * Organizes questions by mastery level into columns
  */
-export function QuestionKanbanView({
+export function KanbanView({
   practiceSets,
   onSelectSet,
   selectedSetId,

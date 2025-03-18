@@ -3,6 +3,30 @@
 import { QuestionWithMetadata } from '../../question-view/types'
 import { groupQuestionsByTopicAndDifficulty } from './dataUtils'
 
+// Explicitly import the topic definitions from mockData
+// These are the exact tag lists defined in mockData.ts
+import { readingTopics, writingTopics, mathTopics } from '@/lib/mockData'
+
+// Helper to determine if a topic belongs to a subject
+export const isTopicInSubject = (topic: string, subject: string): boolean => {
+  if (subject === 'Math') {
+    return mathTopics.includes(topic);
+  } else if (subject === 'Reading') {
+    return readingTopics.includes(topic);
+  } else if (subject === 'Writing') {
+    return writingTopics.includes(topic);
+  }
+  return false;
+}
+
+// Get the correct subject for a topic
+export const getSubjectForTopic = (topic: string): string | null => {
+  if (mathTopics.includes(topic)) return 'Math';
+  if (readingTopics.includes(topic)) return 'Reading';
+  if (writingTopics.includes(topic)) return 'Writing';
+  return null;
+}
+
 /**
  * Apply filters to the questions
  */
@@ -15,9 +39,12 @@ export const applyFilters = (
   filterPerformance: 'low' | 'medium' | 'high' | null,
   difficulties: string[]
 ): QuestionWithMetadata[] => {
-  // Start with subject filter
+  // Start with subject filter, ensuring we also filter by topic-subject relationship
   let result = filterSubject
-    ? allQuestions.filter(q => q.subject === filterSubject)
+    ? allQuestions.filter(q => {
+        // Ensure both the subject matches AND the topic belongs to that subject
+        return q.subject === filterSubject && isTopicInSubject(q.topic, filterSubject);
+      })
     : allQuestions
   
   // Apply difficulty filter
@@ -39,7 +66,7 @@ export const applyFilters = (
     const searchLowercase = topicSearchInput.toLowerCase()
     result = result.filter(q => 
       q.topic.toLowerCase().includes(searchLowercase) || 
-      q.subtopic.toLowerCase().includes(searchLowercase)
+      (q.subtopic?.toLowerCase().includes(searchLowercase) ?? false)
     )
   }
   
@@ -93,10 +120,23 @@ export const extractUniqueSubjects = (questions: QuestionWithMetadata[]): string
 }
 
 /**
- * Extract unique topics from questions
+ * Extract unique topics from questions, correctly associating them with subjects
  */
 export const extractUniqueTopics = (questions: QuestionWithMetadata[]): string[] => {
-  return Array.from(new Set(questions.map(q => q.topic))).sort()
+  const topics = Array.from(new Set(questions.map(q => q.topic))).sort();
+  
+  // Filter topics to ensure they have valid subject associations
+  return topics.filter(topic => getSubjectForTopic(topic) !== null);
+}
+
+/**
+ * Extract unique topics for a specific subject
+ */
+export const extractUniqueTopicsForSubject = (subject: string): string[] => {
+  if (subject === 'Math') return [...mathTopics];
+  if (subject === 'Reading') return [...readingTopics];
+  if (subject === 'Writing') return [...writingTopics];
+  return [];
 }
 
 /**

@@ -1,4 +1,5 @@
 import { QuestionWithMetadata, GroupedQuestions, GroupByOption } from './types'
+import { readingTopics, writingTopics, mathTopics } from '@/lib/mockData'
 
 // Get color class based on subject
 export const getSubjectColor = (subject: string) => {
@@ -99,6 +100,26 @@ export const groupQuestions = (
   }))
 }
 
+// Helper function to check if a topic belongs to a subject
+export const isTopicValidForSubject = (topic: string, subject: string): boolean => {
+  if (subject === 'Math') {
+    return mathTopics.includes(topic);
+  } else if (subject === 'Reading') {
+    return readingTopics.includes(topic);
+  } else if (subject === 'Writing') {
+    return writingTopics.includes(topic);
+  }
+  return false;
+}
+
+// Get correct subject for a topic
+export const getCorrectSubjectForTopic = (topic: string): string | null => {
+  if (mathTopics.includes(topic)) return 'Math';
+  if (readingTopics.includes(topic)) return 'Reading';
+  if (writingTopics.includes(topic)) return 'Writing';
+  return null;
+}
+
 // Extract all questions with metadata from practice sets
 export const extractQuestionsWithMetadata = (practiceSets: any[]): QuestionWithMetadata[] => {
   const extractedQuestions: QuestionWithMetadata[] = []
@@ -109,24 +130,50 @@ export const extractQuestionsWithMetadata = (practiceSets: any[]): QuestionWithM
       const attempts = question.attempts || 0;
       const masteryLevel = calculateMasteryLevel(attempts, question.correct);
       
+      // Store the original subject from the set
+      const originalSubject = set.subject;
+      // Start with original subject
+      let subject = originalSubject;
+      const topic = question.topic;
+      
+      // Check if the topic belongs to the original subject
+      const hasValidTopicSubjectRelation = isTopicValidForSubject(topic, originalSubject);
+      
+      // Store whether the subject has been corrected
+      let hasSubjectCorrected = false;
+      
+      // If the topic doesn't belong to the original subject, try to find the correct one
+      if (!hasValidTopicSubjectRelation) {
+        const correctSubject = getCorrectSubjectForTopic(topic);
+        if (correctSubject) {
+          // For data correction, use the correct subject
+          subject = correctSubject;
+          hasSubjectCorrected = true;
+        }
+      }
+      
+      // Add the question with appropriate metadata flags
+      // Note: Not including subtopic field as it's not needed in Question View for now
       extractedQuestions.push({
         id: question.id,
         topic: question.topic,
-        subtopic: question.subtopic,
         difficulty: question.difficulty,
         answered: question.answered,
         correct: question.correct,
         timeSpent: question.timeSpent,
         setId: set.id,
-        setTitle: `${set.subject} - ${set.type}`,
-        subject: set.subject,
+        setTitle: `${subject} - ${set.type}`,
+        subject: subject, // Use the validated subject
         setType: set.type,
         dateCompleted: set.dateCompleted,
         userAnswer: question.userAnswer || '',
         correctAnswer: question.correctAnswer || '',
         masteryLevel,
         attempts,
-        partiallyCorrect: question.partiallyCorrect || false
+        partiallyCorrect: question.partiallyCorrect || false,
+        hasValidTopicSubjectRelation, // Whether the topic matches its ORIGINAL subject
+        hasSubjectCorrected, // Whether we've corrected the subject
+        originalSubject // The original subject from the set
       })
     })
   })

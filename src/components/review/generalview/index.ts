@@ -1,0 +1,1 @@
+export { GeneralView } from './GeneralView'

@@ -4,27 +4,19 @@ import { useState } from 'react'
 import { PracticeSet } from '@/lib/mockData'
 import { getDataWithFallback } from '@/lib/dataUtils'
 
-interface SetViewProps {
+interface SetViewTableProps {
   practiceSets: PracticeSet[];
   onSelectSet?: (id: string) => void;
   selectedSetId?: string | null;
 }
 
 /**
- * SetView - A clean, tabular view of practice sets with detailed performance metrics
- * Based on the Timeline Inspired View
+ * SetViewTable - A clean, tabular view of practice sets with detailed performance metrics
  * 
- * Features:
- * - Structured table layout with sortable columns
- * - Color-coded performance indicators
- * - Subject and type grouping
- * - Difficulty and pace badges
- * - Pagination with results count
+ * This standalone production component provides a timeline-inspired table view
+ * that showcases practice sets with rich performance data and visual indicators.
  */
-export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewProps) {
-  // Debug data loading
-  console.log('SetView received practiceSets:', practiceSets?.length);
-  
+export function SetViewTable({ practiceSets, onSelectSet, selectedSetId }: SetViewTableProps) {
   // Use the utility function to get data with fallback
   const sets = getDataWithFallback(practiceSets);
   

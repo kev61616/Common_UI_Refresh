@@ -68,51 +68,64 @@ const writingSubcategories = [
 ];
 
 const mathSubcategories = [
-  'Expressions & Equations',
-  'Linear & Nonlinear Functions',
-  'Statistical Analysis',
-  'Probability',
-  'Geometry: Triangles',
-  'Geometry: Rectangles',
-  'Geometry: Circles',
-  'Geometry: Parabolas',
-  'Solids: Cones',
-  'Solids: Cubes',
-  'Solids: Cylinders',
-  'Solids: Spheres',
-  'Trigonometric Ratios',
-  'Trigonometric Functions'
+  'Expressions, Equations, and Inequalities',
+  'Functions and Nonlinear Equations',
+  'Statistical Analysis and Probability',
+  'Triangle',
+  'Rectangle',
+  'Circle',
+  'Parabola',
+  'Cone',
+  'Cube',
+  'Cylinder',
+  'Sphere',
+  'Trigonometric Ratios and Functions'
 ];
 
-// Realistic test topics that could appear in sets
-const readingTopics = [
-  'Reading Comprehension',
-  'Literary Analysis',
-  'Textual Evidence',
-  'Author\'s Purpose',
-  'Comparative Analysis',
-  'Information Synthesis',
-  'Data Interpretation'
+// Standard topic tags as defined in tags.md
+export const readingTopics = [
+  'Specific Detail',
+  'Summary',
+  'Supporting Evidence',
+  'Supporting Quotation',
+  'Underlined Function',
+  'Data Analysis: Graph(s)',
+  'Data Analysis: Table(s)',
+  'Logical Reasoning',
+  'Main Purpose',
+  'Vocabulary',
+  'Two Texts',
+  'Long Completion',
+  'Main Idea',
+  'Structure of Text'
 ];
 
-const writingTopics = [
-  'Grammar Fundamentals',
+export const writingTopics = [
+  'Parts of Speech',
   'Sentence Structure',
-  'Word Choice',
-  'Punctuation Rules',
-  'Style and Tone',
-  'Essay Organization',
-  'Coherence & Cohesion'
+  'Pronouns',
+  'Agreement',
+  'Degree',
+  'Mood',
+  'Punctuation',
+  'Verb',
+  'Voice',
+  'Transition'
 ];
 
-const mathTopics = [
-  'Algebra Fundamentals',
-  'Functions and Graphs',
-  'Statistics and Data',
-  'Geometry Concepts',
-  'Trigonometry Basics',
-  'Problem Solving',
-  'Mathematical Reasoning'
+export const mathTopics = [
+  'Expressions, Equations, and Inequalities',
+  'Functions and Nonlinear Equations',
+  'Statistical Analysis and Probability',
+  'Triangle',
+  'Rectangle',
+  'Circle',
+  'Parabola',
+  'Cone',
+  'Cube',
+  'Cylinder',
+  'Sphere',
+  'Trigonometric Ratios and Functions'
 ];
 
 // ===== Helper functions =====
@@ -209,7 +222,7 @@ type MasteryLevel = {
 const masteryLevels: MasteryLevel[] = [
   {
     id: 'very-weak',
-    name: 'Very Weak (2x+ incorrect)',
+    name: 'Very Weak (2x)', // Updated per feedback
     targetPercentage: 0.17,
     matchFunction: (questionId, setId) => {
       // Use a stable hash to determine category consistently
@@ -219,7 +232,7 @@ const masteryLevels: MasteryLevel[] = [
   },
   {
     id: 'weak',
-    name: 'Weak (1x incorrect)',
+    name: 'Weak (1x)', // Updated per feedback
     targetPercentage: 0.17,
     matchFunction: (questionId, setId) => {
       const hash = getStableHashFromString(questionId + setId);
@@ -359,20 +372,49 @@ const generatePracticeSets = (): PracticeSet[] => {
     'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening'
   ];
 
-  // Define type mapping to ensure each subject has valid types that match the appropriate subcategories
+  // Define type mapping using the standard tags from tags.md
   const typeMapping: Record<'Reading' | 'Writing' | 'Math', string[]> = {
     'Reading': [
-      'Main Purpose', 'Main Idea', 'Summary', 'Supporting Evidence', 'Logical Reasoning',
-      'Two Texts', 'Vocabulary', 'Data Analysis: Graph(s)', 'Data Analysis: Table(s)'
+      'Specific Detail',
+      'Summary',
+      'Supporting Evidence',
+      'Supporting Quotation',
+      'Underlined Function',
+      'Data Analysis: Graph(s)',
+      'Data Analysis: Table(s)',
+      'Logical Reasoning',
+      'Main Purpose',
+      'Vocabulary',
+      'Two Texts',
+      'Long Completion',
+      'Main Idea',
+      'Structure of Text'
     ],
     'Writing': [
-      'Parts of Speech', 'Sentence Structure', 'Pronouns', 'Agreement', 'Punctuation',
-      'Verb Tense', 'Voice', 'Transition'
+      'Parts of Speech',
+      'Sentence Structure',
+      'Pronouns',
+      'Agreement',
+      'Degree',
+      'Mood',
+      'Punctuation',
+      'Verb',
+      'Voice',
+      'Transition'
     ],
     'Math': [
-      'Expressions & Equations', 'Linear & Nonlinear Functions', 'Statistical Analysis',
-      'Probability', 'Geometry: Triangles', 'Geometry: Circles', 'Trigonometric Ratios',
-      'Solids: Cubes', 'Solids: Spheres'
+      'Expressions, Equations, and Inequalities',
+      'Functions and Nonlinear Equations',
+      'Statistical Analysis and Probability',
+      'Triangle',
+      'Rectangle',
+      'Circle',
+      'Parabola',
+      'Cone',
+      'Cube',
+      'Cylinder',
+      'Sphere',
+      'Trigonometric Ratios and Functions'
     ]
   };
   

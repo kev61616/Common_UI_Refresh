@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from 'react';
-import { TimelineViewProps } from './types';
+import { TimelineViewProps } from '../types';
 import { getDataWithFallback } from '@/lib/dataUtils';
 
 /**
  * Narrative timeline that displays practice sets as a learning journey with chapters
  */
-export function ModifiedStorytellingTimeline({ practiceSets, onSelectSet, selectedSetId }: TimelineViewProps) {
+export function TimelineView({ practiceSets, onSelectSet, selectedSetId }: TimelineViewProps) {
   // Debug data loading
-  console.log('ModifiedStorytellingTimeline received practiceSets:', practiceSets?.length);
+  console.log('TimelineView received practiceSets:', practiceSets?.length);
   
   // Use the utility function to get data with fallback
   const displaySets = getDataWithFallback(practiceSets);

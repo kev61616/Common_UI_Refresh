@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { QuestionViewProps } from './types'
 import { EnhancedMatrixGridView } from './EnhancedMatrixGridView'
 import { QuestionKanbanView } from './QuestionKanbanView'
+import { getDataWithFallback } from '@/lib/dataUtils'
 
 type QuestionViewType = 'matrix' | 'kanban'
 
@@ -12,6 +13,15 @@ type QuestionViewType = 'matrix' | 'kanban'
  * question view formats (matrix and kanban board)
  */
 export function QuestionViewTabs(props: QuestionViewProps) {
+  // Debug data loading
+  console.log('QuestionViewTabs received practiceSets:', props.practiceSets?.length);
+  
+  // Use the utility function to get data with fallback
+  const dataWithFallback = {
+    ...props,
+    practiceSets: getDataWithFallback(props.practiceSets)
+  };
+  
   // State for active tab
   const [activeView, setActiveView] = useState<QuestionViewType>('matrix')
   
@@ -51,9 +61,9 @@ export function QuestionViewTabs(props: QuestionViewProps) {
       {/* View content */}
       <div className="w-full">
         {activeView === 'matrix' ? (
-          <EnhancedMatrixGridView {...props} />
+          <EnhancedMatrixGridView {...dataWithFallback} />
         ) : (
-          <QuestionKanbanView {...props} />
+          <QuestionKanbanView {...dataWithFallback} />
         )}
       </div>
     </div>

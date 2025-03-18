@@ -31,6 +31,7 @@ interface FilterProviderProps {
   children: ReactNode;
   initialState?: FilterState;
   onFiltersChanged?: (filters: FilterState) => void;
+  onResetFilters?: () => void;
 }
 
 /**
@@ -40,7 +41,8 @@ interface FilterProviderProps {
 export function FilterProvider({
   children,
   initialState = initialFilters,
-  onFiltersChanged
+  onFiltersChanged,
+  onResetFilters
 }: FilterProviderProps) {
   // State management
   const [filters, setFilters] = useState<FilterState>(initialState);
@@ -70,9 +72,13 @@ export function FilterProvider({
     console.log('Resetting all filters');
     setFilters(initialState);
     
-    // Call the callback if provided
+    // Call the callbacks if provided
     if (onFiltersChanged) {
       onFiltersChanged(initialState);
+    }
+    
+    if (onResetFilters) {
+      onResetFilters();
     }
   };
 

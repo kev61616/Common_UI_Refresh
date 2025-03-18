@@ -18,7 +18,9 @@ export const navigation = [
   {
     title: 'Review',
     links: [
-      { title: 'Review', href: '/review' },
+      { title: 'Question View', href: '/review?view=question' },
+      { title: 'Matrix View', href: '/review?view=matrix' },
+      { title: 'Timeline View', href: '/review?view=timeline' },
     ],
   },
   {

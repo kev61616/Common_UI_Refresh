@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { QuestionWithMetadata } from '../../question-view/types'
 import { QuestionViewProps } from '../../question-view-variants/types'
 import { extractQuestionsWithMetadata } from '../../question-view/utils'
-import { applyFilters, extractUniqueSubjects, extractUniqueTopics, getInitialFilterState } from '../utils/filterUtils'
+import { applyFilters, extractUniqueSubjects, extractUniqueTopics, getInitialFilterState, isTopicInSubject, extractUniqueTopicsForSubject } from '../utils/filterUtils'
 import { calculateDifficultyTotals, calculateGrandTotal, calculateTopicTotals } from '../utils/dataUtils'
 import { GridRow, GrandTotal, TopicTotal, DifficultyTotal } from '../types'
 
@@ -34,6 +34,16 @@ export const useMatrixData = (props: QuestionViewProps) => {
   // Standard order for difficulties
   const difficulties = ['Easy', 'Medium', 'Hard']
   
+  // Mastery levels for column organization
+  const masteryLevels = [
+    'Very Weak', 
+    'Weak', 
+    'Not Attempted', 
+    'Emerging', 
+    'Proficient', 
+    'Mastered'
+  ]
+  
   // Process questions when practiceSets change
   useEffect(() => {
     const questions = extractQuestionsWithMetadata(props.practiceSets)
@@ -58,35 +68,80 @@ export const useMatrixData = (props: QuestionViewProps) => {
   )
   
   // Extract unique topics from filtered questions
-  const topics = Array.from(new Set(filteredQuestions.map(q => q.topic))).sort()
+  // If subject filter is applied, only include topics that belong to that subject
+  let topics = Array.from(new Set(filteredQuestions.map(q => q.topic))).sort();
   
-  // Create grid structure
+  // Extra filtering to ensure topics match the selected subject
+  if (filterSubject) {
+    topics = topics.filter(topic => isTopicInSubject(topic, filterSubject));
+  }
+  
+  // Create grid structure organized by mastery level (not difficulty)
   const createGrid = (): GridRow[] => {
+    // Define mastery levels
+    const masteryLevels = [
+      'Very Weak', 
+      'Weak', 
+      'Not Attempted', 
+      'Emerging', 
+      'Proficient', 
+      'Mastered'
+    ];
+    
     return topics.map(topic => {
+      // Get all questions for this topic
+      const topicQuestions = filteredQuestions.filter(q => q.topic === topic);
+      
+      // Create a cell for each mastery level
+      const cells = masteryLevels.map(masteryLevel => {
+        // Categorize questions by mastery level - same logic as in dataUtils.ts
+        let cellQuestions: QuestionWithMetadata[] = [];
+        
+        topicQuestions.forEach(question => {
+          const totalAttempts = question.attempts || 0;
+          const isCorrect = question.correct;
+          const questionMasteryLevel = question.masteryLevel !== undefined ? question.masteryLevel : -1;
+          
+          let matches = false;
+          
+          if (masteryLevel === 'Not Attempted' && totalAttempts === 0) {
+            matches = true;
+          } else if (masteryLevel === 'Very Weak' && questionMasteryLevel === 0 && !isCorrect) {
+            matches = true;
+          } else if (masteryLevel === 'Weak' && questionMasteryLevel === 0 && isCorrect) {
+            matches = true;
+          } else if (masteryLevel === 'Emerging' && questionMasteryLevel === 1) {
+            matches = true;
+          } else if (masteryLevel === 'Proficient' && questionMasteryLevel === 2) {
+            matches = true;
+          } else if (masteryLevel === 'Mastered' && questionMasteryLevel === 3) {
+            matches = true;
+          }
+          
+          if (matches) {
+            cellQuestions.push(question);
+          }
+        });
+        
+        return {
+          topic,
+          difficulty: masteryLevel, // Using masteryLevel in place of difficulty for cell mapping
+          questions: cellQuestions,
+          count: cellQuestions.length,
+          correctCount: cellQuestions.filter(q => q.correct).length,
+          accuracy: cellQuestions.length > 0 
+            ? Math.round((cellQuestions.filter(q => q.correct).length / cellQuestions.length) * 100) 
+            : 0,
+          setIds: Array.from(new Set(cellQuestions.map(q => q.setId)))
+        };
+      });
+      
       return {
         topic,
-        cells: difficulties.filter(difficulty => 
-          filterDifficulties[difficulty] // Only include active difficulties
-        ).map(difficulty => {
-          const cellQuestions = filteredQuestions.filter(
-            q => q.topic === topic && q.difficulty === difficulty
-          )
-          
-          return {
-            topic,
-            difficulty,
-            questions: cellQuestions,
-            count: cellQuestions.length,
-            correctCount: cellQuestions.filter(q => q.correct).length,
-            accuracy: cellQuestions.length > 0 
-              ? Math.round((cellQuestions.filter(q => q.correct).length / cellQuestions.length) * 100) 
-              : 0,
-            setIds: Array.from(new Set(cellQuestions.map(q => q.setId)))
-          }
-        })
-      }
-    })
-  }
+        cells
+      };
+    });
+  };
   
   const grid = createGrid()
   

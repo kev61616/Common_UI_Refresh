@@ -5,8 +5,8 @@ export interface QuestionWithMetadata {
   // Fields from Question
   id: string;
   topic: string;
-  subtopic: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard' | 'Very Hard';
+  subtopic?: string; // Made optional since it's not needed in Question View
+  difficulty: 'Easy' | 'Medium' | 'Hard'; // Matching Question difficulty type
   answered: boolean;
   correct: boolean;
   timeSpent: number;
@@ -24,6 +24,11 @@ export interface QuestionWithMetadata {
   correctAnswer?: string;
   masteryLevel?: number;
   attempts?: number;
+  
+  // Flags to track subject-topic relationship status
+  hasValidTopicSubjectRelation?: boolean; // Whether the topic matches its original subject
+  hasSubjectCorrected?: boolean; // Whether the subject has been corrected based on topic
+  originalSubject?: string; // The original subject from the practice set
 }
 
 export interface QuestionViewProps {
