@@ -240,6 +240,29 @@ npm start
 
 ## Recent Updates
 
+- **Client-Side Navigation and useSearchParams Fixes (April 2025)**:
+  - Fixed all instances of `useSearchParams()` hook that were causing build errors:
+    - Created client components for anything using `useSearchParams`
+    - Wrapped client components in Suspense boundaries in their parent components
+    - Added loading states that match the design system for better UX during loads
+    - Fixed ReviewNavigation, MainNavigationBar, and other components that use client-side navigation hooks
+  - Implemented proper component architecture for Next.js 15:
+    - Moved client-only logic to separate client components with 'use client' directive
+    - Used a server component → client component pattern with Suspense boundaries
+    - Added skeleton loading UI that correctly represents the layout of loaded components
+  - Files fixed include:
+    - MainNavigationBar.tsx and Navigation components
+    - ReviewNavigation and related components
+    - Board View and other review pages
+    - Various doc pages that were using client navigation hooks
+
+- **Module System Fix (April 2025)**:
+  - Fixed ES module compatibility issue in postcss.config.js:
+    - Changed CommonJS `module.exports` syntax to ES module `export default` syntax
+    - This resolved the "module is not defined in ES module scope" error during build
+    - The fix aligns with the `"type": "module"` setting in package.json
+    - Enables proper building of the project with Next.js 15 and Tailwind CSS 4
+
 - **Variant Component Cleanup & Hook Fixes (April 2025)**:
   - Created `cleanup_variants.sh` maintenance script to safely remove problematic components:
     - Configured with both check and execute modes for safe operations

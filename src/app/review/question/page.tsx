@@ -1,84 +1,43 @@
-'use client'
+import { Suspense } from 'react'
+import ClientPage from './client-page'
 
-import React, { useState, useCallback } from 'react'
-import { mockPracticeSets } from '@/lib/mockData'
-import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { ReviewNavigation } from '@/components/review/ReviewNavigation'
-import { EnhancedMatrixGridView } from '@/components/review/question-view-variants/EnhancedMatrixGridView'
-import { CompactFilterBar } from '@/components/common/CompactFilterBar'
-
-/**
- * Question View page - Enhanced with beautiful filter bar
- */
-export default function QuestionViewPage() {
-  // Use state for selected set
-  const [selectedSetId, setSelectedSetId] = useState<string | null>(null);
-  
-  // Filter state - updated to support multi-select
-  const [filters, setFilters] = useState<Record<string, string[] | string>>({
-    subject: ['all'],
-    difficulty: ['all'],
-    status: ['all'],
-    topic: ['all']
-  });
-  
-  // Sort state
-  const [sortField, setSortField] = useState<string>('dateCompleted');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  
-  // Filter and sort options are now handled directly by the CompactFilterBar component
-  
-  // Handle individual filter changes - updated for multi-select
-  const handleFilterChange = useCallback((category: string, values: string[] | string) => {
-    setFilters(prev => ({
-      ...prev,
-      [category]: values
-    }));
-  }, []);
-  
-  // Handle sort changes
-  const handleSortChange = useCallback((field: string, direction: 'asc' | 'desc') => {
-    setSortField(field);
-    setSortDirection(direction);
-  }, []);
-  
+// Loading component for Suspense
+function LoadingQuestionView() {
   return (
     <div className="px-[2%] pb-8">
-      {/* Shared navigation component */}
-      <ReviewNavigation />
-      
-      <ErrorBoundary>
-        {/* Compact filter bar - consistent with other views */}
-        <CompactFilterBar 
-          activeFilters={filters}
-          onFilterChange={handleFilterChange}
-          sortField={sortField}
-          sortDirection={sortDirection}
-          onSortChange={handleSortChange}
-        />
-        
-        {/* Question view with enhanced grid */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-slate-200 dark:border-slate-700">
-          <div className="flex items-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-            </svg>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Questions</h3>
-          </div>
-          
-          {/* Question grid */}
-          <EnhancedMatrixGridView 
-            practiceSets={mockPracticeSets}
-            onSelectSet={(id: string) => {
-              setSelectedSetId(id);
-              console.log(`Selected set: ${id}`);
-            }}
-            selectedSetId={selectedSetId}
-            sortConfig={{ key: sortField, direction: sortDirection }}
-            filters={filters}
-          />
+      <div className="w-full py-4 mb-4">
+        <div className="h-8 w-full max-w-3xl mx-auto flex space-x-4">
+          <div className="h-8 w-24 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+          <div className="h-8 w-28 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+          <div className="h-8 w-20 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
         </div>
-      </ErrorBoundary>
+      </div>
+      
+      <div className="h-10 w-full bg-slate-100 dark:bg-slate-800 rounded-lg mb-4 animate-pulse"></div>
+      
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-slate-200 dark:border-slate-700">
+        <div className="flex items-center mb-6">
+          <div className="h-6 w-6 mr-2 rounded-full bg-indigo-100 dark:bg-indigo-900/20 animate-pulse"></div>
+          <div className="h-6 w-32 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+        </div>
+        
+        <div className="grid grid-cols-1 gap-4">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="h-12 bg-slate-100 dark:bg-slate-700/50 rounded animate-pulse"></div>
+          ))}
+        </div>
+      </div>
     </div>
+  )
+}
+
+/**
+ * Question View page with proper Suspense boundary for useSearchParams
+ */
+export default function QuestionViewPage() {
+  return (
+    <Suspense fallback={<LoadingQuestionView />}>
+      <ClientPage />
+    </Suspense>
   )
 }

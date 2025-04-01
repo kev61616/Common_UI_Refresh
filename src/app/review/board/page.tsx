@@ -1,72 +1,36 @@
-'use client'
+import { Suspense } from 'react'
+import ClientPage from './client-page'
 
-import React, { useState, useCallback } from 'react'
-import { EnhancedCollapsibleBoardView } from '@/components/review/board/EnhancedCollapsibleBoardView'
-import { mockPracticeSets } from '@/lib/mockData'
-import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { ReviewNavigation } from '@/components/review/ReviewNavigation'
-import { CompactFilterBar } from '@/components/common/CompactFilterBar'
-
-/**
- * Board View page
- */
-export default function BoardViewPage() {
-  // State for selected set
-  const [selectedSetId, setSelectedSetId] = useState<string | null>(null);
-  
-  // Filter state - updated to support multi-select
-  const [filters, setFilters] = useState<Record<string, string[] | string>>({
-    subject: ['all'],
-    difficulty: ['all'],
-    period: ['all'],
-    performance: ['all']
-  });
-  
-  // Sort state - consistent naming with other views
-  const [sortField, setSortField] = useState<string>('dateCompleted');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  
-  // Handle individual filter changes - updated for multi-select
-  const handleFilterChange = useCallback((category: string, values: string[] | string) => {
-    setFilters(prev => ({
-      ...prev,
-      [category]: values
-    }));
-  }, []);
-  
-  // Handle sort changes
-  const handleSortChange = useCallback((field: string, direction: 'asc' | 'desc') => {
-    setSortField(field);
-    setSortDirection(direction);
-  }, []);
-  
+// Loading component for Suspense
+function LoadingBoardView() {
   return (
     <div className="px-[2%] pb-8">
-      {/* Shared navigation component */}
-      <ReviewNavigation />
+      <div className="w-full py-4 mb-4">
+        <div className="h-8 w-full max-w-3xl mx-auto flex space-x-4">
+          <div className="h-8 w-24 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+          <div className="h-8 w-28 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+          <div className="h-8 w-20 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+        </div>
+      </div>
       
-      <ErrorBoundary>
-        {/* Compact filter bar - consistent with other views */}
-        <CompactFilterBar 
-          activeFilters={filters}
-          onFilterChange={handleFilterChange}
-          sortField={sortField}
-          sortDirection={sortDirection}
-          onSortChange={handleSortChange}
-        />
-        
-        <EnhancedCollapsibleBoardView 
-          practiceSets={mockPracticeSets}
-          onSelectSet={(id) => {
-            setSelectedSetId(id);
-            console.log(`Selected set: ${id}`);
-          }}
-          selectedSetId={selectedSetId}
-          sortConfig={{ key: sortField, direction: sortDirection }}
-          onSortChange={handleSortChange}
-          filters={filters}
-        />
-      </ErrorBoundary>
+      <div className="h-10 w-full bg-slate-100 dark:bg-slate-800 rounded-lg mb-4 animate-pulse"></div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="h-40 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
+        ))}
+      </div>
     </div>
+  )
+}
+
+/**
+ * Board View page with proper Suspense boundary for useSearchParams
+ */
+export default function BoardViewPage() {
+  return (
+    <Suspense fallback={<LoadingBoardView />}>
+      <ClientPage />
+    </Suspense>
   )
 }

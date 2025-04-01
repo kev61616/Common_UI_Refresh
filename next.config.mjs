@@ -39,10 +39,6 @@ const nextConfig = {
   // Most reliable configuration for mixed SSR/CSR application
   output: 'standalone',
   
-  // Completely disable static optimization - this forces server runtime mode
-  // which avoids issues with client components and static generation
-  staticPageGenerationTimeout: 0,
-  
   // Disable image optimization for simplified builds
   images: {
     unoptimized: true
@@ -50,5 +46,8 @@ const nextConfig = {
 }
 
 export default withSearch(
-  withMarkdoc({ schemaPath: './src/markdoc' })(nextConfig),
+  withMarkdoc({ 
+    schemaPath: './src/markdoc',
+    mode: 'server' 
+  })(nextConfig),
 )
