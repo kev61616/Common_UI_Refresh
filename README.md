@@ -2,7 +2,7 @@
 
 ## Overview
 
-Syntax is a next-generation learning platform that provides advanced data visualization and analysis for educational content. The platform uses React 19, Next.js 15.2.1, and Tailwind CSS 3.3 to deliver a responsive and interactive user experience.
+Syntax is a next-generation learning platform that provides advanced data visualization and analysis for educational content. The platform uses React 18, Next.js 15.2.1, and Tailwind CSS 3.3 to deliver a responsive and interactive user experience.
 
 ## Features
 
@@ -211,8 +211,8 @@ As specified in package.json:
 
 ```json
 "dependencies": {
-  "react": "^19.0.0",
-  "react-dom": "^19.0.0",
+  "react": "^18.0.0",
+  "react-dom": "^18.0.0",
   "next": "15.2.1"
 },
 "devDependencies": {
@@ -248,6 +248,13 @@ node .next/standalone/server.js
 ```
 
 ## Recent Updates
+
+- **React Version Change to 18.0.0 (April 2025)**:
+  - Downgraded from React 19 to React 18 for better compatibility with existing libraries
+  - Updated type definitions to match React 18 API
+  - Maintained full functionality with Next.js 15.2.1 and the App Router
+  - Ensured better ecosystem compatibility with third-party packages
+  - Reduced potential for experimental feature-related bugs
 
 - **Navigation and Theme Enhancements (April 2025)**:
   - Added dark/light mode toggle in the navigation bar for better user experience

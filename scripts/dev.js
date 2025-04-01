@@ -16,4 +16,4 @@ if (process.env.DEBUG === '1') {
 import { runCLI } from './modules/commands.js';
 
 // Run the CLI with the process arguments
-runCLI(process.argv); 
+runCLI(process.argv);
