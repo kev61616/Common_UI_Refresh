@@ -1,7 +1,7 @@
 'use client'
 
 import { PracticeSet } from '@/lib/mockData'
-import { TimelineView } from './TimelineView'
+import { TimelineView, TimelineViewTabs, EnhancedTimelineView, CalendarTimelineView } from './timeline-view'
 import { TimelineView2 } from './TimelineView2'
 import { TimelineView3 } from './TimelineView3'
 import { 
@@ -25,7 +25,7 @@ import {
 } from './timeline-view-variants'
 
 // Type for the variant prop
-export type TimelineViewVariant = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20
+export type TimelineViewVariant = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22
 
 interface TimelineViewVariantsProps {
   variant: TimelineViewVariant
@@ -63,8 +63,8 @@ export function TimelineViewVariants({ variant, practiceSets, onSelectSet, selec
     case 3:
       return (
         <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
-          <h3 className="text-xl font-bold mb-6 text-center">3. Detailed Timeline View</h3>
-          <TimelineView3 {...commonProps} />
+          <h3 className="text-xl font-bold mb-6 text-center">3. Calendar Timeline View</h3>
+          <CalendarTimelineView {...commonProps} />
         </div>
       );
     case 4:
@@ -101,6 +101,20 @@ export function TimelineViewVariants({ variant, practiceSets, onSelectSet, selec
       return <MilestoneTimeline {...commonProps} />;
     case 20:
       return <StreamGraph {...commonProps} />;
+    case 21:
+      return (
+        <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+          <h3 className="text-xl font-bold mb-6 text-center">21. Enhanced Timeline View</h3>
+          <EnhancedTimelineView {...commonProps} />
+        </div>
+      );
+    case 22:
+      return (
+        <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+          <h3 className="text-xl font-bold mb-6 text-center">22. Timeline View with Tabs</h3>
+          <TimelineViewTabs {...commonProps} />
+        </div>
+      );
     default:
       return (
         <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">

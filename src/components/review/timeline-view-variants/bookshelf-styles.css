@@ -1,0 +1,43 @@
+/* 3D Bookshelf Styles */
+.perspective-800 {
+  perspective: 800px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.rotate-x-10 {
+  transform: rotateX(10deg);
+}
+
+/* Book spine effects */
+.book-spine {
+  position: relative;
+  transform: translateZ(10px);
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.book-spine:hover {
+  transform: translateZ(20px) scale(1.02);
+}
+
+/* Shelf appearance */
+.bookshelf-row {
+  position: relative;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 8px solid rgba(165, 142, 130, 0.3);
+}
+
+.bookshelf-row::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background: linear-gradient(to bottom, rgba(165, 142, 130, 0.2), transparent);
+  border-radius: 0 0 5px 5px;
+}

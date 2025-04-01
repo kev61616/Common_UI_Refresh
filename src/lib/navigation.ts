@@ -9,17 +9,17 @@ export const navigation = [
     ],
   },
   {
-    title: 'Test',
+    title: 'SAT',
     links: [
-      { title: 'Mock Test', href: '/test/mock-test' },
-      { title: 'Question Bank', href: '/test/question-bank' },
+      { title: 'Question Bank', href: '/sat/question-bank' },
+      { title: 'Mock Test', href: '/sat/mock-test' },
     ],
   },
   {
     title: 'Review',
     links: [
+      { title: 'Set View', href: '/review?view=matrix' },
       { title: 'Question View', href: '/review?view=question' },
-      { title: 'Matrix View', href: '/review?view=matrix' },
       { title: 'Timeline View', href: '/review?view=timeline' },
     ],
   },

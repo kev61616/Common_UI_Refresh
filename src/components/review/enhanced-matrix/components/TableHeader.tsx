@@ -53,6 +53,13 @@ export function TableHeader({
         </div>
       </th>
       
+      <th className="p-3 text-left font-medium text-sm text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 border-b dark:border-slate-700">
+        <div className="flex items-center">
+          <div>Tags & Subtopics</div>
+          <div className="ml-1 text-xs text-slate-400 dark:text-slate-500">(categorization)</div>
+        </div>
+      </th>
+      
       {masteryLevels.map((level) => {
         // Use the matching difficulty total for this mastery level
         const total = difficultyTotals.find(d => d.difficulty === level.name);

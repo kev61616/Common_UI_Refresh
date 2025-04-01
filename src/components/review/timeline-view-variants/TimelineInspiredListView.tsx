@@ -15,7 +15,6 @@ interface TimelineViewProps {
 
 /**
  * Timeline Inspired List View - A tabular view of practice sets
- * Implementation based on the design from review-alt's Timeline Inspired View
  */
 export function TimelineInspiredListView({ 
   practiceSets, 

@@ -110,9 +110,9 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
   const displayedCombinations = new Set<string>();
   
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {/* Header and Filters */}
-      <div className="flex justify-between flex-wrap gap-3 mb-4">
+      <div className="flex justify-between flex-wrap gap-3 mb-0">
         <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
           Questions ({filteredQuestions.length})
         </h2>
@@ -172,7 +172,7 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
         </div>
       </div>
       {/* Column Headers */}
-      <div className="grid grid-cols-6 gap-4 mb-2 px-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+      <div className="grid grid-cols-6 gap-4 mb-0 px-4 text-sm font-medium text-slate-500 dark:text-slate-400">
         <div>Subject</div>
         <div className="col-span-2">Topic</div>
         <div>Difficulty</div>
@@ -237,20 +237,56 @@ export const QuestionView: React.FC<QuestionViewProps> = ({
                 </span>
               </div>
               
-              {/* Status Column */}
+              {/* Status Column - Show mastery level with emojis */}
               <div>
-                <span className={`px-2 py-1 text-xs rounded-md ${
+                <span className={`px-2 py-1 text-xs rounded-md flex items-center ${
                   !question.answered
                     ? 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300'
                     : question.correct
                       ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
                       : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
                 }`}>
-                  {!question.answered 
-                    ? 'Not Attempted' 
-                    : question.correct 
-                      ? 'Correct' 
-                      : 'Incorrect'}
+                  {!question.answered ? (
+                    <>
+                      <span className="mr-1 text-sm">⚪</span>
+                      <span>Not Attempted</span>
+                    </>
+                  ) : question.masteryLevel === 'very-weak' ? (
+                    <>
+                      <span className="mr-1 text-sm">❌</span>
+                      <span>Very Weak (2x)</span>
+                    </>
+                  ) : question.masteryLevel === 'weak' ? (
+                    <>
+                      <span className="mr-1 text-sm">❌</span>
+                      <span>Weak (1x)</span>
+                    </>
+                  ) : question.masteryLevel === 'emerging' ? (
+                    <>
+                      <span className="mr-1 text-sm">✅</span>
+                      <span>Emerging (1x)</span>
+                    </>
+                  ) : question.masteryLevel === 'proficient' ? (
+                    <>
+                      <span className="mr-1 text-sm">✅</span>
+                      <span>Proficient (2x)</span>
+                    </>
+                  ) : question.masteryLevel === 'mastered' ? (
+                    <>
+                      <span className="mr-1 text-sm">⭐</span>
+                      <span>Mastered (3x+)</span>
+                    </>
+                  ) : question.correct ? (
+                    <>
+                      <span className="mr-1 text-sm">✅</span>
+                      <span>Correct</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="mr-1 text-sm">❌</span>
+                      <span>Incorrect</span>
+                    </>
+                  )}
                 </span>
               </div>
               

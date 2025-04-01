@@ -8,6 +8,8 @@ import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
 import '@/styles/custom-animations.css'
+import '@/styles/timeline-animations.css'
+import '@/components/review/timeline-view-variants/bookshelf-styles.css'
 
 const inter = Inter({
   subsets: ['latin'],

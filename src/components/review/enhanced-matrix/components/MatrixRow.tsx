@@ -70,6 +70,38 @@ export function MatrixRowComponent({
             {topicTotal.count} questions
           </div>
         </td>
+        
+        <td className={`p-3 text-sm font-medium border-b dark:border-slate-700 ${
+          depth > 0 ? 'bg-slate-100 dark:bg-slate-800/70' : 'bg-slate-50 dark:bg-slate-800/50'
+        }`}>
+          {row.cells.length > 0 && row.cells[0].questions.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {/* Extract unique subtopics as tags */}
+              {Array.from(new Set(row.cells.flatMap(cell => 
+                cell.questions.map(q => q.subtopic)
+              ))).filter(Boolean).map((subtopic, index) => (
+                <span 
+                  key={`${subtopic}-${index}`}
+                  className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300"
+                >
+                  {subtopic}
+                </span>
+              ))}
+              
+              {/* Add any additional tags from questions if they exist */}
+              {Array.from(new Set(row.cells.flatMap(cell => 
+                cell.questions.flatMap(q => q.tags || [])
+              ))).filter(Boolean).map((tag, index) => (
+                <span 
+                  key={`tag-${tag}-${index}`}
+                  className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </td>
       
         {row.cells.map(cell => (
           <MatrixCellComponent 

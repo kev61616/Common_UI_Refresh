@@ -3,9 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { QuestionViewProps } from './types'
 
-// Animations for CSS
-import '../../../styles/review-alt.css'
-
 /** 
  * Types for Steampunk Machinery components
  */

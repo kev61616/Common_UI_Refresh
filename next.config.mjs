@@ -6,7 +6,11 @@ import withSearch from './src/markdoc/search.mjs'
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'ts', 'tsx'],
   experimental: {
-    turbo: {}
+    turbo: {
+      // Enhanced Turbopack configuration
+      resolveAlias: {},
+      loaders: {}
+    }
   }
 }
 

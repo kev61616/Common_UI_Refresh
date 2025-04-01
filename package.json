@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -15,32 +15,36 @@
     "@markdoc/markdoc": "^0.4.0",
     "@markdoc/next.js": "^0.3.4",
     "@sindresorhus/slugify": "^2.1.0",
-    "clsx": "^2.1.0",
+    "canvas-confetti": "^1.9.3",
+    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "fast-glob": "^3.2.12",
     "flexsearch": "^0.7.31",
+    "framer-motion": "^12.5.0",
     "glob": "^11.0.1",
     "js-yaml": "^4.1.0",
-    "next": "15.2.1",
+    "lucide-react": "^0.483.0",
+    "next": "15.2.3",
     "next-themes": "^0.2.1",
     "prism-react-renderer": "^2.0.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-highlight-words": "^0.20.0",
-    "simple-functional-loader": "^1.2.1"
+    "simple-functional-loader": "^1.2.1",
+    "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
-    "eslint-config-next": "15.2.1",
-    "@eslint/eslintrc": "^3",
+    "eslint-config-next": "15.2.3",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.10",
-    "sharp": "0.33.1"
+    "sharp": "0.33.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

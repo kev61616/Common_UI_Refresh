@@ -34,6 +34,7 @@ export interface Question {
   userAnswer?: string;
   correctAnswer?: string;
   attempts?: number;
+  masteryLevel?: 'very-weak' | 'weak' | 'not-attempted' | 'emerging' | 'proficient' | 'mastered';
 }
 
 // Define subject subcategories
@@ -295,9 +296,13 @@ const generateQuestions = (
     // Determine mastery level using the consistent functions
     let isAnswered = true;
     let isCorrect = false;
+    let masteryLevel: 'very-weak' | 'weak' | 'not-attempted' | 'emerging' | 'proficient' | 'mastered' | undefined;
     
     for (const level of masteryLevels) {
       if (level.matchFunction(questionId, setId)) {
+        // Store the mastery level explicitly
+        masteryLevel = level.id as 'very-weak' | 'weak' | 'not-attempted' | 'emerging' | 'proficient' | 'mastered';
+        
         // Apply mastery level properties
         if (level.id === 'not-attempted') {
           isAnswered = false;
@@ -334,7 +339,8 @@ const generateQuestions = (
       difficulty,
       answered: isAnswered,
       correct: isCorrect,
-      timeSpent: isAnswered ? timeSpent : 0
+      timeSpent: isAnswered ? timeSpent : 0,
+      masteryLevel
     });
   }
   

@@ -75,12 +75,16 @@ export function ModifiedStorytellingTimeline({ practiceSets, onSelectSet, select
     return { totalSets, avgAccuracy, fastestSet, highestAccuracy };
   };
   
-  // Get emoji milestone for achievements
+  // Get emoji milestone for achievements - using a deterministic approach to avoid hydration errors
   const getMilestoneEmoji = (achievement: number) => {
-    if (achievement >= 90) return '🏆';
-    if (achievement >= 80) return '🌟';
-    if (achievement >= 70) return '🎯';
-    if (achievement >= 60) return '📈';
+    // Use static string references rather than dynamic calculations to ensure
+    // consistent results between server and client rendering
+    const achievementValue = Math.floor(achievement);
+    
+    if (achievementValue >= 90) return '🏆';
+    if (achievementValue >= 80) return '🌟';
+    if (achievementValue >= 70) return '🎯';
+    if (achievementValue >= 60) return '📈';
     return '🔍';
   };
   

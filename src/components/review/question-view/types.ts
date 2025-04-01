@@ -22,8 +22,9 @@ export interface QuestionWithMetadata {
   // Fields for individual question view
   userAnswer?: string;
   correctAnswer?: string;
-  masteryLevel?: number;
+  masteryLevel?: 'very-weak' | 'weak' | 'not-attempted' | 'emerging' | 'proficient' | 'mastered';
   attempts?: number;
+  tags?: string[]; // Optional array of tags for categorization
   
   // Flags to track subject-topic relationship status
   hasValidTopicSubjectRelation?: boolean; // Whether the topic matches its original subject

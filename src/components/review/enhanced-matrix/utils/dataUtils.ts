@@ -491,9 +491,11 @@ export function distributeQuestionsAcrossMasteryLevels(questions: QuestionWithMe
           setTitle: `Practice Set ${Math.floor(Math.random() * 100)}`,
           subject, // This will always match the topic's correct subject
           dateCompleted: new Date(Date.now() - Math.floor(Math.random() * 30 * 24 * 60 * 60 * 1000)).toISOString(),
-          masteryLevel: level === 'Mastered' ? 3 : 
-                        level === 'Proficient' ? 2 : 
-                        level === 'Emerging' ? 1 : 0,
+          masteryLevel: level === 'Mastered' ? 'mastered' : 
+                        level === 'Proficient' ? 'proficient' : 
+                        level === 'Emerging' ? 'emerging' : 
+                        level === 'Not Attempted' ? 'not-attempted' :
+                        level === 'Weak' ? 'weak' : 'very-weak',
           attempts
         });
       }

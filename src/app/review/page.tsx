@@ -1,70 +1,49 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { ReviewPage } from '@/components/review/ReviewPage'
+import { useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import '@/styles/components/set-view.css'
 
-// Define the saved state interface
-interface SavedReviewState {
-  viewType: 'set' | 'timeline' | 'question';
-  selectedSetId: string | null;
-  filters: any;
-  sortConfig: {
-    key: string;
-    direction: 'asc' | 'desc';
-  };
-}
+// Add console logging to help debug
+console.log('Review page loaded - redirecting based on view parameter');
 
 /**
- * Production review page that uses the standalone implementation
- * with the SetViewTable component (timeline-inspired table view)
+ * Main review page that redirects to the appropriate standalone view page
+ * This approach separates concerns and avoids complex component interactions
  */
 export default function ReviewIndexPage() {
-  const [savedState, setSavedState] = useState<SavedReviewState | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Load saved state from localStorage on component mount
+  const searchParams = useSearchParams();
+  const viewParam = searchParams?.get('view');
+  
+  // Add console logging for search params
+  console.log('View parameter from URL:', viewParam);
+  
+  // Redirect to appropriate view page on component mount
   useEffect(() => {
-    // Using a try-catch to handle any parsing errors or localStorage issues
-    try {
-      const savedStateJson = localStorage.getItem('reviewPageState');
-      if (savedStateJson) {
-        const parsedState = JSON.parse(savedStateJson);
-        setSavedState(parsedState);
-      }
-    } catch (error) {
-      console.error('Error loading saved state:', error);
-      // If there's an error, we'll just use default state
+    // Determine redirect path based on view parameter
+    let redirectPath = '/review/set'; // Default to set view
+    
+    if (viewParam === 'question') {
+      console.log('Redirecting to question view');
+      redirectPath = '/review/set'; // Redirect to set view since question view is broken
+    } else if (viewParam === 'timeline') {
+      console.log('Redirecting to timeline view');
+      redirectPath = '/review/timeline';
+    } else if (viewParam === 'matrix') {
+      console.log('Redirecting to set view');
+      redirectPath = '/review/set';
     }
     
-    // Mark loading as complete
-    setIsLoading(false);
-  }, []);
+    // Perform browser redirect
+    console.log('Redirecting to:', redirectPath);
+    window.location.href = redirectPath;
+  }, [viewParam]);
 
-  // Save state handler to pass to ReviewPage component
-  const handleSaveState = (state: SavedReviewState) => {
-    try {
-      localStorage.setItem('reviewPageState', JSON.stringify(state));
-    } catch (error) {
-      console.error('Error saving state:', error);
-    }
-  };
-
-  // Show a simple loading indicator if state is still loading
-  if (isLoading) {
-    return (
-      <div className="px-[2%] flex justify-center py-12">
-        <div className="h-8 w-8 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
+  // Show a simple loading indicator while redirect happens
   return (
-    <div className="px-[2%]">
-      <ReviewPage 
-        initialState={savedState}
-        onStateChange={handleSaveState}
-      />
+    <div className="px-[2%] flex flex-col items-center justify-center py-12">
+      <div className="h-8 w-8 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin mb-4"></div>
+      <p className="text-slate-600 dark:text-slate-400">Redirecting to the appropriate view...</p>
     </div>
-  )
+  );
 }

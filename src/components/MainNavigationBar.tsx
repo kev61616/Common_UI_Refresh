@@ -32,15 +32,15 @@ const NavigationIcons: Record<string, JSX.Element> = {
     </svg>
   ),
   
-  // Test section
-  'Mock Test': (
+  // SAT section
+  'Question Bank': (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
     </svg>
   ),
-  'Question Bank': (
+  'Mock Test': (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
     </svg>
   ),
   
@@ -50,7 +50,7 @@ const NavigationIcons: Record<string, JSX.Element> = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
     </svg>
   ),
-  'Matrix View': (
+  'Set View': (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
       <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
     </svg>
@@ -198,7 +198,7 @@ export function MainNavigationBar() {
           <div className="flex h-full items-center justify-between">
             {/* Left side - Logo */}
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/dashboard" aria-label="Dashboard" className="flex items-center">
+              <Link href="/" aria-label="Home" className="flex items-center">
                 <Logomark className="h-9 w-9 sm:hidden" />
                 <Logo className="hidden sm:block h-9 w-auto min-w-[120px]" />
               </Link>
@@ -213,7 +213,7 @@ export function MainNavigationBar() {
                       <button 
                         className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:text-sky-600 group-hover:text-sky-600 dark:hover:text-sky-400 dark:group-hover:text-sky-400 ${
                           activeSection === section.title 
-                            ? 'text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-900/10' 
+                            ? 'text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-slate-800' 
                             : 'text-slate-700 dark:text-slate-300'
                         }`}
                         onMouseEnter={() => setActiveSection(section.title)}
@@ -235,14 +235,7 @@ export function MainNavigationBar() {
                       </svg>
                     </div>
                     
-                    {/* Simple underline indicator - removed diamond effect/shadow per feedback */}
-                    <span 
-                      className={`absolute -bottom-1 left-0 w-full h-1 rounded-full transform transition-all duration-200 ${
-                        activeSection === section.title 
-                          ? 'bg-sky-500 scale-x-100 opacity-100' 
-                          : 'bg-sky-500 scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-50'
-                      }`}
-                    />
+                    {/* Removed underline indicator per feedback */}
                     
                     {/* Improved dropdown menu with better cohesion and positioning */}
                     <div 
@@ -253,14 +246,14 @@ export function MainNavigationBar() {
                       }`}
                       onMouseLeave={() => setActiveSection(null)}
                     >
-                      {/* Decorative arrow pointing up */}
-                      <div className="absolute top-0 left-7 w-4 h-4 bg-white dark:bg-slate-700 transform rotate-45 border-t border-l border-slate-200 dark:border-slate-600 -mt-2 z-0"></div>
+                    {/* Subtle dropdown indicator - removed diamond effect */}
+                    <div className="absolute top-0 left-0 w-full h-0.5 bg-sky-500/70 dark:bg-sky-500/50 -mt-0.5 z-0 rounded-t-md"></div>
                       
                       {/* Dropdown uses same color as primary button background when active */}
                       <div className="rounded-lg shadow-xl border border-slate-200 dark:border-slate-600 overflow-hidden">
                         <div className={`relative py-2 ${
                           activeSection === section.title 
-                            ? 'bg-sky-50 dark:bg-sky-900/10' 
+                            ? 'bg-sky-50 dark:bg-slate-800' 
                             : 'bg-white dark:bg-slate-700'
                         }`}>
                           {section.links.map((link) => (
@@ -328,8 +321,8 @@ export function MainNavigationBar() {
                   </div>
                 </div>
                 
-                <Link href="/user" className="group relative scale-on-hover" aria-label="User Account">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 p-0.5 shadow-sm border border-slate-200/50 dark:border-slate-700/50 transition-transform duration-200 ease-in-out transform group-hover:scale-110">
+                <Link href="/user" className="group relative" aria-label="User Account">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 p-0.5 shadow-sm border border-slate-200/50 dark:border-slate-700/50 hover:border-sky-300 dark:hover:border-sky-600 transition-colors duration-200">
                     <Image
                       src="/topbar/user_icon.png"
                       alt="User"

@@ -2,8 +2,6 @@
 @import './prism.css';
 @import './custom-animations.css';
 
-@plugin '@tailwindcss/typography';
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {

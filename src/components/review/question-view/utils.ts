@@ -182,13 +182,17 @@ export const extractQuestionsWithMetadata = (practiceSets: any[]): QuestionWithM
 }
 
 // Helper function to calculate mastery level
-const calculateMasteryLevel = (attempts: number, isCorrect: boolean): number => {
-  if (attempts === 0) return 1; // Not Started
-  if (attempts === 1 && isCorrect) return 2; // Familiar
-  if (attempts >= 2 && isCorrect) return 3; // Proficient
-  if (attempts >= 3 && isCorrect) return 4; // Mastered
-  if (attempts >= 4 && isCorrect) return 5; // Expert
-  return 1; // Default to Not Started
+const calculateMasteryLevel = (
+  attempts: number, 
+  isCorrect: boolean
+): 'very-weak' | 'weak' | 'not-attempted' | 'emerging' | 'proficient' | 'mastered' => {
+  if (attempts === 0) return 'not-attempted';
+  if (!isCorrect && attempts >= 2) return 'very-weak'; // 2x+ incorrect
+  if (!isCorrect && attempts === 1) return 'weak'; // 1x incorrect
+  if (isCorrect && attempts === 1) return 'emerging'; // 1x correct
+  if (isCorrect && attempts === 2) return 'proficient'; // 2x correct
+  if (isCorrect && attempts >= 3) return 'mastered'; // 3x+ correct
+  return 'not-attempted'; // Default fallback
 }
 
 // Analyze error patterns from questions

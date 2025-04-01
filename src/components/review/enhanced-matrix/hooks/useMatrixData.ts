@@ -98,28 +98,57 @@ export const useMatrixData = (props: QuestionViewProps) => {
         let cellQuestions: QuestionWithMetadata[] = [];
         
         topicQuestions.forEach(question => {
-          const totalAttempts = question.attempts || 0;
-          const isCorrect = question.correct;
-          const questionMasteryLevel = question.masteryLevel !== undefined ? question.masteryLevel : -1;
-          
           let matches = false;
           
-          if (masteryLevel === 'Not Attempted' && totalAttempts === 0) {
-            matches = true;
-          } else if (masteryLevel === 'Very Weak' && questionMasteryLevel === 0 && !isCorrect) {
-            matches = true;
-          } else if (masteryLevel === 'Weak' && questionMasteryLevel === 0 && isCorrect) {
-            matches = true;
-          } else if (masteryLevel === 'Emerging' && questionMasteryLevel === 1) {
-            matches = true;
-          } else if (masteryLevel === 'Proficient' && questionMasteryLevel === 2) {
-            matches = true;
-          } else if (masteryLevel === 'Mastered' && questionMasteryLevel === 3) {
-            matches = true;
-          }
-          
-          if (matches) {
-            cellQuestions.push(question);
+          try {
+            const totalAttempts = question.attempts || 0;
+            const isCorrect = question.correct;
+            
+            // Safely handle masteryLevel which could be a string or number
+            let questionMasteryLevel: string | number = 'not-attempted';
+            
+            if (question.masteryLevel !== undefined) {
+              // Handle both string and numeric mastery levels
+              if (typeof question.masteryLevel === 'string') {
+                questionMasteryLevel = question.masteryLevel;
+              } else if (typeof question.masteryLevel === 'number') {
+                // Map numbers to string values
+                const masteryMap: Record<number, string> = {
+                  0: 'weak',
+                  1: 'emerging',
+                  2: 'proficient',
+                  3: 'mastered'
+                };
+                questionMasteryLevel = masteryMap[question.masteryLevel] || 'not-attempted';
+              }
+            }
+            
+            // Match based on standardized mastery levels
+            if (masteryLevel === 'Not Attempted' && (totalAttempts === 0 || questionMasteryLevel === 'not-attempted')) {
+              matches = true;
+            } else if (masteryLevel === 'Very Weak' && (
+              (questionMasteryLevel === 'very-weak') ||
+              (questionMasteryLevel === 'weak' && !isCorrect)
+            )) {
+              matches = true;
+            } else if (masteryLevel === 'Weak' && (
+              (questionMasteryLevel === 'weak' && isCorrect)
+            )) {
+              matches = true;
+            } else if (masteryLevel === 'Emerging' && questionMasteryLevel === 'emerging') {
+              matches = true;
+            } else if (masteryLevel === 'Proficient' && questionMasteryLevel === 'proficient') {
+              matches = true;
+            } else if (masteryLevel === 'Mastered' && questionMasteryLevel === 'mastered') {
+              matches = true;
+            }
+            
+            if (matches) {
+              cellQuestions.push(question);
+            }
+          } catch (error) {
+            console.error('Error processing question mastery level:', error);
+            // Skip this question if there's an error
           }
         });
         

@@ -80,7 +80,7 @@ export function ListView3({ practiceSets, onSelectSet, selectedSetId }: ListView
   return (
     <div className="p-4">
       {/* Table style list */}
-      <div className="overflow-x-auto bg-white dark:bg-slate-900 shadow-md rounded-lg">
+      <div className="overflow-x-auto bg-white dark:bg-slate-900 shadow-md rounded-lg px-0">
         <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
           <thead className="bg-slate-50 dark:bg-slate-800">
             <tr>
