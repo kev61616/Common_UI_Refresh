@@ -10,6 +10,7 @@ export type DashboardCardId =
   | 'upcomingTests'
   | 'recommendedActions'
   | 'performanceInsights'
+  | 'recentProgress'
 
 // Priority levels
 export type CardPriority = 'high' | 'normal' | 'low' | 'hidden'
@@ -37,10 +38,11 @@ interface DashboardLayoutContextType {
 const initialCardPositions: CardPosition[] = [
   { id: 'studyStreak', priority: 'high', order: 0 },
   { id: 'skillsRadar', priority: 'high', order: 1 },
-  { id: 'focusAreas', priority: 'high', order: 2 },
-  { id: 'performanceInsights', priority: 'normal', order: 3 },
-  { id: 'upcomingTests', priority: 'normal', order: 4 },
-  { id: 'recommendedActions', priority: 'normal', order: 5 }
+  { id: 'upcomingTests', priority: 'high', order: 2 },
+  { id: 'recommendedActions', priority: 'high', order: 3 },
+  { id: 'recentProgress', priority: 'high', order: 4 },
+  { id: 'focusAreas', priority: 'hidden', order: 5 },
+  { id: 'performanceInsights', priority: 'hidden', order: 6 }
 ]
 
 const DashboardLayoutContext = createContext<DashboardLayoutContextType | undefined>(undefined)

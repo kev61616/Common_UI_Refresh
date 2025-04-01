@@ -4,10 +4,8 @@ import { useState, useEffect, useMemo } from 'react'
 import { mockPracticeSets } from '@/lib/mockData'
 import { UpcomingTests } from './UpcomingTests'
 import { SkillsRadarChart } from './SkillsRadarChart'
-import { WeakAreasFocus } from './WeakAreasFocus'
 import { StudyStreak } from './StudyStreak'
 import { RecommendedActions } from './RecommendedActions'
-import { PerformanceInsights } from './PerformanceInsights'
 import { DashboardCard } from './DashboardCard'
 import Link from 'next/link'
 
@@ -254,12 +252,181 @@ export function Dashboard() {
             />
           </DashboardCard>
           
-          <DashboardCard id="focusAreas" title="Focus Areas" icon={cardIcons.focusAreas} className="h-full md:col-span-2">
-            <WeakAreasFocus practiceSets={mockPracticeSets} />
+          <DashboardCard id="upcomingTests" title="Upcoming Tests" icon={cardIcons.upcomingTests} className="h-full">
+            <div className="flex flex-col space-y-3">
+              <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-100 dark:border-indigo-800">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-semibold text-p3 text-indigo-700 dark:text-indigo-300">SAT Practice Test</h3>
+                    <p className="text-sm text-indigo-600 dark:text-indigo-400 mt-1">Full-length practice exam</p>
+                  </div>
+                  <span className="bg-white dark:bg-indigo-800 text-indigo-600 dark:text-indigo-300 text-xs font-medium px-2.5 py-1 rounded shadow-sm border border-indigo-200 dark:border-indigo-700">
+                    In {daysLeft - 30} days
+                  </span>
+                </div>
+                <div className="mt-3 flex items-center text-xs text-indigo-600 dark:text-indigo-400">
+                  <svg className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  3 hours 30 minutes
+                </div>
+              </div>
+              
+              <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-semibold text-p3 text-slate-700 dark:text-slate-300">Official SAT Exam</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">College Board Testing Center</p>
+                  </div>
+                  <span className="bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-medium px-2.5 py-1 rounded shadow-sm border border-slate-200 dark:border-slate-700">
+                    In {daysLeft} days
+                  </span>
+                </div>
+                <div className="mt-3 flex items-center text-xs text-slate-600 dark:text-slate-400">
+                  <svg className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  4 hours 15 minutes
+                </div>
+              </div>
+            </div>
           </DashboardCard>
           
-          <DashboardCard id="performanceInsights" title="Performance Insights" icon={cardIcons.performanceInsights} className="h-full md:col-span-2">
-            <PerformanceInsights practiceSets={mockPracticeSets} />
+          <DashboardCard id="recommendedActions" title="Recommended Actions" icon={cardIcons.recommendedActions} className="h-full">
+            <div className="space-y-3">
+              <div className="p-3 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800/30">
+                <h3 className="font-medium text-blue-700 dark:text-blue-300 flex items-center">
+                  <svg className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Complete Algebra Review
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 pl-5.5">Finish practice questions in your strongest area</p>
+                <div className="mt-2 pl-5.5">
+                  <Link href="/question-bank/subjects/math" className="text-xs font-medium text-blue-600 dark:text-blue-400 inline-flex items-center hover:underline">
+                    Start now
+                    <svg className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+              
+              <div className="p-3 bg-gradient-to-r from-rose-50 to-orange-50 dark:from-rose-900/20 dark:to-orange-900/20 rounded-lg border border-orange-100 dark:border-orange-800/30">
+                <h3 className="font-medium text-orange-700 dark:text-orange-300 flex items-center">
+                  <svg className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  Improve Data Analysis
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 pl-5.5">Work on your lowest scoring area</p>
+                <div className="mt-2 pl-5.5">
+                  <Link href="/question-bank/subjects/data" className="text-xs font-medium text-orange-600 dark:text-orange-400 inline-flex items-center hover:underline">
+                    Start now
+                    <svg className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+              
+              <div className="p-3 bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 rounded-lg border border-teal-100 dark:border-teal-800/30">
+                <h3 className="font-medium text-teal-700 dark:text-teal-300 flex items-center">
+                  <svg className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  Take Practice Test
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 pl-5.5">Scheduled for this weekend</p>
+                <div className="mt-2 pl-5.5">
+                  <Link href="/test/mock" className="text-xs font-medium text-teal-600 dark:text-teal-400 inline-flex items-center hover:underline">
+                    Schedule now
+                    <svg className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </DashboardCard>
+          
+          <DashboardCard id="recentProgress" title="Recent Progress" icon={cardIcons.skillsRadar} className="h-full md:col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-indigo-100 dark:border-indigo-800/30">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-800/30 flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold text-blue-800 dark:text-blue-300">Reading</h3>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">82%</div>
+                    <div className="text-sm text-blue-600 dark:text-blue-400 mt-1">Mastery Level</div>
+                  </div>
+                  <div className="text-green-600 dark:text-green-400 text-sm font-medium">
+                    <span className="flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                      </svg>
+                      +5%
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-br from-purple-50 to-fuchsia-50 dark:from-purple-900/20 dark:to-fuchsia-900/20 rounded-xl p-4 border border-purple-100 dark:border-purple-800/30">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-800/30 flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold text-purple-800 dark:text-purple-300">Writing</h3>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">70%</div>
+                    <div className="text-sm text-purple-600 dark:text-purple-400 mt-1">Mastery Level</div>
+                  </div>
+                  <div className="text-green-600 dark:text-green-400 text-sm font-medium">
+                    <span className="flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                      </svg>
+                      +8%
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-br from-teal-50 to-green-50 dark:from-teal-900/20 dark:to-green-900/20 rounded-xl p-4 border border-teal-100 dark:border-teal-800/30">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-800/30 flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-teal-600 dark:text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold text-teal-800 dark:text-teal-300">Math</h3>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-3xl font-bold text-teal-700 dark:text-teal-300">78%</div>
+                    <div className="text-sm text-teal-600 dark:text-teal-400 mt-1">Mastery Level</div>
+                  </div>
+                  <div className="text-green-600 dark:text-green-400 text-sm font-medium">
+                    <span className="flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                      </svg>
+                      +3%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </DashboardCard>
         </div>
       </div>

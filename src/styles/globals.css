@@ -8,19 +8,31 @@
     letter-spacing: 0.02em;
   }
   
+  /* Base text size increase for improved readability */
+  html {
+    letter-spacing: 0.02em;
+    font-size: 16px; /* Ensure base font size is reasonable */
+  }
+  
+  @media (max-width: 768px) {
+    html {
+      font-size: 18px; /* Slightly larger on small screens */
+    }
+  }
+  
   :root {
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 240 10% 0%; /* Increased to true black for better contrast */
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 240 10% 0%; /* Increased contrast */
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 240 10% 0%; /* Increased contrast */
     --primary: 199 89% 48%;
-    --primary-foreground: 0 0% 98%;
+    --primary-foreground: 0 0% 100%; /* Pure white for better contrast */
     --secondary: 199 89% 98%;
-    --secondary-foreground: 199 89% 48%;
+    --secondary-foreground: 199 89% 40%; /* Darker for better visibility */
     --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted-foreground: 240 5% 35%; /* Darker muted text for better visibility */
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
@@ -33,19 +45,19 @@
 
   .dark {
     --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --foreground: 0 0% 100%; /* Increased to true white for better contrast */
     --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card-foreground: 0 0% 100%; /* Increased contrast */
     --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover-foreground: 0 0% 100%; /* Increased contrast */
     --primary: 199 89% 67%;
-    --primary-foreground: 0 0% 12%;
+    --primary-foreground: 0 0% 0%; /* Pure black for better contrast */
     --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary-foreground: 0 0% 100%; /* Brighter for better visibility */
     --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted-foreground: 240 5% 80%; /* Brighter muted text for better visibility */
     --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent-foreground: 0 0% 100%; /* Brighter for better visibility */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
