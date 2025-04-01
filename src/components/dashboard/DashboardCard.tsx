@@ -33,17 +33,25 @@ export function DashboardCard({ id, title, children, className = '', icon }: Das
     }
   }, [])
   
+  // To prevent hydration errors, only apply styles on the client side
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
   return (
     <div 
       className={`rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-300 ${className}`}
-      style={{ 
+      style={isClient ? { 
         order: styles.order,
         display: styles.display,
         opacity: styles.opacity,
         transform: styles.scale
-      }}
+      } : undefined}
       onMouseEnter={() => setControlsVisible(true)}
       onMouseLeave={() => setControlsVisible(false)}
+      suppressHydrationWarning
     >
       <div className="px-3 py-2.5 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center relative">
         <h3 className="font-medium text-slate-900 dark:text-white flex items-center text-sm truncate">

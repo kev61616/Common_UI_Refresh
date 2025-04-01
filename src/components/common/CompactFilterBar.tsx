@@ -1,6 +1,9 @@
 'use client'
 
-import { useState, useRef } from 'react'
+// Define a client-side detection utility
+const isClient = typeof window !== 'undefined';
+
+import { useState, useRef, useEffect, useMemo, useCallback, useLayoutEffect } from 'react'
 import { useClickAway } from '../../hooks/useClickAway'
 
 interface FilterOption {
@@ -27,11 +30,19 @@ export function CompactFilterBar({
   sortField = 'dateCompleted',
   sortDirection = 'desc',
   onSortChange
-}: CompactFilterBarProps) {
+}: CompactFilterBarProps): JSX.Element {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const dropdownContentRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const [dropdownWidths, setDropdownWidths] = useState<Record<string, number>>({})
   
-  useClickAway(dropdownRef, () => setActiveDropdown(null))
+  // Clear timeout when component unmounts
+  useEffect(() => {
+    return () => {
+      if (hoverTimeout) clearTimeout(hoverTimeout)
+    }
+  }, [hoverTimeout])
   
   const filterOptions: FilterOption[] = [
     // Subject filter options
@@ -65,6 +76,108 @@ export function CompactFilterBar({
     { id: 'timeUsed', label: 'Time Used' },
     { id: 'difficulty', label: 'Difficulty' }
   ]
+  
+  // Default widths for server-side rendering (helps avoid hydration mismatch)
+  const defaultWidths: Record<string, number> = {
+    subject: 160,
+    difficulty: 150,
+    period: 160,
+    accuracy: 190,
+    sort: 150
+  }
+  
+  // We're measuring the rendered DOM elements directly for precise width calculation
+  // but only on the client side
+  const measureDropdownWidth = useCallback((dropdownElement: HTMLElement | null, category: string) => {
+    // Skip measurement if not in browser or if element is missing
+    if (!isClient || !dropdownElement) return;
+    
+    try {
+      // Create a hidden container to render items for measurement
+      const measuringContainer = document.createElement('div');
+      measuringContainer.style.position = 'absolute';
+      measuringContainer.style.visibility = 'hidden';
+      measuringContainer.style.left = '-9999px';
+      measuringContainer.style.fontSize = '0.75rem'; // Match text-xs
+      measuringContainer.style.padding = '0';
+      measuringContainer.style.maxWidth = 'none';
+      measuringContainer.style.whiteSpace = 'nowrap';
+      document.body.appendChild(measuringContainer);
+      
+      let maxWidth = 0;
+      let items: HTMLElement[] = [];
+      
+      // Get all child items
+      const children = Array.from(dropdownElement.children);
+      children.forEach(child => {
+        // Clone the item
+        const clone = child.cloneNode(true) as HTMLElement;
+        measuringContainer.appendChild(clone);
+        items.push(clone);
+      });
+      
+      // Force browser to calculate layout
+      measuringContainer.getBoundingClientRect();
+      
+      // Measure each item
+      items.forEach(item => {
+        // Add 32px padding (16px each side) + 16px for icon + 8px extra safety margin
+        const itemWidth = item.getBoundingClientRect().width + 56;
+        maxWidth = Math.max(maxWidth, itemWidth);
+      });
+      
+      // Use a minimum width even if no items
+      const finalWidth = Math.max(maxWidth, 120);
+      
+      // Update the state with the measured width
+      setDropdownWidths(prev => ({
+        ...prev,
+        [category]: finalWidth
+      }));
+      
+      // Clean up
+      document.body.removeChild(measuringContainer);
+    } catch (error) {
+      // Fallback in case of error - use default width
+      setDropdownWidths(prev => ({
+        ...prev,
+        [category]: defaultWidths[category] || 150
+      }));
+      console.error(`Error measuring dropdown ${category}:`, error);
+    }
+  }, []);
+  
+  // Use regular useEffect instead of useLayoutEffect to avoid SSR issues
+  useEffect(() => {
+    // Only run this code on the client
+    if (!isClient) return;
+    
+    if (activeDropdown) {
+      const dropdownElement = dropdownContentRefs.current[activeDropdown];
+      if (dropdownElement) {
+        // Small timeout to ensure the DOM is fully rendered
+        setTimeout(() => {
+          measureDropdownWidth(dropdownElement, activeDropdown);
+        }, 0);
+      }
+    }
+  }, [activeDropdown, measureDropdownWidth]);
+  
+  useClickAway(dropdownRef, () => setActiveDropdown(null))
+  
+  
+  // Handle hover to open dropdown
+  const handleMouseEnter = (category: string) => {
+    // Clear any existing timeout
+    if (hoverTimeout) clearTimeout(hoverTimeout)
+    
+    // Set a short timeout to avoid unwanted dropdowns during fast mouse movements
+    const timeout = setTimeout(() => {
+      setActiveDropdown(category)
+    }, 150)
+    
+    setHoverTimeout(timeout)
+  }
   
   const toggleDropdown = (dropdown: string) => {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown)
@@ -161,8 +274,15 @@ export function CompactFilterBar({
     return `${option?.label || 'Date'} ${sortDirection === 'asc' ? '↑' : '↓'}`
   }
   
+  // Initialize with default widths on server side
+  useEffect(() => {
+    if (isClient) {
+      setDropdownWidths(defaultWidths);
+    }
+  }, []);
+
   return (
-    <div ref={dropdownRef} className="flex flex-col gap-2 py-2 mb-4">
+    <div ref={dropdownRef} className="flex flex-col gap-2 py-2 mb-4" suppressHydrationWarning>
       {/* Top row with filter buttons */}
       <div className="relative flex items-center gap-2">
         <div className="text-slate-500 dark:text-slate-400 mr-1">
@@ -176,13 +296,19 @@ export function CompactFilterBar({
           <div key={category} className="relative">
             <button
               onClick={() => toggleDropdown(category)}
+              onMouseEnter={() => handleMouseEnter(category)}
               className={`w-24 px-3 py-1.5 text-xs rounded-full border ${getCategoryColor(category)} hover:bg-opacity-80 transition-colors text-center truncate`}
             >
               {getActiveFilterLabel(category)}
             </button>
             
             {activeDropdown === category && (
-              <div className="absolute top-8 left-0 z-10 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+              <div 
+                ref={el => { dropdownContentRefs.current[category] = el }}
+                suppressHydrationWarning
+                style={{ width: dropdownWidths[category] ? `${dropdownWidths[category]}px` : `${defaultWidths[category]}px` }}
+                className={`absolute top-8 left-0 z-10 w-auto min-w-[12rem] ${getCategoryColor(category)} rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden`}
+              >
                 {/* Option list */}
                 {filterOptions
                   .filter(option => option.category === category && option.id !== 'all')
@@ -194,8 +320,8 @@ export function CompactFilterBar({
                       <div
                         key={option.id}
                         onClick={() => handleFilterSelect(category, option.id)}
-                        className={`flex items-center w-full px-4 py-2 text-xs cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 ${
-                          isSelected ? 'bg-sky-50 text-sky-600 dark:bg-sky-900/20 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300'
+                        className={`flex items-center w-full px-4 py-2 text-xs cursor-pointer hover:bg-white/20 dark:hover:bg-slate-900/20 ${
+                          isSelected ? 'bg-white/30 font-medium' : ''
                         }`}
                       >
                         <div className="flex-shrink-0 w-4 h-4 mr-2">
@@ -218,6 +344,7 @@ export function CompactFilterBar({
         <div className="relative ml-auto">
           <button
             onClick={() => toggleDropdown('sort')}
+            onMouseEnter={() => handleMouseEnter('sort')}
             className={`w-24 px-3 py-1.5 text-xs rounded-full border ${getCategoryColor('sort')} hover:bg-opacity-80 transition-colors flex items-center justify-center gap-1`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
@@ -227,13 +354,20 @@ export function CompactFilterBar({
           </button>
           
           {activeDropdown === 'sort' && (
-            <div className="absolute top-8 right-0 z-10 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-              {sortOptions.map(option => (
+            <div 
+              ref={el => { dropdownContentRefs.current['sort'] = el }}
+              suppressHydrationWarning
+              style={{ width: dropdownWidths['sort'] ? `${dropdownWidths['sort']}px` : `${defaultWidths['sort']}px` }}
+              className={`absolute top-8 right-0 z-10 w-auto min-w-[12rem] ${getCategoryColor('sort')} rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden`}
+            >
+              {sortOptions
+                .filter(option => option.id !== 'dateCompleted') // Remove the Date option
+                .map(option => (
                 <button
                   key={option.id}
                   onClick={() => handleSortSelect(option.id)}
-                  className={`block w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-700 ${
-                    sortField === option.id ? 'bg-sky-50 text-sky-600 dark:bg-sky-900/20 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300'
+                  className={`block w-full text-right px-4 py-2 text-xs hover:bg-white/20 dark:hover:bg-slate-900/20 ${
+                    sortField === option.id ? 'bg-white/30 font-medium' : ''
                   }`}
                 >
                   {option.label} {sortField === option.id ? (sortDirection === 'asc' ? '↑' : '↓') : ''}

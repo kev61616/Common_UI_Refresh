@@ -126,28 +126,7 @@ export function Dashboard() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-6">
               <div className="flex-1">
                 <div className="text-sm text-slate-600 dark:text-slate-300 mb-4">
-                  You're making great progress on your SAT preparation! Continue with your study plan to maintain your improvement trajectory.
-                </div>
-                
-                <div className="flex flex-wrap gap-3">
-                  <Link 
-                    href="/question-bank/practice"
-                    className="inline-flex items-center px-4 py-2 text-sm bg-indigo-600 text-white font-medium rounded-lg shadow-sm transition-all hover:bg-indigo-700"
-                  >
-                    <svg className="mr-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    Practice Questions
-                  </Link>
-                  <Link 
-                    href="/test/mock"
-                    className="inline-flex items-center px-4 py-2 text-sm bg-white text-indigo-700 border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-indigo-300 font-medium rounded-lg shadow-sm transition-all hover:bg-slate-50 dark:hover:bg-slate-600"
-                  >
-                    <svg className="mr-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                    Take Full Test
-                  </Link>
+                  {/* Per user request, removed the progress message and quick action buttons */}
                 </div>
               </div>
               

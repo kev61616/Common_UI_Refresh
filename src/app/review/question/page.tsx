@@ -15,17 +15,10 @@ function LoadingQuestionView() {
       
       <div className="h-10 w-full bg-slate-100 dark:bg-slate-800 rounded-lg mb-4 animate-pulse"></div>
       
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-slate-200 dark:border-slate-700">
-        <div className="flex items-center mb-6">
-          <div className="h-6 w-6 mr-2 rounded-full bg-indigo-100 dark:bg-indigo-900/20 animate-pulse"></div>
-          <div className="h-6 w-32 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
-        </div>
-        
-        <div className="grid grid-cols-1 gap-4">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-12 bg-slate-100 dark:bg-slate-700/50 rounded animate-pulse"></div>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="h-40 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
+        ))}
       </div>
     </div>
   )

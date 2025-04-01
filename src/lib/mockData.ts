@@ -158,8 +158,8 @@ const getDateInPast = (daysAgo: number): string => {
   return targetDate.toISOString();
 };
 
-// Get subject-based subcategory
-const getRandomSubcategory = (subject: 'Reading' | 'Writing' | 'Math'): string => {
+// Get subject-based subcategory - deterministic based on questionId
+const getSubcategoryForSubject = (subject: 'Reading' | 'Writing' | 'Math', questionId: string): string => {
   let subcategories: string[] = [];
   
   switch (subject) {
@@ -176,11 +176,14 @@ const getRandomSubcategory = (subject: 'Reading' | 'Writing' | 'Math'): string =
       subcategories = [];
   }
   
-  return subcategories[Math.floor(Math.random() * subcategories.length)];
+  // Create a deterministic index based on the questionId
+  const hash = getStableHashFromString(`${questionId}-subtopic`);
+  const subcategoryIndex = Math.floor(hash * subcategories.length);
+  return subcategories[subcategoryIndex];
 };
 
-// Get topic based on subject
-const getTopicForSubject = (subject: 'Reading' | 'Writing' | 'Math'): string => {
+// Get topic based on subject - deterministic based on setId and index
+const getTopicForSubject = (subject: 'Reading' | 'Writing' | 'Math', setId: string, index: number): string => {
   let topics: string[] = [];
   
   switch (subject) {
@@ -197,7 +200,10 @@ const getTopicForSubject = (subject: 'Reading' | 'Writing' | 'Math'): string => 
       topics = [];
   }
   
-  return topics[Math.floor(Math.random() * topics.length)];
+  // Create a deterministic index based on the setId and question index
+  const hash = getStableHashFromString(`${setId}-${index}`);
+  const topicIndex = Math.floor(hash * topics.length);
+  return topics[topicIndex];
 };
 
 // Generate a semi-stable hash from a string
@@ -278,7 +284,7 @@ const masteryLevels: MasteryLevel[] = [
   }
 ];
 
-// Generate questions with proper distribution of mastery levels
+  // Generate questions with proper distribution of mastery levels
 const generateQuestions = (
   count: number,
   setId: string,
@@ -286,12 +292,13 @@ const generateQuestions = (
   difficulty: 'Easy' | 'Medium' | 'Hard'
 ): Question[] => {
   const questions: Question[] = [];
-  const topic = getTopicForSubject(subject);
   
   for (let i = 0; i < count; i++) {
-    // Create a unique question ID that includes set info for consistency
-    const questionId = `q-${setId}-${i}-${Math.random().toString(36).substring(2, 7)}`;
-    const subtopic = getRandomSubcategory(subject);
+    // Get topic deterministically based on setId and question index
+    const topic = getTopicForSubject(subject, setId, i);
+    // Create a unique question ID that is deterministic (no random elements)
+    const questionId = `q-${setId}-${i}`;
+    const subtopic = getSubcategoryForSubject(subject, questionId);
     
     // Determine mastery level using the consistent functions
     let isAnswered = true;
@@ -373,8 +380,8 @@ const generatePracticeSets = (): PracticeSet[] => {
   ];
   
   const timeOfDayDistribution: string[] = [
-    'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning',
-    'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon',
+    '8:15 AM', '8:45 AM', '9:10 AM', '9:30 AM', '10:05 AM', '10:25 AM', '10:50 AM', '11:15 AM', '11:40 AM', '11:55 AM',
+    '1:05 PM', '1:25 PM', '2:00 PM', '2:15 PM', '2:45 PM', '3:10 PM', '3:30 PM', '3:55 PM', '4:20 PM', '4:45 PM',
     '7:15 PM', '7:30 PM', '8:00 PM', '8:20 PM', '8:45 PM', '7:05 PM', '7:50 PM', '8:10 PM', '8:35 PM', '9:00 PM'
   ];
 
@@ -435,9 +442,11 @@ const generatePracticeSets = (): PracticeSet[] => {
     const pace = paceDistribution[i];
     const timeOfDay = timeOfDayDistribution[i];
     
-    // Generate type based on subject's valid types
+    // Generate type based on subject's valid types - deterministically
     const validTypes = typeMapping[subject];
-    const type = validTypes[Math.floor(Math.random() * validTypes.length)];
+    const typeHash = getStableHashFromString(`${setId}-type`);
+    const typeIndex = Math.floor(typeHash * validTypes.length);
+    const type = validTypes[typeIndex];
     
     // Calculate a date with higher density of recent dates (logarithmic distribution)
     // This creates more recent dates with some spread over several months

@@ -111,7 +111,19 @@ export function DashboardLayoutProvider({ children }: { children: ReactNode }) {
   }
   
   // Get style properties for a card based on its position and priority
+  // Ensuring consistent types between server and client to avoid hydration errors
   const getCardStyle = (id: DashboardCardId) => {
+    // Use default values for server-side rendering to avoid hydration mismatches
+    if (typeof window === 'undefined') {
+      // These default values will be overridden by client-side values after hydration
+      return { 
+        order: 0, 
+        display: 'block', 
+        opacity: 1, 
+        scale: 'scale(1)' 
+      }
+    }
+    
     const card = cardPositions.find(card => card.id === id)
     
     if (!card) {

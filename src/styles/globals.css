@@ -3,14 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  /* Global letter spacing for better readability */
+  /* Base text size and improved letter spacing for enhanced readability */
   html {
-    letter-spacing: 0.02em;
-  }
-  
-  /* Base text size increase for improved readability */
-  html {
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em; /* Increased from 0.02em for better character separation */
     font-size: 16px; /* Ensure base font size is reasonable */
   }
   
@@ -32,7 +27,7 @@
     --secondary: 199 89% 98%;
     --secondary-foreground: 199 89% 40%; /* Darker for better visibility */
     --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 5% 35%; /* Darker muted text for better visibility */
+    --muted-foreground: 240 5% 20%; /* Much darker muted text for significantly better visibility */
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
@@ -55,7 +50,7 @@
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 100%; /* Brighter for better visibility */
     --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 80%; /* Brighter muted text for better visibility */
+    --muted-foreground: 240 5% 90%; /* Much brighter muted text for significantly better visibility in dark mode */
     --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 100%; /* Brighter for better visibility */
     --destructive: 0 62.8% 30.6%;

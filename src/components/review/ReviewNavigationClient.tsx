@@ -51,20 +51,6 @@ export default function ReviewNavigationClient() {
             <span className="sm:hidden">Questions</span>
           </Link>
           
-          <Link
-            href="/review/board"
-            className={`flex items-center text-xs px-3 py-1.5 font-medium transition-all duration-150 rounded-full border ${
-              isActive('/review/board')
-                ? 'bg-sky-50 text-sky-600 border-sky-200 dark:bg-sky-900/20 dark:text-sky-300 dark:border-sky-800'
-                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700 dark:hover:bg-slate-700/80'
-            }`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            <span className="hidden sm:inline">Board View</span>
-            <span className="sm:hidden">Board</span>
-          </Link>
         </div>
       </div>
     </div>

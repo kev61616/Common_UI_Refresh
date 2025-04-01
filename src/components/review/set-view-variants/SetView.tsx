@@ -143,23 +143,6 @@ export function SetView({ practiceSets, onSelectSet, selectedSetId }: SetViewPro
                     <div className={`text-xl font-semibold ${getAccuracyStyle(set.accuracy)}`}>
                       {set.accuracy}%
                     </div>
-                    <div className="flex items-center justify-center mt-1 space-x-1">
-                      {set.mistakeTypes.conceptual > 0 && (
-                        <span className="text-xs text-slate-600 dark:text-slate-400">
-                          {set.mistakeTypes.conceptual}c
-                        </span>
-                      )}
-                      {set.mistakeTypes.careless > 0 && (
-                        <span className="text-xs text-slate-600 dark:text-slate-400">
-                          {set.mistakeTypes.careless}l
-                        </span>
-                      )}
-                      {set.mistakeTypes.timeManagement > 0 && (
-                        <span className="text-xs text-slate-600 dark:text-slate-400">
-                          {set.mistakeTypes.timeManagement}t
-                        </span>
-                      )}
-                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
                     <div className="text-sm text-slate-900 dark:text-white">{formatTime(set.timeUsed)}</div>
