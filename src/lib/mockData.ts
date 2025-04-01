@@ -9,7 +9,7 @@ export interface PracticeSet {
   dateCompleted: string;
   questions: Question[];
   difficulty: 'Easy' | 'Medium' | 'Hard';
-  timeOfDay: 'Morning' | 'Afternoon' | 'Evening';
+  timeOfDay: string; // Changed to string to support actual time values
   mistakeTypes: {
     conceptual: number;
     careless: number;
@@ -372,10 +372,10 @@ const generatePracticeSets = (): PracticeSet[] => {
     'Slow', 'Slow', 'Slow', 'Slow', 'Slow', 'Slow', 'Slow', 'Slow', 'Slow', 'Slow'
   ];
   
-  const timeOfDayDistribution: ('Morning' | 'Afternoon' | 'Evening')[] = [
+  const timeOfDayDistribution: string[] = [
     'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning', 'Morning',
     'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon', 'Afternoon',
-    'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening', 'Evening'
+    '7:15 PM', '7:30 PM', '8:00 PM', '8:20 PM', '8:45 PM', '7:05 PM', '7:50 PM', '8:10 PM', '8:35 PM', '9:00 PM'
   ];
 
   // Define type mapping using the standard tags from tags.md

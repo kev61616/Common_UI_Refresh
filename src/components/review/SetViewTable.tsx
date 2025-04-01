@@ -269,7 +269,7 @@ export function SetViewTable({
                 className="px-6 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider dark:text-slate-400 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50"
                 onClick={() => onSelectSet && onSelectSet(`sort:accuracy:${sortField === 'accuracy' && sortDirection === 'asc' ? 'desc' : 'asc'}`)}
               >
-                Performance
+                Accuracy
                 {sortField === 'accuracy' && (
                   <span className="ml-1">
                     {sortDirection === 'asc' ? '↑' : '↓'}

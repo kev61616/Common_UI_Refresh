@@ -61,7 +61,8 @@ export function ClientAccuracyMeter({
 }
 
 /**
- * Component to display mistake types with client-only rendering
+ * Component to display mistake summary with client-only rendering
+ * Updated to not show 2c 2l 2t format to improve readability
  */
 export function ClientMistakeTypes({ 
   conceptual = 0, 
@@ -78,27 +79,18 @@ export function ClientMistakeTypes({
     setIsMounted(true)
   }, [])
   
-  if (!isMounted) {
-    return null // Empty during SSR
+  if (!isMounted || (conceptual === 0 && careless === 0 && timeManagement === 0)) {
+    return null // Empty during SSR or if there are no mistakes
   }
   
+  // Calculate total mistakes
+  const totalMistakes = conceptual + careless + timeManagement;
+  
   return (
-    <div className="flex items-center justify-center mt-1 space-x-1">
-      {conceptual > 0 && (
-        <span className="text-xs text-slate-600 dark:text-slate-400">
-          {conceptual}c
-        </span>
-      )}
-      {careless > 0 && (
-        <span className="text-xs text-slate-600 dark:text-slate-400">
-          {careless}l
-        </span>
-      )}
-      {timeManagement > 0 && (
-        <span className="text-xs text-slate-600 dark:text-slate-400">
-          {timeManagement}t
-        </span>
-      )}
+    <div className="flex items-center justify-center mt-1">
+      <span className="text-xs text-slate-600 dark:text-slate-400">
+        {totalMistakes} {totalMistakes === 1 ? 'mistake' : 'mistakes'}
+      </span>
     </div>
   )
 }

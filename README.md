@@ -16,28 +16,34 @@ The Dashboard provides a comprehensive overview of student progress and performa
 - **Study Schedule**: Daily and weekly study plans tailored to student needs
 - **Focus Areas**: Highlighted areas needing additional attention based on performance analytics
 
-### SAT Section
+### Test Section
 
-Under the SAT section, we offer two main components:
+Under the Test section, we offer two main components:
 
-#### Question Bank
+#### Continuous Practice
 
-Based on the Brainbox2 GEPTv2 design, our Question Bank offers:
+Our Continuous Practice feature offers two approaches:
 
-- **Two-Column Layout**: Reading passage on the left, answer options on the right
-- **Interactive Options**: Select answers with immediate visual feedback
-- **Navigation Tools**: Advanced breadcrumb navigation with subject/topic hierarchies
-- **Tool Windows**: Access to calculator, formula sheets, and other helpful resources
-- **Performance Tracking**: Real-time tracking of answers and progress
+##### AI Recommended
+- **Adaptive Learning**: Smart question sets tailored by user data
+- **Personalized Focus**: Automatically focuses on weak areas
+- **Premium Feature**: Available to premium subscribers
+- **Comprehensive Analytics**: Detailed performance tracking
 
-#### Mock Tests
+##### Custom Practice
+- **Freemium Model**: Free users can only pick subject
+- **Limited Usage**: Free tier limited to 7 hearts per day
+- **Premium Access**: Premium users can choose specific units
+- **Spotify-Inspired**: Uses a familiar freemium access model
 
-Our Mock Test feature provides:
+#### Full Test
 
-- **Full-Length Simulations**: Complete SAT tests under realistic conditions
-- **Timed Sessions**: Accurately timed sections reflecting the actual exam
-- **Comprehensive Review**: Detailed analysis of strengths and weaknesses
-- **Performance Metrics**: Score breakdowns and improvement tracking
+Our Full Test feature provides:
+
+- **Full Mock Test**: Timed, full-length exam simulations
+- **Realistic Conditions**: Complete test experience under timed conditions
+- **Detailed Scoring**: Comprehensive performance analysis
+- **Section Breakdown**: Individual scoring for Reading, Writing, and Math sections
 
 ### Review Section
 
@@ -136,7 +142,7 @@ The project follows the Next.js 15.2.3 special files pattern:
   - `/common/` - Common UI components used throughout the application
     - `FilterBar.tsx` - Standardized filter component with pill UI and color categorization
   - `/dashboard/` - Dashboard-specific components
-  - `/question-bank/` - Question Bank components modeled after GEPTv2
+  - `/question-bank/` - Question Bank components for interactive learning
   - `/review/` - Review system components
     - `/enhanced-matrix/` - Matrix grid components for the Question View
       - `/components/` - UI components like MatrixCell, MatrixRow, etc.
@@ -235,10 +241,34 @@ npm run dev
 npm run build
 
 # Start production server
-npm start
+# Note: Since the project uses 'output: standalone' configuration,
+# we must use the standalone server.js instead of 'next start'
+node .next/standalone/server.js
 ```
 
 ## Recent Updates
+
+- **Navigation and Theme Enhancements (April 2025)**:
+  - Added dark/light mode toggle in the navigation bar for better user experience
+  - Set light mode as the default theme for better readability
+  - Improved component modularization across the Test section for better maintainability
+  - Enhanced responsive design for various screen sizes
+  - Improved navigation with more intuitive UI patterns
+
+- **Test Section Renaming and Enhancement (April 2025)**:
+  - Renamed "SAT" section to "Test" for more inclusive terminology
+  - Restructured Test section with new "Continuous Practice" and "Full Test" components
+  - Added AI Recommended practice with premium features and freemium model
+  - Implemented Custom Practice with 7 hearts/day limit for free users
+  - Enhanced Full Test with detailed test day information
+  - Improved navigation with clearer pathways between practice options
+
+- **Brainbox2 Reference Removal (April 2025)**:
+  - Removed Brainbox2 reference folder that was previously used for design inspiration
+  - Updated documentation to remove references to Brainbox2/GEPTv2 design
+  - No functional impact on the codebase as the Syntax platform is now a standalone implementation
+  - Maintained all Question Bank functionality with the same features and UI components
+  - VSCode may still show phantom tabs for the removed files until the editor is restarted
 
 - **Client-Side Navigation and useSearchParams Fixes (April 2025)**:
   - Fixed all instances of `useSearchParams()` hook that were causing build errors:
@@ -280,6 +310,7 @@ npm start
     - Replaced deprecated `experimental.turbo.loaders` with `experimental.turbo.rules`
     - Moved `serverComponentsExternalPackages` to the new standard `serverExternalPackages` location
     - Configured for standalone mode which better supports mixed SSR/CSR applications
+      - Note: This requires using `node .next/standalone/server.js` instead of `next start` to run the production server
     - Optimized staticPageGenerationTimeout settings for improved build reliability
   - **API Route Enhancements**:
     - Updated `src/app/api/hello/route.ts` to work with Next.js 15.2 standards

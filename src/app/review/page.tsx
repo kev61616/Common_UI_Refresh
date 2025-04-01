@@ -17,12 +17,15 @@ function ReviewPageContent() {
     // Determine redirect path based on view parameter
     let redirectPath = '/review/set'; // Default to set view
     
-    if (viewParam === 'question' || viewParam === 'timeline') {
-      console.log('Redirecting to insights view');
-      redirectPath = '/review/insights';
+    if (viewParam === 'question') {
+      console.log('Redirecting to question view');
+      redirectPath = '/review/question';
     } else if (viewParam === 'matrix') {
       console.log('Redirecting to set view');
       redirectPath = '/review/set';
+    } else if (viewParam === 'board') {
+      console.log('Redirecting to board view');
+      redirectPath = '/review/board';
     }
     
     // Perform browser redirect

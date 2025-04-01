@@ -5,7 +5,7 @@ import { DashboardLayoutProvider } from '@/contexts/DashboardLayoutContext'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
       <DashboardLayoutProvider>
         {children}
       </DashboardLayoutProvider>

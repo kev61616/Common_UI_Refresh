@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { navigation } from '@/lib/navigation'
 import { NavigationIcons, Logomark, Logo } from './NavigationIcons'
+import { ThemeSelector } from './ThemeSelector'
 
 // This is the client component that can safely use useSearchParams
 export default function NavigationClient() {
@@ -198,6 +199,11 @@ export default function NavigationClient() {
             {/* Right side - Theme & User Icons */}
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-3">
+                {/* Theme Selector - Defaulting to light theme */}
+                <div className="mr-2">
+                  <ThemeSelector />
+                </div>
+
                 <div className="flex items-center">
                   <div className="flex items-center mr-1 rounded-full bg-gradient-to-r from-purple-500/10 to-sky-500/10 p-1 shadow-sm border border-slate-200/50 dark:border-slate-700/50">
                     <Image

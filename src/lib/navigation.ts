@@ -9,18 +9,18 @@ export const navigation = [
     ],
   },
   {
-    title: 'SAT',
+    title: 'Test',
     links: [
-      { title: 'Question Bank', href: '/sat/question-bank' },
-      { title: 'Mock Test', href: '/sat/mock-test' },
+      { title: 'Continuous Practice', href: '/test/continuous-practice' },
+      { title: 'Full Test', href: '/test/full-test' },
     ],
   },
   {
     title: 'Review',
     links: [
-      { title: 'Set View', href: '/review?view=matrix' },
-      { title: 'Question View', href: '/review?view=question' },
-      { title: 'Board View', href: '/review?view=board' },
+      { title: 'Set View', href: '/review/set' },
+      { title: 'Question View', href: '/review/question' },
+      { title: 'Board View', href: '/review/board' },
     ],
   },
   {
