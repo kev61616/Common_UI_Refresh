@@ -6,7 +6,7 @@ graph TD
     %% Main Navigation Options
     MenuNavigation --> ReviewSection[Review Section]
     MenuNavigation --> QuestionBank[Question Bank]
-    MenuNavigation --> SATSection[SAT Practice Tests]
+    MenuNavigation --> TestSection[Test Section]
     
     %% Review Section Navigation
     ReviewSection --> ReviewNav[Review Navigation Tabs]
@@ -46,6 +46,23 @@ graph TD
     CardOptions --> EditCard[Edit Card]
     CardOptions --> StartStudy[Start Study Session]
     
+    %% Test Section Flow
+    TestSection --> TestOptions[Test Options]
+    TestOptions --> ContinuousPractice[Continuous Practice]
+    TestOptions --> FullTest[Full Test]
+    
+    %% Continuous Practice Options
+    ContinuousPractice --> AIRecommended[AI Recommended<br/>Premium Feature]
+    ContinuousPractice --> CustomPractice[Custom Practice<br/>7 hearts/day for free users]
+    AIRecommended --> AdaptiveLearning[Adaptive Learning<br/>Based on User Data]
+    CustomPractice --> SubjectSelection[Subject Selection<br/>Free Users]
+    CustomPractice --> UnitSelection[Unit Selection<br/>Premium Users]
+    
+    %% Full Test Flow
+    FullTest --> MockTest[Full Mock Test]
+    MockTest --> TimedExam[Timed Exam Experience]
+    TimedExam --> DetailedScoring[Detailed Scoring<br/>Performance Analysis]
+    
     %% Shared Components
     FilterBar[Shared FilterBar Component<br/>with Pill UI Elements<br/>Multi-Select & Category Labels]
     FilterBar --> SetFilterBar
@@ -73,4 +90,6 @@ graph TD
     class SetView,SetFilterOptions,SetSortOptions,FilteredSetResults,SelectSet,SetDetails setView
     class QuestionView,QuestionFilterOptions,QuestionSortOptions,MatrixGrid,ExpandCategory,ViewQuestionDetails,SelectMasteryCell,PracticeQuestions questionView
     class KanbanView,KanbanFilterOptions,KanbanBoard,DragCard,ExpandCard,CardOptions,EditCard,StartStudy kanbanView
-    class QuestionBank,SATSection secondary
+    class QuestionBank,TestSection secondary
+    class TestOptions,ContinuousPractice,FullTest,AIRecommended,CustomPractice,MockTest interface
+    class AdaptiveLearning,SubjectSelection,UnitSelection,TimedExam,DetailedScoring action

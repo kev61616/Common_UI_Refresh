@@ -1,8 +1,15 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import './prism.css';
 @import './custom-animations.css';
 
-@custom-variant dark (&:where(.dark, .dark *));
+@layer base {
+  [inert] ::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 @theme {
   --text-*: initial;
@@ -38,10 +45,4 @@
   --font-display--font-feature-settings: 'ss01';
 
   --container-8xl: 88rem;
-}
-
-@layer base {
-  [inert] ::-webkit-scrollbar {
-    display: none;
-  }
 }

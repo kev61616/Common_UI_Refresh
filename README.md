@@ -2,7 +2,7 @@
 
 ## Overview
 
-Syntax is a next-generation learning platform that provides advanced data visualization and analysis for educational content. The platform uses React 19, Next.js 15.2.3, and Tailwind CSS 4 to deliver a responsive and interactive user experience.
+Syntax is a next-generation learning platform that provides advanced data visualization and analysis for educational content. The platform uses React 19, Next.js 15.2.1, and Tailwind CSS 3.3 to deliver a responsive and interactive user experience.
 
 ## Features
 
@@ -108,7 +108,7 @@ The FilterBar is a standardized component used across all views with these featu
 
 ## Technical Implementation
 
-### App Router Architecture (Next.js 15.2.3)
+### App Router Architecture (Next.js 15.2.1)
 
 This project exclusively uses the Next.js App Router for routing. Page Router is not utilized. The app router provides:
 
@@ -121,7 +121,7 @@ This project exclusively uses the Next.js App Router for routing. Page Router is
 
 #### Special Files Pattern
 
-The project follows the Next.js 15.2.3 special files pattern:
+The project follows the Next.js 15.2.1 special files pattern:
 
 - `layout.tsx` - Main layout wrapper for application sections
 - `page.tsx` - Route UI for specific paths
@@ -220,8 +220,9 @@ As specified in package.json:
   "@types/node": "^20",
   "@types/react": "^19",
   "@types/react-dom": "^19",
-  "@tailwindcss/postcss": "^4",
-  "tailwindcss": "^4",
+  "postcss": "^8.4.31",
+  "autoprefixer": "^10.4.16",
+  "tailwindcss": "^3.3",
   "eslint": "^9",
   "eslint-config-next": "15.2.1",
   "@eslint/eslintrc": "^3"
@@ -291,7 +292,7 @@ node .next/standalone/server.js
     - Changed CommonJS `module.exports` syntax to ES module `export default` syntax
     - This resolved the "module is not defined in ES module scope" error during build
     - The fix aligns with the `"type": "module"` setting in package.json
-    - Enables proper building of the project with Next.js 15 and Tailwind CSS 4
+    - Enables proper building of the project with Next.js 15 and Tailwind CSS 3.3
 
 - **Variant Component Cleanup & Hook Fixes (April 2025)**:
   - Created `cleanup_variants.sh` maintenance script to safely remove problematic components:
