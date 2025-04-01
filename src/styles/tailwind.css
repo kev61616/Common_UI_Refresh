@@ -1,48 +1,159 @@
+@import './prism.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './prism.css';
-@import './custom-animations.css';
 
 @layer base {
   [inert] ::-webkit-scrollbar {
     display: none;
   }
+  
+  html {
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+  
+  body {
+    @apply text-black dark:text-white;
+    font-size: 17px;
+    line-height: 1.65;
+    letter-spacing: -0.015em;
+  }
+  
+  /* Typography System based on docs/typography.md */
+  
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-semibold tracking-tight;
+  }
+  
+  h1 {
+    font-size: 37px;
+    line-height: 45px;
+  }
+  
+  h2 {
+    font-size: 29px;
+    line-height: 33px;
+  }
+  
+  h3 {
+    font-size: 25px;
+    line-height: 29px;
+  }
+  
+  h4 {
+    font-size: 21px;
+    line-height: 29px;
+  }
+  
+  h5 {
+    font-size: 17px;
+    line-height: 25px;
+  }
+  
+  h6 {
+    font-size: 15px;
+    line-height: 21px;
+  }
+  
+  /* Paragraph styles */
+  .p1 {
+    font-size: 21px;
+    line-height: 29px;
+  }
+  
+  .p2 {
+    font-size: 19px;
+    line-height: 25px;
+  }
+  
+  .p3 {
+    font-size: 17px;
+    line-height: 25px;
+  }
+  
+  .p4 {
+    font-size: 15px;
+    line-height: 21px;
+  }
+  
+  /* Body and Caption */
+  .body {
+    font-size: 13px;
+    line-height: 21px;
+  }
+  
+  .caption {
+    font-size: 11px;
+    line-height: 17px;
+  }
+  
+  /* Font weight utilities */
+  .font-regular {
+    font-weight: 400;
+  }
+  
+  .font-medium {
+    font-weight: 500;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  .font-bold {
+    font-weight: 700;
+  }
+  
+  /* Interactive elements */
+  button, a {
+    @apply transition-all duration-200;
+  }
 }
 
 @theme {
+  /* Typography Scale - Refined for better readability and aesthetics */
   --text-*: initial;
   --text-xs: 0.75rem;
   --text-xs--line-height: 1rem;
   --text-sm: 0.875rem;
-  --text-sm--line-height: 1.5rem;
+  --text-sm--line-height: 1.425rem;
   --text-base: 1rem;
-  --text-base--line-height: 2rem;
+  --text-base--line-height: 1.65rem;
   --text-lg: 1.125rem;
   --text-lg--line-height: 1.75rem;
   --text-xl: 1.25rem;
-  --text-xl--line-height: 2rem;
+  --text-xl--line-height: 1.85rem;
   --text-2xl: 1.5rem;
-  --text-2xl--line-height: 2.5rem;
+  --text-2xl--line-height: 2rem;
   --text-3xl: 2rem;
-  --text-3xl--line-height: 2.5rem;
+  --text-3xl--line-height: 2.25rem;
   --text-4xl: 2.5rem;
-  --text-4xl--line-height: 3rem;
+  --text-4xl--line-height: 2.75rem;
   --text-5xl: 3rem;
-  --text-5xl--line-height: 3.5rem;
+  --text-5xl--line-height: 3.25rem;
   --text-6xl: 3.75rem;
-  --text-6xl--line-height: 1;
+  --text-6xl--line-height: 1.1;
   --text-7xl: 4.5rem;
-  --text-7xl--line-height: 1;
+  --text-7xl--line-height: 1.1;
   --text-8xl: 6rem;
-  --text-8xl--line-height: 1;
+  --text-8xl--line-height: 1.1;
   --text-9xl: 8rem;
-  --text-9xl--line-height: 1;
+  --text-9xl--line-height: 1.1;
 
+  /* Font Family Variables */
   --font-sans: var(--font-inter);
-  --font-display: var(--font-lexend);
-  --font-display--font-feature-settings: 'ss01';
+  --font-display: var(--font-inter);
+  --font-display--font-feature-settings: 'ss01', 'cv02', 'cv03';
 
+  /* Spacing and Layout */
   --container-8xl: 88rem;
+  --section-padding: 3rem;
+  --content-spacing: 1.5rem;
+  
+  /* Animation Speeds */
+  --transition-fast: 150ms;
+  --transition-normal: 250ms;
+  --transition-slow: 350ms;
 }

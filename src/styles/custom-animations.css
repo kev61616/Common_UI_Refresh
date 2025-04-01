@@ -1,8 +1,65 @@
-/* Define keyframes for dropdown animations */
-@keyframes dropdown-enter {
+/* ====== Enhanced Animation System ====== */
+
+/* === Core Animation Variables === */
+:root {
+  /* Timing Functions */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Duration Scales */
+  --duration-50: 50ms;
+  --duration-100: 100ms;
+  --duration-150: 150ms;
+  --duration-200: 200ms;
+  --duration-250: 250ms;
+  --duration-300: 300ms;
+  --duration-500: 500ms;
+  --duration-700: 700ms;
+  --duration-1000: 1000ms;
+  
+  /* Layout dimensions */
+  --navbar-height: 4.75rem;
+  --sidebar-width: 18.5rem;
+  --content-max-width: 1280px;
+  --card-border-radius: 0.75rem;
+  
+  /* Z-index layers */
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-overlay: 30;
+  --z-modal: 40;
+  --z-popover: 50;
+  --z-tooltip: 60;
+}
+
+/* === Entrance/Exit Animations === */
+
+/* Fade Animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.fade-in {
+  animation: fade-in var(--duration-200) var(--ease-out) forwards;
+}
+
+.fade-out {
+  animation: fade-out var(--duration-150) var(--ease-in) forwards;
+}
+
+/* Slide Animations - Enhanced with refined motion */
+@keyframes slide-in-up {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -10,63 +67,151 @@
   }
 }
 
-@keyframes dropdown-exit {
+@keyframes slide-in-down {
   from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
     opacity: 1;
     transform: translateY(0);
   }
-  to {
+}
+
+@keyframes slide-in-left {
+  from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-/* Apply animations to classes */
-.dropdown-enter {
-  animation: dropdown-enter 0.2s ease-out forwards;
-}
-
-.dropdown-exit {
-  animation: dropdown-exit 0.15s ease-in forwards;
-}
-
-/* Define scale animation for hover effects */
-.scale-on-hover {
-  transition: transform 0.2s ease-in-out;
-}
-
-.scale-on-hover:hover {
-  transform: scale(1.05);
-}
-
-/* Define slide animations */
 @keyframes slide-in-right {
   from {
-    transform: translateX(100%);
+    opacity: 0;
+    transform: translateX(12px);
   }
   to {
+    opacity: 1;
     transform: translateX(0);
+  }
+}
+
+.slide-in-up {
+  animation: slide-in-up var(--duration-250) var(--ease-out) forwards;
+}
+
+.slide-in-down {
+  animation: slide-in-down var(--duration-250) var(--ease-out) forwards;
+}
+
+.slide-in-left {
+  animation: slide-in-left var(--duration-250) var(--ease-out) forwards;
+}
+
+.slide-in-right {
+  animation: slide-in-right var(--duration-250) var(--ease-out) forwards;
+}
+
+/* Slide Exit Animations */
+@keyframes slide-out-up {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes slide-out-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes slide-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-12px);
   }
 }
 
 @keyframes slide-out-right {
   from {
+    opacity: 1;
     transform: translateX(0);
   }
   to {
-    transform: translateX(100%);
+    opacity: 0;
+    transform: translateX(12px);
   }
 }
 
-.slide-in-right {
-  animation: slide-in-right 0.3s ease-out forwards;
+.slide-out-up {
+  animation: slide-out-up var(--duration-200) var(--ease-in) forwards;
+}
+
+.slide-out-down {
+  animation: slide-out-down var(--duration-200) var(--ease-in) forwards;
+}
+
+.slide-out-left {
+  animation: slide-out-left var(--duration-200) var(--ease-in) forwards;
 }
 
 .slide-out-right {
-  animation: slide-out-right 0.3s ease-in forwards;
+  animation: slide-out-right var(--duration-200) var(--ease-in) forwards;
 }
 
-/* Underline animation */
+/* === Interactive Element Animations === */
+
+/* Refined Hover Effects */
+.scale-on-hover {
+  transition: transform var(--duration-200) var(--ease-out);
+}
+
+.scale-on-hover:hover {
+  transform: scale(1.03);
+}
+
+.scale-on-hover:active {
+  transform: scale(0.98);
+}
+
+/* Card and Button Hover Effects */
+.elevation-hover {
+  transition: 
+    box-shadow var(--duration-200) var(--ease-out),
+    transform var(--duration-200) var(--ease-out);
+}
+
+.elevation-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 8px 10px -6px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.elevation-hover:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px -3px rgba(0, 0, 0, 0.1), 
+              0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Enhanced Link Underline Animation */
 .underline-animation {
   position: relative;
 }
@@ -78,10 +223,11 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(to right, #3b82f6, #6366f1);
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 0.3s ease-out;
+  transition: transform var(--duration-300) var(--ease-out);
+  border-radius: 1px;
 }
 
 .underline-animation:hover::after,
@@ -90,128 +236,251 @@
   transform-origin: left;
 }
 
-/* Sword Icon Animations */
+/* Pulse Effect for Notifications and Highlights */
+@keyframes subtle-pulse {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4);
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+}
+
+.subtle-pulse {
+  animation: subtle-pulse 2s var(--ease-out) infinite;
+}
+
+/* === Specialized Component Animations === */
+
+/* Dropdown Animations - Refined for smoother motion */
+@keyframes dropdown-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dropdown-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+}
+
+.dropdown-enter {
+  animation: dropdown-enter var(--duration-200) var(--ease-out) forwards;
+  transform-origin: top center;
+}
+
+.dropdown-exit {
+  animation: dropdown-exit var(--duration-150) var(--ease-in) forwards;
+  transform-origin: top center;
+}
+
+/* Sword Icon Animations - Refined for more polish */
 @keyframes sword-pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.08) rotate(3deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
 @keyframes sword-shine {
-  0% { opacity: 0.5; left: -100%; top: -100%; }
-  50% { opacity: 1; }
-  100% { opacity: 0.5; left: 100%; top: 100%; }
+  0% { opacity: 0; left: -150%; top: -150%; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0; left: 150%; top: 150%; }
 }
 
 .sword-pulse {
-  animation: sword-pulse 1.5s ease-in-out infinite;
+  animation: sword-pulse 2s var(--ease-elastic) infinite;
 }
 
 .sword-rotate {
-  transition: transform 0.3s ease-in-out;
+  transition: transform var(--duration-300) var(--ease-elastic);
 }
 
 .sword-rotate:hover {
-  transform: rotate(12deg);
+  transform: rotate(15deg) scale(1.1);
+}
+
+.sword-shine {
+  position: relative;
+  overflow: hidden;
 }
 
 .sword-shine::before {
   content: "";
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
-  animation: sword-shine 2s infinite;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,0.1) 40%,
+    rgba(255,255,255,0.8) 50%, 
+    rgba(255,255,255,0.1) 60%,
+    rgba(255,255,255,0) 100%);
+  animation: sword-shine 3s var(--ease-in-out) infinite;
+  pointer-events: none;
 }
 
-/* Kanban Board Animations */
+/* Kanban Board Animations - Enhanced for better visual flow */
 @keyframes expand-board {
-  0% { transform: scale(0.9); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
+  0% { transform: scale(0.95); opacity: 0.6; filter: blur(2px); }
+  100% { transform: scale(1); opacity: 1; filter: blur(0); }
 }
 
 @keyframes deal-card {
-  0% { transform: translateY(-20px) scale(0.95); opacity: 0; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
+  0% { 
+    transform: translateY(-15px) scale(0.97); 
+    opacity: 0; 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  }
+  100% { 
+    transform: translateY(0) scale(1); 
+    opacity: 1; 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
 }
 
 @keyframes stack-in {
-  0% { transform: translateY(20px) scale(0.95); opacity: 0; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
+  0% { 
+    transform: translateY(15px) scale(0.97); 
+    opacity: 0; 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  }
+  100% { 
+    transform: translateY(0) scale(1); 
+    opacity: 1; 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
 }
 
 .expand-board {
-  animation: expand-board 0.3s ease-out forwards;
+  animation: expand-board var(--duration-300) var(--ease-out) forwards;
 }
 
 .deal-card {
-  animation: deal-card 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: deal-card var(--duration-500) cubic-bezier(0.2, 0.85, 0.4, 1.4) forwards;
 }
 
 .stack-in {
-  animation: stack-in 0.3s ease-out forwards;
+  animation: stack-in var(--duration-300) var(--ease-out) forwards;
 }
 
-/* Stagger animation delays for cards */
+/* Stagger animation delays for cards with refined timing */
 .stagger-0 { animation-delay: 0ms; }
-.stagger-1 { animation-delay: 50ms; }
-.stagger-2 { animation-delay: 100ms; }
-.stagger-3 { animation-delay: 150ms; }
-.stagger-4 { animation-delay: 200ms; }
-.stagger-5 { animation-delay: 250ms; }
-.stagger-6 { animation-delay: 300ms; }
-.stagger-7 { animation-delay: 350ms; }
-.stagger-8 { animation-delay: 400ms; }
+.stagger-1 { animation-delay: 40ms; }
+.stagger-2 { animation-delay: 80ms; }
+.stagger-3 { animation-delay: 120ms; }
+.stagger-4 { animation-delay: 160ms; }
+.stagger-5 { animation-delay: 200ms; }
+.stagger-6 { animation-delay: 240ms; }
+.stagger-7 { animation-delay: 280ms; }
+.stagger-8 { animation-delay: 320ms; }
 
-/* Challenge Modal Animations */
+/* Modal Animations - Refined for better user experience */
 @keyframes modal-enter {
-  0% { transform: scale(0.9); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  0% { 
+    transform: scale(0.95); 
+    opacity: 0; 
+    filter: blur(2px);
+  }
+  100% { 
+    transform: scale(1); 
+    opacity: 1; 
+    filter: blur(0);
+  }
 }
 
 @keyframes modal-backdrop-enter {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% { opacity: 0; backdrop-filter: blur(0); }
+  100% { opacity: 1; backdrop-filter: blur(4px); }
+}
+
+@keyframes modal-exit {
+  0% { 
+    transform: scale(1); 
+    opacity: 1; 
+    filter: blur(0);
+  }
+  100% { 
+    transform: scale(0.95); 
+    opacity: 0; 
+    filter: blur(2px);
+  }
+}
+
+@keyframes modal-backdrop-exit {
+  0% { opacity: 1; backdrop-filter: blur(4px); }
+  100% { opacity: 0; backdrop-filter: blur(0); }
 }
 
 .modal-enter {
-  animation: modal-enter 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: modal-enter var(--duration-300) cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.modal-exit {
+  animation: modal-exit var(--duration-200) var(--ease-in) forwards;
 }
 
 .modal-backdrop-enter {
-  animation: modal-backdrop-enter 0.2s ease-out forwards;
+  animation: modal-backdrop-enter var(--duration-300) var(--ease-out) forwards;
 }
 
-/* CSS Variables for app-wide consistency */
-:root {
-  /* Layout dimensions */
-  --navbar-height: 4.75rem;
-  --sidebar-width: 18rem;
-  --content-max-width: 1280px;
-  
-  /* Animation durations */
-  --transition-fast: 150ms;
-  --transition-normal: 300ms;
-  --transition-slow: 500ms;
-  
-  /* Z-index layers */
-  --z-dropdown: 10;
-  --z-sticky: 20;
-  --z-overlay: 30;
-  --z-modal: 40;
-  --z-popover: 50;
-  --z-tooltip: 60;
+.modal-backdrop-exit {
+  animation: modal-backdrop-exit var(--duration-200) var(--ease-in) forwards;
+}
+
+/* 3D Card Flip Animation */
+.flip-card-container {
+  perspective: 1000px;
+}
+
+.flip-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.flip-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
 }
 
 /* Media query adjustments */
 @media (max-width: 768px) {
   :root {
     --navbar-height: 4rem;
+    --sidebar-width: 16rem;
   }
 }
 
 @media (max-width: 640px) {
   :root {
     --navbar-height: 3.5rem;
+    --sidebar-width: 100%;  /* For mobile slide-out navigation */
   }
 }

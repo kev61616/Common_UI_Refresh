@@ -1,27 +1,22 @@
 import { type Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import localFont from 'next/font/local'
 import clsx from 'clsx'
 
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
 
+import '@/styles/globals.css'
 import '@/styles/tailwind.css'
 import '@/styles/custom-animations.css'
 import '@/styles/timeline-animations.css'
 import '@/components/review/timeline-view-variants/bookshelf-styles.css'
 
+// Configure Inter with all weights and variable support
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
-})
-
-// Use local version of Lexend so that we can use OpenType features
-const lexend = localFont({
-  src: '../fonts/lexend.woff2',
-  display: 'swap',
-  variable: '--font-lexend',
+  weight: ['400', '500', '600', '700'],
 })
 
 export const metadata: Metadata = {
@@ -41,7 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={clsx('h-full antialiased', inter.variable, lexend.variable)}
+      className={clsx('h-full antialiased', inter.variable)}
       suppressHydrationWarning
     >
       <body className="flex min-h-full bg-white dark:bg-slate-900">
