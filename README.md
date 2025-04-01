@@ -174,6 +174,31 @@ The project follows the Next.js 15.2.3 special files pattern:
 6. Ensure components handle both light and dark modes appropriately
 7. Use static values where possible to prevent hydration errors
 
+## Maintenance Scripts
+
+### cleanup_variants.sh
+
+The project includes a maintenance script for managing and cleaning up problematic view variant components:
+
+```bash
+# Display what would be removed (dry run)
+./cleanup_variants.sh --check
+
+# Actually remove the problematic files
+./cleanup_variants.sh --execute
+```
+
+This script automates the process of identifying and removing components with React hooks issues, providing:
+
+- **Safe Execution Mode**: Dry-run capability to preview changes before execution
+- **Intelligent Detection**: Automatically identifies conditional hooks and ESLint violations
+- **Detailed Reporting**: Provides clear information about what files are problematic and why
+- **Auto-scanning**: Scans variant directories for additional issues beyond the known problematic files
+- **Import Reference Check**: Identifies potential import references that may need updating after removal
+- **Colorized Output**: Uses color-coding to make output more readable
+
+The script is particularly useful for maintaining React best practices across the large number of variant components in the review system.
+
 ## Technologies
 
 As specified in package.json:
@@ -215,34 +240,57 @@ npm start
 
 ## Recent Updates
 
-- Added beautiful Flashcard view as the default Question View with interactive 3D flip animations
-- Enhanced Board view popup with filtering and sorting capabilities for better organization
-- Enhanced the FilterBar component with multi-select capabilities and implemented tag-based filter display
-- Added category labels to filter pills for improved usability (Subject, Difficulty, Time, Performance)
-- Implemented comprehensive solution for hydration errors with client-only components and deterministic rendering
-- Added specialized client components for dates, icons, and performance metrics with safe SSR fallbacks
-- Updated hydration error documentation with best practices for handling mock data
-- Removed the "Learning Journey" concept for a more streamlined UI
-- Renamed "Insights" to "Question View" for clearer user understanding
-- Added a new Board View as the third tab in the review section
-- Enhanced the FilterBar component with beautiful pill-shaped selections and pastel color schemes
-- Made FilterBar a standard reusable component across all views with consistent styling
-- Updated Set View with advanced sorting and filtering capabilities
-- Fixed hydration errors by implementing deterministic data generation
-- Updated to Next.js 15.2.1 with full App Router implementation
-- Added critical App Router special files (error.tsx, loading.tsx, global-error.tsx)
-- Created API route handler example using Next.js 15.2.1 route.ts convention
-- Implemented GEPTv2-style Question Bank from Brainbox2
-- Enhanced Dashboard with cleaner UI and removed complex SVG patterns
-- Fixed hydration errors by implementing static values for dynamic content
-- Improved responsiveness for mobile devices
-- Reordered Review dropdown menu items to match tab view order (Set View, Question View, Timeline View)
-- Fixed hydration error in SimpleQuestionView by using deterministic calculations with useMemo and Math.floor
-- Renamed ModifiedStorytellingTimeline to TimelineView for better code maintainability
-- Enhanced TimelineView with improved visuals, animations, and interactive features:
-  - Added entrance animations for timeline elements
-  - Implemented hover effects and visual feedback
-  - Added expandable details for practice sets
-  - Created a toggleable animation system
-  - Improved visual hierarchy with gradients and shadows
-  - Added progress visualization with animated indicators
+- **Variant Component Cleanup & Hook Fixes (April 2025)**:
+  - Created `cleanup_variants.sh` maintenance script to safely remove problematic components:
+    - Configured with both check and execute modes for safe operations
+    - Added automatic detection of conditional hooks and other React violations
+    - Implemented color-coded output for better readability
+    - Detected and removed NeuralNetworkView, NetworkGraphView, and CalendarHeatmapView with hook issues
+  - Fixed conditional hook usage patterns across components:
+    - Ensured all React hooks are called unconditionally at the top level
+    - Removed patterns where hooks were conditionally executed
+    - Added proper dependency arrays to useEffect and useMemo hooks
+
+- **Next.js Configuration & Build Optimization (April 2025)**:
+  - **Next.js Configuration Improvements**:
+    - Updated to use modern syntax with the latest Next.js 15.2 options
+    - Replaced deprecated `experimental.turbo.loaders` with `experimental.turbo.rules`
+    - Moved `serverComponentsExternalPackages` to the new standard `serverExternalPackages` location
+    - Configured for standalone mode which better supports mixed SSR/CSR applications
+    - Optimized staticPageGenerationTimeout settings for improved build reliability
+  - **API Route Enhancements**:
+    - Updated `src/app/api/hello/route.ts` to work with Next.js 15.2 standards
+    - Modified dynamic directives for proper static/dynamic handling in modern Next.js
+    - Added better error handling for API routes to improve user experience
+    - Implemented graceful fallbacks for dynamic API routes in various build modes
+
+- **Client-Side Navigation Improvements (April 2025)**:
+  - **useSearchParams Hook Compliance**:
+    - Fixed all instances of useSearchParams() hook by properly wrapping in Suspense boundaries
+    - Applied fixes to review pages, demo pages, and question bank sections
+    - Created consistent loading patterns with visually matching spinner components
+    - Implemented component splitting pattern to separate client-only logic from parent components
+  - **React 18+ Best Practices**:
+    - Updated components to follow latest React 18 patterns for client components
+    - Added dedicated loading states that match the visual design system
+    - Improved error boundary handling for more graceful failure modes
+    - Enhanced client-side navigation UX with proper loading indicators
+
+- **Major Technical Improvements (Previous Updates)**:
+  - **React Hooks Compliance**: Fixed conditional React hooks across multiple components:
+    - Restructured `IndividualQuestionView.tsx` to follow React hooks rules by moving state hooks to the top level
+    - Properly handled type conversions in components working with mixed data types
+  - **Project Maintenance**:
+    - Enhanced error handling during builds to provide clearer error messages
+    - Configured proper static generation options for improved deployment compatibility
+    - Added TypeScript safety improvements with better null/undefined handling
+  - Created comprehensive page structure documentation with detailed mermaid diagrams for better visualization of application architecture
+  - Fixed hydration errors by renaming "Performance" filter to "Accuracy" for consistent naming across components
+  - Added custom mastery level icons with intuitive visual indicators
+  - Added beautiful Flashcard view as the default Question View with interactive 3D flip animations
+  - Enhanced Board view popup with filtering and sorting capabilities for better organization
+  - Enhanced the FilterBar component with multi-select capabilities and implemented tag-based filter display
+  - Added category labels to filter pills for improved usability (Subject, Difficulty, Time, Performance)
+  - Implemented comprehensive solution for hydration errors with client-only components and deterministic rendering
+  - Added specialized client components for dates, icons, and performance metrics with safe SSR fallbacks
+  - Updated hydration error documentation with best practices for handling mock data

@@ -92,7 +92,66 @@ function TopicCard({
   );
 }
 
-export default function MathTopicsPage() {
+// Enhanced loading component
+function MathTopicsLoading() {
+  return (
+    <div className="min-h-screen bg-white py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 animate-pulse">
+          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+          <div className="h-8 bg-gray-200 rounded w-1/2 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-full max-w-3xl"></div>
+        </div>
+        
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8 animate-pulse">
+          <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div className="flex flex-wrap items-center justify-between">
+            <div className="flex items-center mb-4 sm:mb-0">
+              <div className="w-16 h-16 bg-gray-200 rounded-full mr-4"></div>
+              <div>
+                <div className="h-4 bg-gray-200 rounded w-24 mb-1"></div>
+                <div className="w-40 h-2 bg-gray-200 rounded-full"></div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="text-center">
+                  <div className="h-6 bg-gray-200 rounded w-12 mx-auto mb-1"></div>
+                  <div className="h-4 bg-gray-200 rounded w-20 mx-auto"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden animate-pulse">
+              <div className="h-2 bg-gray-200"></div>
+              <div className="p-6">
+                <div className="flex items-start">
+                  <div className="rounded-lg p-3 bg-gray-200 mr-4 w-12 h-12"></div>
+                  <div className="flex-1">
+                    <div className="h-6 bg-gray-200 rounded w-1/2 mb-1"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                    <div className="flex justify-between items-center">
+                      <div className="h-4 bg-gray-200 rounded w-32"></div>
+                      <div className="h-4 bg-gray-200 rounded w-16"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main content component separated for proper Suspense handling
+function MathTopicsContent() {
   // Mock data for math topic cards
   const mathTopics = [
     {
@@ -151,86 +210,93 @@ export default function MathTopicsPage() {
   );
 
   return (
-    <Suspense fallback={<div className="h-screen bg-white">Loading...</div>}>
-      <div className="min-h-screen bg-white py-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-10">
-            <div className="flex items-center text-sm text-gray-500 mb-4">
-              <Link href="/" className="hover:text-gray-700">Home</Link>
-              <ChevronRight className="h-4 w-4 mx-1" />
-              <Link href="/test" className="hover:text-gray-700">Test Center</Link>
-              <ChevronRight className="h-4 w-4 mx-1" />
-              <Link href="/test/question-bank/subjects" className="hover:text-gray-700">Question Bank</Link>
-              <ChevronRight className="h-4 w-4 mx-1" />
-              <span className="text-gray-700 font-medium">Mathematics</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Mathematics Topics</h1>
-            <p className="text-lg text-gray-600 max-w-3xl">
-              Select a topic to explore specific math concepts and practice questions.
-            </p>
+    <div className="min-h-screen bg-white py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <div className="flex items-center text-sm text-gray-500 mb-4">
+            <Link href="/" className="hover:text-gray-700">Home</Link>
+            <ChevronRight className="h-4 w-4 mx-1" />
+            <Link href="/test" className="hover:text-gray-700">Test Center</Link>
+            <ChevronRight className="h-4 w-4 mx-1" />
+            <Link href="/test/question-bank/subjects" className="hover:text-gray-700">Question Bank</Link>
+            <ChevronRight className="h-4 w-4 mx-1" />
+            <span className="text-gray-700 font-medium">Mathematics</span>
           </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Mathematics Topics</h1>
+          <p className="text-lg text-gray-600 max-w-3xl">
+            Select a topic to explore specific math concepts and practice questions.
+          </p>
+        </div>
 
-          {/* Math Progress Overview */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-4">Your Mathematics Progress</h2>
-            <div className="flex flex-wrap items-center justify-between">
-              <div className="flex items-center mb-4 sm:mb-0">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
-                  <span className="text-xl font-bold">{overallMastery}%</span>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-500 mb-1">Overall Mastery</div>
-                  <div className="w-40 h-2 bg-gray-200 rounded-full">
-                    <div 
-                      className={`h-full rounded-full ${
-                        overallMastery >= 80 ? 'bg-green-500' : 
-                        overallMastery >= 60 ? 'bg-emerald-500' :
-                        overallMastery >= 40 ? 'bg-yellow-500' : 'bg-red-500'
-                      }`} 
-                      style={{ width: `${overallMastery}%` }}
-                    ></div>
-                  </div>
-                </div>
+        {/* Math Progress Overview */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
+          <h2 className="text-xl font-semibold mb-4">Your Mathematics Progress</h2>
+          <div className="flex flex-wrap items-center justify-between">
+            <div className="flex items-center mb-4 sm:mb-0">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
+                <span className="text-xl font-bold">{overallMastery}%</span>
               </div>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-800">{totalQuestions}</div>
-                  <div className="text-sm text-gray-500">Total Questions</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-800">
-                    {mathTopics.filter(topic => topic.masteryLevel >= 80).length}
-                  </div>
-                  <div className="text-sm text-gray-500">Mastered Topics</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-800">
-                    {mathTopics.filter(topic => topic.masteryLevel < 60).length}
-                  </div>
-                  <div className="text-sm text-gray-500">Topics to Improve</div>
+              <div>
+                <div className="text-sm text-gray-500 mb-1">Overall Mastery</div>
+                <div className="w-40 h-2 bg-gray-200 rounded-full">
+                  <div 
+                    className={`h-full rounded-full ${
+                      overallMastery >= 80 ? 'bg-green-500' : 
+                      overallMastery >= 60 ? 'bg-emerald-500' :
+                      overallMastery >= 40 ? 'bg-yellow-500' : 'bg-red-500'
+                    }`} 
+                    style={{ width: `${overallMastery}%` }}
+                  ></div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {mathTopics.map((topic, index) => (
-              <TopicCard key={index} {...topic} index={index} />
-            ))}
-          </div>
-          
-          <div className="mt-12 flex justify-center">
-            <Link 
-              href="/test/question-bank/subjects" 
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Subjects
-            </Link>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-gray-800">{totalQuestions}</div>
+                <div className="text-sm text-gray-500">Total Questions</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-gray-800">
+                  {mathTopics.filter(topic => topic.masteryLevel >= 80).length}
+                </div>
+                <div className="text-sm text-gray-500">Mastered Topics</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-gray-800">
+                  {mathTopics.filter(topic => topic.masteryLevel < 60).length}
+                </div>
+                <div className="text-sm text-gray-500">Topics to Improve</div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {mathTopics.map((topic, index) => (
+            <TopicCard key={index} {...topic} index={index} />
+          ))}
+        </div>
+        
+        <div className="mt-12 flex justify-center">
+          <Link 
+            href="/test/question-bank/subjects" 
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Subjects
+          </Link>
+        </div>
       </div>
+    </div>
+  );
+}
+
+// Top-level page component with proper Suspense boundary
+export default function MathTopicsPage() {
+  return (
+    <Suspense fallback={<MathTopicsLoading />}>
+      <MathTopicsContent />
     </Suspense>
   );
 }

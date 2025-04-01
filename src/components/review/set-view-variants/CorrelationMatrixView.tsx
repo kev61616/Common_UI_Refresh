@@ -9,25 +9,6 @@ export function CorrelationMatrixView({ practiceSets, onSelectSet, selectedSetId
   const [focusedSet, setFocusedSet] = useState<string | null>(null)
   const [metricFilter, setMetricFilter] = useState<string | null>(null)
   
-  // If loading or no practice sets, show empty state
-  if (isLoading || practiceSets.length === 0) {
-    return (
-      <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-6 text-center shadow-sm">
-        <h3 className="text-xl font-bold mb-6">Correlation Matrix View</h3>
-        <div className="p-8 text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
-          {isLoading ? (
-            <p>Loading practice sets...</p>
-          ) : (
-            <>
-              <p className="mb-4">No practice sets found.</p>
-              <p>Complete some practice sets to see your data here.</p>
-            </>
-          )}
-        </div>
-      </div>
-    )
-  }
-
   // Define metrics for the correlation matrix
   const metrics = [
     { id: 'accuracy', name: 'Accuracy', format: (val: number) => `${val}%` },
@@ -36,8 +17,13 @@ export function CorrelationMatrixView({ practiceSets, onSelectSet, selectedSetId
     { id: 'size', name: 'Size', format: (val: number) => `${val}q` },
   ]
   
-  // Process sets with normalized values for each metric
+  // Process sets with normalized values for each metric - moved before any conditional returns
   const processedSets = useMemo(() => {
+    // If no practice sets, return empty array to avoid processing errors
+    if (!practiceSets || practiceSets.length === 0) {
+      return []
+    }
+
     // Get oldest date for recency calculation
     const today = new Date()
     const oldestDate = new Date(Math.min(
@@ -91,7 +77,7 @@ export function CorrelationMatrixView({ practiceSets, onSelectSet, selectedSetId
     })
   }, [practiceSets])
   
-  // Calculate correlations between metrics
+  // Calculate correlations between metrics - moved before any conditional returns
   const correlationData = useMemo(() => {
     const result: Record<string, Record<string, number>> = {}
     
@@ -102,6 +88,11 @@ export function CorrelationMatrixView({ practiceSets, onSelectSet, selectedSetId
         result[metric1.id][metric2.id] = 0
       })
     })
+
+    // If no processed sets, return initialized matrix with zeros
+    if (processedSets.length === 0) {
+      return result
+    }
     
     // For each pair of metrics, calculate the correlation
     metrics.forEach(metric1 => {
@@ -144,6 +135,25 @@ export function CorrelationMatrixView({ practiceSets, onSelectSet, selectedSetId
     
     return result
   }, [processedSets, metrics])
+  
+  // If loading or no practice sets, show empty state (moved after all hooks)
+  if (isLoading || practiceSets.length === 0) {
+    return (
+      <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-6 text-center shadow-sm">
+        <h3 className="text-xl font-bold mb-6">Correlation Matrix View</h3>
+        <div className="p-8 text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+          {isLoading ? (
+            <p>Loading practice sets...</p>
+          ) : (
+            <>
+              <p className="mb-4">No practice sets found.</p>
+              <p>Complete some practice sets to see your data here.</p>
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
   
   // Get color based on correlation strength
   const getCorrelationColor = (value: number) => {

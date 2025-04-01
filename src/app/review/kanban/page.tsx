@@ -1,16 +1,29 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, Suspense } from 'react'
 import { EnhancedCollapsibleBoardView } from '@/components/review/board/EnhancedCollapsibleBoardView'
 import { mockPracticeSets } from '@/lib/mockData'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { ReviewNavigation } from '@/components/review/ReviewNavigation'
 import { CompactFilterBar } from '@/components/common/CompactFilterBar'
 
-/**
- * Board View page
- */
-export default function BoardViewPage() {
+// Loading component for Suspense fallback
+function KanbanViewLoading() {
+  return (
+    <div className="px-[2%] pb-8">
+      <ReviewNavigation />
+      <div className="flex justify-center py-12">
+        <div className="flex flex-col items-center">
+          <div className="h-8 w-8 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin mb-4"></div>
+          <p className="text-slate-600 dark:text-slate-400">Loading kanban board view...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main component with all the interactive features
+function KanbanViewContent() {
   // State for selected set
   const [selectedSetId, setSelectedSetId] = useState<string | null>(null);
   
@@ -68,5 +81,17 @@ export default function BoardViewPage() {
         />
       </ErrorBoundary>
     </div>
+  )
+}
+
+/**
+ * Board View page wrapped in Suspense boundary to properly handle
+ * client-side hooks including useSearchParams
+ */
+export default function BoardViewPage() {
+  return (
+    <Suspense fallback={<KanbanViewLoading />}>
+      <KanbanViewContent />
+    </Suspense>
   )
 }

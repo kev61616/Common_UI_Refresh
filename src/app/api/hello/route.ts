@@ -1,13 +1,25 @@
 import { NextResponse } from 'next/server'
 
-export const dynamic = 'force-dynamic' // Make this endpoint always dynamic
+// Set explicitly to static generation for static export compatibility
+export const dynamic = 'force-static'
+
+// Pre-generate a fixed timestamp for static build
+const STATIC_TIMESTAMP = new Date().toISOString();
  
 export async function GET() {
-  // Route handlers are a server-side API feature introduced in App Router
-  return NextResponse.json({ message: 'Hello from Next.js 15.2.3!', time: new Date().toISOString() })
+  // For static export, we need to return a fixed response
+  return NextResponse.json({ 
+    message: 'Hello from Next.js 15.2.3!', 
+    time: STATIC_TIMESTAMP,
+    note: 'This is a statically generated API response'
+  })
 }
 
 export async function POST(request: Request) {
-  const data = await request.json()
-  return NextResponse.json({ received: data, success: true })
+  try {
+    const data = await request.json()
+    return NextResponse.json({ received: data, success: true })
+  } catch (error) {
+    return NextResponse.json({ error: 'Invalid JSON', success: false }, { status: 400 })
+  }
 }

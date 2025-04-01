@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { SimpleQuestionView } from '@/components/review/question-view-variants/SimpleQuestionView'
 import { ModifiedStorytellingTimeline } from '@/components/review/timeline-view-variants/ModifiedStorytellingTimeline'
 import { mockPracticeSets } from '@/lib/mockData'
@@ -8,12 +8,9 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
-/**
- * Combined Insights View page that hosts both Question View and Timeline View as subtabs
- * This provides a consolidated experience for related review data
- */
-export default function InsightsViewPage() {
-  console.log('Combined Insights View Page loaded');
+// Component that handles the insights content with search params
+function InsightsContent() {
+  console.log('Insights Content Component loaded');
   
   // Get URL parameters
   const searchParams = useSearchParams();
@@ -134,5 +131,31 @@ export default function InsightsViewPage() {
         )}
       </ErrorBoundary>
     </div>
-  )
+  );
+}
+
+// Simple loading fallback component
+function LoadingInsights() {
+  return (
+    <div className="px-[2%] pb-8 flex justify-center py-12">
+      <div className="flex flex-col items-center">
+        <div className="h-8 w-8 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin mb-4"></div>
+        <p className="text-slate-600 dark:text-slate-400">Loading insights view...</p>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Combined Insights View page that hosts both Question View and Timeline View as subtabs
+ * Wrapped in Suspense to properly handle useSearchParams hook
+ */
+export default function InsightsViewPage() {
+  console.log('Combined Insights View Page loaded');
+  
+  return (
+    <Suspense fallback={<LoadingInsights />}>
+      <InsightsContent />
+    </Suspense>
+  );
 }

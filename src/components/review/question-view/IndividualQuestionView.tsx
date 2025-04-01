@@ -7,6 +7,9 @@ interface IndividualQuestionViewProps {
 }
 
 export const IndividualQuestionView = ({ questionId }: IndividualQuestionViewProps) => {
+  // Always call hooks at the top level of the component - never conditional
+  const [showMasteryTable, setShowMasteryTable] = useState(false);
+  
   const questions = extractQuestionsWithMetadata(mockPracticeSets);
   const question = questions.find(q => q.id === questionId);
 
@@ -14,7 +17,10 @@ export const IndividualQuestionView = ({ questionId }: IndividualQuestionViewPro
     return <div>Question not found</div>;
   }
 
-  const [showMasteryTable, setShowMasteryTable] = useState(false);
+  // Convert masteryLevel to a number or default to 1 if undefined or not a number
+  const masteryLevelNumber = question.masteryLevel 
+    ? parseInt(question.masteryLevel as string, 10) || 1 
+    : 1;
 
   const masteryLevels = [
     { level: 1, description: 'Not Started', color: 'bg-slate-100 text-slate-700' },
@@ -63,7 +69,7 @@ export const IndividualQuestionView = ({ questionId }: IndividualQuestionViewPro
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
               {masteryLevels.map((level) => (
-                <tr key={level.level} className={level.level === question.masteryLevel ? 'bg-slate-50 dark:bg-slate-700/50' : ''}>
+                <tr key={level.level} className={level.level === masteryLevelNumber ? 'bg-slate-50 dark:bg-slate-700/50' : ''}>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${level.color} dark:bg-opacity-20`}>
                       Level {level.level}
@@ -73,11 +79,11 @@ export const IndividualQuestionView = ({ questionId }: IndividualQuestionViewPro
                     {level.description}
                   </td>
                   <td className="px-4 py-3">
-                    {level.level === question.masteryLevel ? (
+                    {level.level === masteryLevelNumber ? (
                       <span className="text-green-600 dark:text-green-400 text-sm font-medium">
                         Current Level
                       </span>
-                    ) : level.level < question.masteryLevel ? (
+                    ) : level.level < masteryLevelNumber ? (
                       <span className="text-slate-400 dark:text-slate-500 text-sm">
                         Completed
                       </span>
@@ -122,4 +128,4 @@ export const IndividualQuestionView = ({ questionId }: IndividualQuestionViewPro
       </div>
     </div>
   );
-}; 
+};

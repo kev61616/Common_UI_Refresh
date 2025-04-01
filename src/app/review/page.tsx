@@ -1,17 +1,11 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import '@/styles/components/set-view.css'
 
-// Add console logging to help debug
-console.log('Review page loaded - redirecting based on view parameter');
-
-/**
- * Main review page that redirects to the appropriate view page
- * Updated to handle the new combined insights page for question and timeline views
- */
-export default function ReviewIndexPage() {
+// Loading component for the Suspense boundary
+function ReviewPageContent() {
   const searchParams = useSearchParams();
   const viewParam = searchParams?.get('view');
   
@@ -42,5 +36,30 @@ export default function ReviewIndexPage() {
       <div className="h-8 w-8 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin mb-4"></div>
       <p className="text-slate-600 dark:text-slate-400">Redirecting to the appropriate view...</p>
     </div>
+  );
+}
+
+// Simple loading fallback for Suspense
+function LoadingFallback() {
+  return (
+    <div className="px-[2%] flex flex-col items-center justify-center py-12">
+      <div className="h-8 w-8 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin mb-4"></div>
+      <p className="text-slate-600 dark:text-slate-400">Loading review page...</p>
+    </div>
+  );
+}
+
+/**
+ * Main review page that redirects to the appropriate view page
+ * Wrapped in Suspense to properly handle useSearchParams hook
+ */
+export default function ReviewIndexPage() {
+  // Add console logging to help debug
+  console.log('Review page loaded - redirecting based on view parameter');
+
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ReviewPageContent />
+    </Suspense>
   );
 }
