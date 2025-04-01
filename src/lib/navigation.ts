@@ -20,7 +20,7 @@ export const navigation = [
     links: [
       { title: 'Set View', href: '/review?view=matrix' },
       { title: 'Question View', href: '/review?view=question' },
-      { title: 'Timeline View', href: '/review?view=timeline' },
+      { title: 'Board View', href: '/review?view=board' },
     ],
   },
   {

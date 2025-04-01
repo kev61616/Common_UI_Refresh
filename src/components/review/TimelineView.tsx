@@ -126,7 +126,7 @@ export function TimelineView({ practiceSets, onSelectSet, selectedSetId, sortCon
     >
       {/* Enhanced top controls */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Learning Journey</h2>
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Timeline View</h2>
         
         <div className="flex items-center gap-3">
           {/* Animation toggle */}
@@ -347,7 +347,7 @@ export function TimelineView({ practiceSets, onSelectSet, selectedSetId, sortCon
                   <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                     Completed {totalSets} practice sets with an average accuracy of {avgAccuracy}%.
                     {avgAccuracy >= 85 
-                      ? " This was an exceptional period in your learning journey."
+                      ? " This was an exceptional performance period."
                       : avgAccuracy >= 70
                         ? " You showed consistent progress during this chapter."
                         : " This chapter provided valuable learning opportunities."
@@ -375,7 +375,7 @@ export function TimelineView({ practiceSets, onSelectSet, selectedSetId, sortCon
             </span>
           </div>
           <p className="text-slate-600 dark:text-slate-400">
-            Your learning journey continues! Overall accuracy: {
+            Your progress continues! Overall accuracy: {
               displaySets.length > 0 
                 ? Math.round(displaySets.reduce((sum, set) => sum + set.accuracy, 0) / displaySets.length)
                 : 0

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 // Mock upcoming test data
@@ -12,7 +12,9 @@ const upcomingTestsMock = [
     type: 'practice',
     subject: 'Full Test',
     preparedness: 85,
-    location: 'Online'
+    location: 'Online',
+    duration: 180, // minutes
+    missingSkills: ['Quadratic Equations', 'Data Analysis']
   },
   {
     id: 'test2',
@@ -21,7 +23,9 @@ const upcomingTestsMock = [
     type: 'official',
     subject: 'Full Test',
     preparedness: 78,
-    location: 'Central High School'
+    location: 'Central High School',
+    duration: 180, // minutes
+    missingSkills: ['Reading Inference', 'Grammar Usage', 'Word Problems']
   },
   {
     id: 'test3',
@@ -30,26 +34,43 @@ const upcomingTestsMock = [
     type: 'assessment',
     subject: 'Math',
     preparedness: 92,
-    location: 'Online'
+    location: 'Online',
+    duration: 60, // minutes
+    missingSkills: []
   }
 ]
 
 export function UpcomingTests() {
   const [activeTab, setActiveTab] = useState<'all' | 'practice' | 'official'>('all')
+  const [animatedTests, setAnimatedTests] = useState<string[]>([])
+  
+  // Animate tests appearing one by one
+  useEffect(() => {
+    const testIds = upcomingTestsMock.map(test => test.id)
+    let currentIndex = 0
+    
+    const interval = setInterval(() => {
+      if (currentIndex < testIds.length) {
+        setAnimatedTests(prev => [...prev, testIds[currentIndex]])
+        currentIndex++
+      } else {
+        clearInterval(interval)
+      }
+    }, 200)
+    
+    return () => clearInterval(interval)
+  }, [])
   
   // Filter tests based on active tab
   const filteredTests = upcomingTestsMock.filter(test => 
     activeTab === 'all' || test.type === activeTab
-  )
+  ).sort((a, b) => a.date.getTime() - b.date.getTime())
   
   // Format date for display
   const formatDate = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = { 
-      weekday: 'short', 
       month: 'short', 
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      day: 'numeric'
     }
     return new Intl.DateTimeFormat('en-US', options).format(date)
   }
@@ -62,49 +83,71 @@ export function UpcomingTests() {
     
     if (diffDays === 0) return 'Today'
     if (diffDays === 1) return 'Tomorrow'
-    return `${diffDays} days`
+    return `${diffDays}d`
   }
   
-  // Get preparedness status and color
-  const getPreparednessStatus = (score: number) => {
-    if (score >= 90) return { text: 'Well prepared', color: 'text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20' }
-    if (score >= 75) return { text: 'Adequately prepared', color: 'text-amber-500 bg-amber-50 dark:bg-amber-900/20' }
-    return { text: 'Needs more practice', color: 'text-rose-500 bg-rose-50 dark:bg-rose-900/20' }
+  // Get bar color based on preparedness
+  const getPreparednessColor = (score: number) => {
+    if (score >= 90) return 'bg-emerald-500'
+    if (score >= 75) return 'bg-amber-500'
+    return 'bg-rose-500'
+  }
+  
+  // Get type badge style
+  const getTypeBadge = (type: string) => {
+    switch(type) {
+      case 'official': 
+        return {
+          bg: 'bg-indigo-100 dark:bg-indigo-900/30',
+          text: 'text-indigo-700 dark:text-indigo-300',
+          short: 'OFF'
+        }
+      case 'practice': 
+        return {
+          bg: 'bg-blue-100 dark:bg-blue-900/30',
+          text: 'text-blue-700 dark:text-blue-300',
+          short: 'PRX'
+        }
+      default: 
+        return {
+          bg: 'bg-purple-100 dark:bg-purple-900/30',
+          text: 'text-purple-700 dark:text-purple-300',
+          short: 'AST'
+        }
+    }
   }
   
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-      <div className="p-5 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
-        <h3 className="font-medium text-slate-800 dark:text-white text-lg">Upcoming Tests</h3>
-        
-        {/* Tab navigation */}
-        <div className="flex bg-slate-100 dark:bg-slate-700/50 rounded-lg p-1">
+    <div className="p-3 h-full flex flex-col">
+      {/* Tab navigation - Simplified */}
+      <div className="flex justify-end mb-2">
+        <div className="flex rounded-md overflow-hidden border border-slate-200 dark:border-slate-700 text-[10px] font-medium">
           <button
             onClick={() => setActiveTab('all')}
-            className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+            className={`px-2 py-1 transition-colors ${
               activeTab === 'all' 
-                ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' 
-                : 'text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white'
+                ? 'bg-indigo-600 text-white' 
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
             }`}
           >
             All
           </button>
           <button
             onClick={() => setActiveTab('practice')}
-            className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+            className={`px-2 py-1 transition-colors ${
               activeTab === 'practice' 
-                ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' 
-                : 'text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white'
+                ? 'bg-indigo-600 text-white' 
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
             }`}
           >
             Practice
           </button>
           <button
             onClick={() => setActiveTab('official')}
-            className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+            className={`px-2 py-1 transition-colors ${
               activeTab === 'official' 
-                ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' 
-                : 'text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white'
+                ? 'bg-indigo-600 text-white' 
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
             }`}
           >
             Official
@@ -113,89 +156,108 @@ export function UpcomingTests() {
       </div>
       
       {filteredTests.length > 0 ? (
-        <div className="divide-y divide-slate-200 dark:divide-slate-700">
-          {filteredTests.map(test => {
-            const preparedness = getPreparednessStatus(test.preparedness)
-            const urgencyClass = 
-              getDaysRemaining(test.date) === 'Today' || getDaysRemaining(test.date) === 'Tomorrow'
-                ? 'animate-pulse text-rose-500 dark:text-rose-400'
-                : 'text-slate-500 dark:text-slate-400'
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 flex-grow">
+          {filteredTests.map((test, index) => {
+            const barColor = getPreparednessColor(test.preparedness)
+            const typeBadge = getTypeBadge(test.type)
+            const daysRemaining = getDaysRemaining(test.date)
+            const isUrgent = daysRemaining === 'Today' || daysRemaining === 'Tomorrow'
+            const isAnimated = animatedTests.includes(test.id)
             
             return (
-              <div key={test.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/20 transition-colors duration-150">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="font-medium text-slate-900 dark:text-white">
-                      {test.title}
-                      {test.type === 'official' && (
-                        <span className="ml-2 text-xs font-medium px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300">
-                          Official
+              <div 
+                key={test.id}
+                className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden shadow-sm hover:shadow transition-all duration-300"
+                style={{
+                  opacity: isAnimated ? 1 : 0,
+                  transform: isAnimated ? 'translateY(0)' : 'translateY(15px)',
+                  transition: `opacity 300ms ease-out ${index * 150}ms, transform 300ms ease-out ${index * 150}ms`
+                }}
+              >
+                <div className="relative">
+                  {/* Preparedness indicator bar */}
+                  <div className="absolute top-0 left-0 right-0 h-1">
+                    <div className={`h-full ${barColor}`} style={{ width: `${test.preparedness}%` }}></div>
+                  </div>
+                
+                  <div className="pt-2 px-3 pb-3">
+                    <div className="flex justify-between items-start mb-1.5">
+                      <h4 className="text-sm font-medium text-slate-900 dark:text-white truncate max-w-[140px]">
+                        {test.title}
+                      </h4>
+                      
+                      <div className={`text-xs font-bold px-1.5 py-0.5 rounded flex items-center ${
+                        isUrgent 
+                          ? 'bg-rose-100 text-rose-600 dark:bg-rose-900/20 dark:text-rose-400' 
+                          : 'text-slate-700 dark:text-slate-300'
+                      }`}>
+                        {isUrgent && (
+                          <span className="inline-block w-1.5 h-1.5 bg-rose-500 rounded-full mr-1 animate-pulse"></span>
+                        )}
+                        {daysRemaining}
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="flex items-center gap-1.5">
+                        <span className={`px-1.5 py-0.5 rounded-sm text-[10px] font-medium ${typeBadge.bg} ${typeBadge.text}`}>
+                          {typeBadge.short}
                         </span>
-                      )}
-                    </h4>
-                    <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                      {test.subject} • {test.location}
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400">{test.duration}m</span>
+                      </div>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">{formatDate(test.date)}</span>
+                    </div>
+                    
+                    {/* Ready indicator and action */}
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{test.preparedness}%</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400">ready</span>
+                      </div>
+                      
+                      <Link
+                        href={`/test/prep/${test.id}`}
+                        className="flex items-center px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-md transition-colors shadow-sm"
+                      >
+                        Prepare
+                        <svg className="ml-1 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </Link>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className={`text-sm font-medium ${urgencyClass}`}>
-                      {getDaysRemaining(test.date)}
-                    </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      {formatDate(test.date)}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mt-3 flex items-center justify-between">
-                  <div className="flex items-center">
-                    <span className="text-sm mr-2">Preparedness:</span>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${preparedness.color}`}>
-                      {preparedness.text}
-                    </span>
-                  </div>
-                  
-                  <Link
-                    href={`/test/prep/${test.id}`}
-                    className="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center"
-                  >
-                    Prepare now
-                    <svg className="ml-1 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </div>
-                
-                <div className="mt-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
-                  <div 
-                    className="h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600" 
-                    style={{ width: `${test.preparedness}%` }}
-                  ></div>
                 </div>
               </div>
             )
           })}
         </div>
       ) : (
-        <div className="p-8 text-center">
-          <div className="text-2xl mb-2">📅</div>
-          <h4 className="text-slate-800 dark:text-white font-medium">No upcoming tests</h4>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Schedule your next test to start preparing</p>
+        <div className="p-3 text-center h-40 flex flex-col items-center justify-center">
+          <div className="w-10 h-10 mb-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
+            <svg className="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">No upcoming tests</p>
           <Link
             href="/test/schedule"
-            className="mt-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+            className="text-xs px-2 py-1 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
           >
             Schedule Test
           </Link>
         </div>
       )}
       
-      <div className="border-t border-slate-200 dark:border-slate-700">
+      {/* Link to calendar */}
+      <div className="mt-auto pt-2 border-t border-slate-200 dark:border-slate-700">
         <Link 
-          href="/test/schedule"
-          className="block p-4 text-sm text-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700/20 transition-colors duration-150"
+          href="/test/calendar"
+          className="flex items-center justify-center text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300"
         >
-          View all tests
+          <svg className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          View calendar
         </Link>
       </div>
     </div>

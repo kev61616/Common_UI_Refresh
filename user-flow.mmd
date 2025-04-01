@@ -1,0 +1,76 @@
+graph TD
+    %% Main Application Entry
+    Start[Application Entry] --> Dashboard[Dashboard]
+    Dashboard --> MenuNavigation[Main Navigation Bar]
+    
+    %% Main Navigation Options
+    MenuNavigation --> ReviewSection[Review Section]
+    MenuNavigation --> QuestionBank[Question Bank]
+    MenuNavigation --> SATSection[SAT Practice Tests]
+    
+    %% Review Section Navigation
+    ReviewSection --> ReviewNav[Review Navigation Tabs]
+    
+    %% Three Main Views
+    ReviewNav --> SetView[Set View]
+    ReviewNav --> QuestionView[Question View]
+    ReviewNav --> KanbanView[Kanban View]
+    
+    %% Set View Flow
+    SetView --> SetFilterBar[Set Filters]
+    SetFilterBar --> SetFilterOptions[Filter Options<br/>Subject, Difficulty,<br/>Time Period, Performance]
+    SetFilterBar --> SetSortOptions[Sort Options<br/>Date, Subject, Performance,<br/>Time Used, Difficulty]
+    SetFilterOptions --> FilteredSetResults[Filtered Set Results]
+    SetSortOptions --> FilteredSetResults
+    FilteredSetResults --> SelectSet[Select Practice Set]
+    SelectSet --> SetDetails[View Set Details]
+    
+    %% Question View Flow
+    QuestionView --> QuestionFilterBar[Question Filters]
+    QuestionFilterBar --> QuestionFilterOptions[Filter Options<br/>Subject, Topic, Difficulty,<br/>Status]
+    QuestionFilterBar --> QuestionSortOptions[Sort Options<br/>Date, Subject, Time,<br/>Accuracy, Difficulty]
+    QuestionFilterOptions --> MatrixGrid[Matrix Grid View]
+    QuestionSortOptions --> MatrixGrid
+    MatrixGrid --> ExpandCategory[Expand Topic Category]
+    ExpandCategory --> ViewQuestionDetails[View Question Details]
+    MatrixGrid --> SelectMasteryCell[Select Mastery Cell]
+    SelectMasteryCell --> PracticeQuestions[Practice Questions]
+    
+    %% Kanban View Flow
+    KanbanView --> KanbanFilterBar[Kanban Filters]
+    KanbanFilterBar --> KanbanFilterOptions[Filter Options<br/>Subject, Priority,<br/>Due Date, Status]
+    KanbanFilterOptions --> KanbanBoard[Kanban Board]
+    KanbanBoard --> DragCard[Drag Card to New Column]
+    KanbanBoard --> ExpandCard[Expand Card Details]
+    ExpandCard --> CardOptions[View Card Options]
+    CardOptions --> EditCard[Edit Card]
+    CardOptions --> StartStudy[Start Study Session]
+    
+    %% Shared Components
+    FilterBar[Shared FilterBar Component<br/>with Pill UI Elements<br/>Multi-Select & Category Labels]
+    FilterBar --> SetFilterBar
+    FilterBar --> QuestionFilterBar
+    FilterBar --> KanbanFilterBar
+    
+    %% Additional Filter Features
+    SetFilterBar -.- FilterTags[Selected Filter Tags<br/>with Remove Option]
+    QuestionFilterBar -.- FilterTags
+    KanbanFilterBar -.- FilterTags
+    
+    %% Visual Styling
+    classDef primary fill:#6366F1,stroke:#4F46E5,color:white
+    classDef secondary fill:#A5B4FC,stroke:#818CF8,color:#1E293B
+    classDef action fill:#3B82F6,stroke:#2563EB,color:white
+    classDef interface fill:#F9FAFB,stroke:#E5E7EB,color:#1F2937
+    classDef setView fill:#F472B6,stroke:#EC4899,color:white
+    classDef questionView fill:#60A5FA,stroke:#3B82F6,color:white
+    classDef kanbanView fill:#A78BFA,stroke:#8B5CF6,color:white
+    
+    %% Apply styles
+    class Start,Dashboard,MenuNavigation primary
+    class ReviewSection,ReviewNav secondary
+    class FilterBar,SetFilterBar,QuestionFilterBar,KanbanFilterBar,FilterTags interface
+    class SetView,SetFilterOptions,SetSortOptions,FilteredSetResults,SelectSet,SetDetails setView
+    class QuestionView,QuestionFilterOptions,QuestionSortOptions,MatrixGrid,ExpandCategory,ViewQuestionDetails,SelectMasteryCell,PracticeQuestions questionView
+    class KanbanView,KanbanFilterOptions,KanbanBoard,DragCard,ExpandCard,CardOptions,EditCard,StartStudy kanbanView
+    class QuestionBank,SATSection secondary

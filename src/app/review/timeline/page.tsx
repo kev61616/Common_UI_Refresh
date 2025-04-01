@@ -7,11 +7,10 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import Link from 'next/link'
 
 /**
- * Standalone Timeline View page that bypasses the combined review page to avoid errors
- * This provides a direct access route to the timeline view functionality
+ * Timeline View page
  */
 export default function TimelineViewPage() {
-  console.log('Direct Timeline View Page loaded');
+  console.log('Timeline View Page loaded');
   
   // Use state for selected set and sort configuration
   const [selectedSetId, setSelectedSetId] = useState<string | null>(null);
@@ -52,6 +51,17 @@ export default function TimelineViewPage() {
         </Link>
         
         <Link
+          href="/review/kanban"
+          className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 font-medium text-sm md:text-base transition-all duration-200 rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700/80"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          <span className="hidden sm:inline">Kanban View</span>
+          <span className="sm:hidden">Kanban</span>
+        </Link>
+        
+        <Link
           href="/review/timeline"
           className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 font-medium text-sm md:text-base transition-all duration-200 rounded-md bg-sky-100 text-sky-700 shadow-sm dark:bg-sky-900/30 dark:text-sky-400"
         >
@@ -62,6 +72,7 @@ export default function TimelineViewPage() {
           <span className="sm:hidden">Timeline</span>
         </Link>
       </div>
+      
       
       <ErrorBoundary>
         <ModifiedStorytellingTimeline 

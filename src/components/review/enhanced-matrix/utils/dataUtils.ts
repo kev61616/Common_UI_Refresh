@@ -6,7 +6,7 @@ import { getSubjectForTopic, isTopicInSubject } from './filterUtils'
 
 /**
  * Get mastery level data based on question metrics
- * Based on defined masteryLevels in mockData.ts:
+ * Based on defined masteryLevels:
  * 1. Very Weak (2x+ incorrect)
  * 2. Weak (1x incorrect)
  * 3. Not Attempted (0x attempted)
@@ -181,7 +181,7 @@ export const calculateTopicTotals = (
 
 /**
  * Calculate summary statistics for each mastery level
- * This function categorizes questions into the 6 mastery levels based on the mockData.ts definitions
+ * This function categorizes questions into the 6 mastery levels based on the definitions
  * and ensures proper data distribution across all columns
  */
 export const calculateDifficultyTotals = (
@@ -189,7 +189,7 @@ export const calculateDifficultyTotals = (
   difficulties: string[],
   filterDifficulties: Record<string, boolean>
 ): DifficultyTotal[] => {
-  // Define the mastery levels from mockData.ts
+  // Define the mastery levels
   const masteryLevels = [
     'Very Weak',   // 2x+ incorrect
     'Weak',        // 1x incorrect
@@ -207,12 +207,12 @@ export const calculateDifficultyTotals = (
     categorizedQuestions.set(level, []);
   });
   
-  // Categorize each question based on its mastery level according to mockData.ts rules
+  // Categorize each question based on its mastery level according to rules
   questions.forEach(question => {
     const attempts = question.attempts || 0;
     const isCorrect = question.correct;
     
-    // Determine the mastery level based on the rules in mockData.ts
+    // Determine the mastery level based on the rules
     let masteryLevel = 'Not Attempted';
     
     if (attempts === 0) {
@@ -250,7 +250,7 @@ export const calculateDifficultyTotals = (
 
   // If we don't have enough real data, enhance it with synthetic data
   if (questions.length < 100) {
-    // Create a distribution across mastery levels similar to what we'd expect
+    // Create a distribution across mastery levels
     const distribution = {
       'Very Weak': 0.15,    // 15%
       'Weak': 0.17,         // 17%
@@ -260,7 +260,7 @@ export const calculateDifficultyTotals = (
       'Mastered': 0.10      // 10%
     };
     
-    // Total target number - similar to distributeQuestionsAcrossMasteryLevels
+    // Total target number
     const targetTotal = 650;
     
     // Update counts and stats for each mastery level
@@ -273,7 +273,7 @@ export const calculateDifficultyTotals = (
       }
       
       // Otherwise enhance with synthetic data
-      const targetCount = Math.round(targetTotal * (distribution[level as keyof typeof distribution] || 0.16));
+      const targetCount = Math.floor(targetTotal * (distribution[level as keyof typeof distribution] || 0.16));
       const correctRate = level === 'Very Weak' ? 0.2 :
                           level === 'Weak' ? 0.4 :
                           level === 'Not Attempted' ? 0 :
@@ -282,8 +282,8 @@ export const calculateDifficultyTotals = (
                           0.9; // Mastered
       
       const enhancedCount = targetCount;
-      const enhancedCorrectCount = Math.round(enhancedCount * correctRate);
-      const enhancedAccuracy = enhancedCount > 0 ? Math.round((enhancedCorrectCount / enhancedCount) * 100) : 0;
+      const enhancedCorrectCount = Math.floor(enhancedCount * correctRate);
+      const enhancedAccuracy = enhancedCount > 0 ? Math.floor((enhancedCorrectCount / enhancedCount) * 100) : 0;
       
       return {
         difficulty: level,
@@ -308,7 +308,7 @@ export const calculateGrandTotal = (questions: QuestionWithMetadata[]): GrandTot
   // For demo purposes, ensure the grand total always has significant value
   if (count < 100) { // If we have too few questions, boost the count
     // Add minimum values for demo display
-    count = 650 + Math.floor(Math.random() * 100); // 650-750 questions total
+    count = 650;
     correctCount = Math.floor(count * 0.65); // ~65% correct rate
   }
   
@@ -323,8 +323,7 @@ export const calculateGrandTotal = (questions: QuestionWithMetadata[]): GrandTot
 
 /**
  * Generate a realistic distribution of questions across mastery levels
- * This ensures all columns have reasonable data for the matrix view
- * Uses the actual topics and subcategories from mockData.ts
+ * Uses a deterministic approach to avoid hydration errors
  */
 export function distributeQuestionsAcrossMasteryLevels(questions: QuestionWithMetadata[]) {
   // If we have enough real questions, use them
@@ -332,72 +331,34 @@ export function distributeQuestionsAcrossMasteryLevels(questions: QuestionWithMe
     return questions;
   }
   
-  // Define mastery levels according to mockData.ts
+  // Define mastery levels
   const masteryLevels = [
-    'Very Weak',   // 2x+ incorrect
-    'Weak',        // 1x incorrect
-    'Not Attempted', // 0x attempted
-    'Emerging',    // 1x correct
-    'Proficient',  // 2x correct
-    'Mastered'     // 3x+ correct
+    'Very Weak',
+    'Weak',
+    'Not Attempted',
+    'Emerging',
+    'Proficient',
+    'Mastered'
   ];
   
-  // Use the topic lists imported from filterUtils
-  // These are correctly aligned with each subject
-  
-  // Generate at least 100 questions with a realistic distribution across all mastery levels
   const syntheticQuestions: QuestionWithMetadata[] = [];
   
-  // Use the distribution from mockData.ts
-  const distribution = {
-    'Very Weak': 0.17,    // 17%
-    'Weak': 0.17,         // 17%
-    'Not Attempted': 0.16, // 16%
-    'Emerging': 0.17,     // 17%
-    'Proficient': 0.17,   // 17%
-    'Mastered': 0.16      // 16%
+  // Hard-coded subcategories for each subject
+  const subcategories = {
+    'Math': [
+      'Expressions & Equations', 'Linear & Nonlinear Functions', 'Statistical Analysis',
+      'Probability', 'Geometry: Triangles', 'Geometry: Rectangles', 'Geometry: Circles'
+    ],
+    'Reading': [
+      'Main Purpose', 'Main Idea', 'Summary', 'Specific Detail', 'Supporting Evidence',
+      'Structure of Text', 'Vocabulary', 'Data Analysis: Graph(s)'
+    ],
+    'Writing': [
+      'Parts of Speech', 'Sentence Structure', 'Pronouns', 'Agreement', 'Punctuation',
+      'Verb Tense', 'Transition'
+    ]
   };
   
-  // Total target number
-  const targetTotal = 650;
-  
-  // Define subject subcategories from mockData.ts
-  const mathSubcategories = [
-    'Expressions & Equations', 'Linear & Nonlinear Functions', 'Statistical Analysis',
-    'Probability', 'Geometry: Triangles', 'Geometry: Rectangles', 'Geometry: Circles',
-    'Geometry: Parabolas', 'Solids: Cones', 'Solids: Cubes', 'Solids: Cylinders',
-    'Solids: Spheres', 'Trigonometric Ratios', 'Trigonometric Functions'
-  ];
-
-  const readingSubcategories = [
-    'Main Purpose', 'Main Idea', 'Summary', 'Specific Detail', 'Supporting Evidence',
-    'Supporting Quotation', 'Underlined Function', 'Logical Reasoning', 'Two Texts',
-    'Long Completion', 'Structure of Text', 'Vocabulary', 'Data Analysis: Graph(s)',
-    'Data Analysis: Table(s)'
-  ];
-
-  const writingSubcategories = [
-    'Parts of Speech', 'Sentence Structure', 'Pronouns', 'Agreement', 'Punctuation',
-    'Verb Tense', 'Degree', 'Mood', 'Voice', 'Transition'
-  ];
-  
-  // Get a random subcategory based on subject
-  const getRandomSubcategory = (subject: string): string => {
-    if (subject === 'Math') {
-      return mathSubcategories[Math.floor(Math.random() * mathSubcategories.length)];
-    } else if (subject === 'Reading') {
-      return readingSubcategories[Math.floor(Math.random() * readingSubcategories.length)];
-    } else {
-      return writingSubcategories[Math.floor(Math.random() * writingSubcategories.length)];
-    }
-  };
-  
-  // Helper function to get a random difficulty
-  function getRandomDifficulty(): 'Easy' | 'Medium' | 'Hard' {
-    const difficulties: ('Easy' | 'Medium' | 'Hard')[] = ['Easy', 'Medium', 'Hard'];
-    return difficulties[Math.floor(Math.random() * difficulties.length)];
-  }
-
   // Process existing questions first
   const processedQuestions = questions.map(question => {
     // Check if the question's topic and subject match correctly
@@ -412,105 +373,100 @@ export function distributeQuestionsAcrossMasteryLevels(questions: QuestionWithMe
     return question;
   });
   
-  // Generate synthetic questions with correct subject-topic relationships
-  // We'll get topics from the filterUtils.ts (via the getSubjectForTopic function)
-  // to ensure we're using the correct topic lists
-  const subjectToProcess = ['Math', 'Reading', 'Writing'];
+  // Fixed synthetic data to avoid randomness
+  const syntheticData = [
+    // Math questions
+    { subject: 'Math', topic: 'Algebra Fundamentals', difficulty: 'Easy', level: 'Mastered', subtopic: 'Expressions & Equations' },
+    { subject: 'Math', topic: 'Algebra Fundamentals', difficulty: 'Medium', level: 'Proficient', subtopic: 'Linear & Nonlinear Functions' },
+    { subject: 'Math', topic: 'Algebra Fundamentals', difficulty: 'Hard', level: 'Emerging', subtopic: 'Statistical Analysis' },
+    { subject: 'Math', topic: 'Statistics and Data', difficulty: 'Easy', level: 'Not Attempted', subtopic: 'Probability' },
+    { subject: 'Math', topic: 'Statistics and Data', difficulty: 'Medium', level: 'Weak', subtopic: 'Statistical Analysis' },
+    { subject: 'Math', topic: 'Statistics and Data', difficulty: 'Hard', level: 'Very Weak', subtopic: 'Data Analysis: Graph(s)' },
+    
+    // Reading questions
+    { subject: 'Reading', topic: 'Reading Comprehension', difficulty: 'Easy', level: 'Mastered', subtopic: 'Main Purpose' },
+    { subject: 'Reading', topic: 'Reading Comprehension', difficulty: 'Medium', level: 'Proficient', subtopic: 'Main Idea' },
+    { subject: 'Reading', topic: 'Literary Analysis', difficulty: 'Hard', level: 'Emerging', subtopic: 'Supporting Evidence' },
+    { subject: 'Reading', topic: 'Literary Analysis', difficulty: 'Easy', level: 'Not Attempted', subtopic: 'Structure of Text' },
+    { subject: 'Reading', topic: 'Comparative Analysis', difficulty: 'Medium', level: 'Weak', subtopic: 'Vocabulary' },
+    { subject: 'Reading', topic: 'Comparative Analysis', difficulty: 'Hard', level: 'Very Weak', subtopic: 'Logical Reasoning' },
+    
+    // Writing questions
+    { subject: 'Writing', topic: 'Grammar Fundamentals', difficulty: 'Easy', level: 'Mastered', subtopic: 'Parts of Speech' },
+    { subject: 'Writing', topic: 'Grammar Fundamentals', difficulty: 'Medium', level: 'Proficient', subtopic: 'Sentence Structure' },
+    { subject: 'Writing', topic: 'Style and Tone', difficulty: 'Hard', level: 'Emerging', subtopic: 'Pronouns' },
+    { subject: 'Writing', topic: 'Style and Tone', difficulty: 'Easy', level: 'Not Attempted', subtopic: 'Agreement' },
+    { subject: 'Writing', topic: 'Essay Organization', difficulty: 'Medium', level: 'Weak', subtopic: 'Punctuation' },
+    { subject: 'Writing', topic: 'Essay Organization', difficulty: 'Hard', level: 'Very Weak', subtopic: 'Transition' },
+  ];
   
-  subjectToProcess.forEach(subject => {
-    // Get topics for this subject
-    const topicsForSubject: string[] = [];
-    
-    // We need to check all possible topics to find ones that belong to this subject
-    ['Algebra Fundamentals', 'Functions and Graphs', 'Statistics and Data', 
-     'Geometry Concepts', 'Trigonometry Basics', 'Problem Solving', 'Mathematical Reasoning',
-     'Reading Comprehension', 'Literary Analysis', 'Textual Evidence', 'Author\'s Purpose',
-     'Comparative Analysis', 'Information Synthesis', 'Data Interpretation',
-     'Grammar Fundamentals', 'Sentence Structure', 'Word Choice', 'Punctuation Rules',
-     'Style and Tone', 'Essay Organization', 'Coherence & Cohesion'].forEach(topic => {
-        if (isTopicInSubject(topic, subject)) {
-          topicsForSubject.push(topic);
-        }
-     });
-    
-    // Generate questions for each topic in this subject
-    topicsForSubject.forEach(topic => {
-      // Random number of questions for this topic (30-100)
-      const topicQuestionCount = 30 + Math.floor(Math.random() * 70);
-    
-      // Generate questions with different mastery levels
-      masteryLevels.forEach(level => {
-        // Calculate how many questions should be at this mastery level
-        const levelCount = Math.round(topicQuestionCount * distribution[level as keyof typeof distribution]);
+  // Target count for each synthetic data entry
+  const repeatCount = 30;
+  
+  // Generate synthetic questions based on the fixed data
+  syntheticData.forEach((template, templateIndex) => {
+    for (let i = 0; i < repeatCount; i++) {
+      // Determine attempts and correctness based on mastery level
+      let attempts = 0;
+      let isCorrect = false;
       
-      // Generate the questions
-      for (let i = 0; i < levelCount; i++) {
-        // Determine attempts and correctness based on mastery level
-        let attempts = 0;
-        let isCorrect = false;
-        
-        switch (level) {
-          case 'Very Weak':
-            attempts = 2 + Math.floor(Math.random() * 2); // 2-3 attempts
-            isCorrect = false;
-            break;
-          case 'Weak':
-            attempts = 1;
-            isCorrect = false;
-            break;
-          case 'Not Attempted':
-            attempts = 0;
-            isCorrect = false;
-            break;
-          case 'Emerging':
-            attempts = 1;
-            isCorrect = true;
-            break;
-          case 'Proficient':
-            attempts = 2;
-            isCorrect = true;
-            break;
-          case 'Mastered':
-            attempts = 3 + Math.floor(Math.random() * 2); // 3-4 attempts
-            isCorrect = true;
-            break;
-        }
-        // Get a random subcategory for this topic
-        const subtopic = getRandomSubcategory(subject);
-        
-        // Create a synthetic question with required fields and CORRECT subject-topic relationship
-        syntheticQuestions.push({
-          id: `${topic}-${level}-${i}`,
-          topic,
-          subtopic,
-          difficulty: getRandomDifficulty(),
-          answered: attempts > 0,
-          correct: isCorrect,
-          timeSpent: attempts > 0 ? Math.floor(Math.random() * 120) : 0,
-          setId: `synthetic-${Math.floor(Math.random() * 1000)}`,
-          setTitle: `Practice Set ${Math.floor(Math.random() * 100)}`,
-          subject, // This will always match the topic's correct subject
-          dateCompleted: new Date(Date.now() - Math.floor(Math.random() * 30 * 24 * 60 * 60 * 1000)).toISOString(),
-          masteryLevel: level === 'Mastered' ? 'mastered' : 
-                        level === 'Proficient' ? 'proficient' : 
-                        level === 'Emerging' ? 'emerging' : 
-                        level === 'Not Attempted' ? 'not-attempted' :
-                        level === 'Weak' ? 'weak' : 'very-weak',
-          attempts
-        });
+      switch (template.level) {
+        case 'Very Weak':
+          attempts = 2;
+          isCorrect = false;
+          break;
+        case 'Weak':
+          attempts = 1;
+          isCorrect = false;
+          break;
+        case 'Not Attempted':
+          attempts = 0;
+          isCorrect = false;
+          break;
+        case 'Emerging':
+          attempts = 1;
+          isCorrect = true;
+          break;
+        case 'Proficient':
+          attempts = 2;
+          isCorrect = true;
+          break;
+        case 'Mastered':
+          attempts = 3;
+          isCorrect = true;
+          break;
       }
+      
+      // Create a synthetic question with deterministic values
+      syntheticQuestions.push({
+        id: `${template.subject}-${template.topic}-${template.level}-${i}`,
+        topic: template.topic,
+        subtopic: template.subtopic,
+        difficulty: template.difficulty as 'Easy' | 'Medium' | 'Hard',
+        answered: attempts > 0,
+        correct: isCorrect,
+        timeSpent: 60 + (templateIndex + i) % 60, // Deterministic time spent
+        setId: `synthetic-${templateIndex * 100 + i}`,
+        setTitle: `Practice Set ${templateIndex + 1}`,
+        subject: template.subject,
+        // Use a fixed date pattern
+        dateCompleted: new Date(2025, 0, 1 + (templateIndex + i) % 30).toISOString(),
+        masteryLevel: template.level === 'Very Weak' ? 'very-weak' :
+                      template.level === 'Weak' ? 'weak' :
+                      template.level === 'Not Attempted' ? 'not-attempted' :
+                      template.level === 'Emerging' ? 'emerging' :
+                      template.level === 'Proficient' ? 'proficient' : 'mastered',
+        attempts
       });
-    });
+    }
   });
   
   // Combine real and synthetic questions, with real ones taking precedence
-  return [...processedQuestions, ...syntheticQuestions.slice(0, targetTotal - processedQuestions.length)];
+  return [...processedQuestions, ...syntheticQuestions.slice(0, 600 - processedQuestions.length)];
 }
 
-
 /**
- * Get categories and subcategories based on mockData.ts structure
- * This can be used for the expandable view
+ * Get categories and subcategories
  */
 export function getCategoriesWithSubcategories() {
   // Math categories

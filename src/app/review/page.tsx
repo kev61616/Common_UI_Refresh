@@ -8,8 +8,8 @@ import '@/styles/components/set-view.css'
 console.log('Review page loaded - redirecting based on view parameter');
 
 /**
- * Main review page that redirects to the appropriate standalone view page
- * This approach separates concerns and avoids complex component interactions
+ * Main review page that redirects to the appropriate view page
+ * Updated to handle the new combined insights page for question and timeline views
  */
 export default function ReviewIndexPage() {
   const searchParams = useSearchParams();
@@ -23,12 +23,9 @@ export default function ReviewIndexPage() {
     // Determine redirect path based on view parameter
     let redirectPath = '/review/set'; // Default to set view
     
-    if (viewParam === 'question') {
-      console.log('Redirecting to question view');
-      redirectPath = '/review/set'; // Redirect to set view since question view is broken
-    } else if (viewParam === 'timeline') {
-      console.log('Redirecting to timeline view');
-      redirectPath = '/review/timeline';
+    if (viewParam === 'question' || viewParam === 'timeline') {
+      console.log('Redirecting to insights view');
+      redirectPath = '/review/insights';
     } else if (viewParam === 'matrix') {
       console.log('Redirecting to set view');
       redirectPath = '/review/set';

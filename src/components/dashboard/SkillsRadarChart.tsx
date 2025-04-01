@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { ClientOnly, SuppressHydrationWarning } from '@/lib/clientUtils'
 
 // Define props interface
 interface SkillsRadarChartProps {
@@ -14,19 +15,54 @@ interface SkillsRadarChartProps {
 
 export function SkillsRadarChart({ 
   skills = [
-    { name: 'Reading', value: 78, color: '#3b82f6' }, // blue
-    { name: 'Writing', value: 65, color: '#8b5cf6' }, // purple
-    { name: 'Algebra', value: 82, color: '#06b6d4' }, // cyan
-    { name: 'Geometry', value: 70, color: '#10b981' }, // emerald
-    { name: 'Data Analysis', value: 55, color: '#f59e0b' }, // amber
-    { name: 'Critical Thinking', value: 75, color: '#ef4444' }, // red
+    { name: 'Reading', value: 78, color: '#4285F4' }, // blue
+    { name: 'Writing', value: 65, color: '#A142F4' }, // purple
+    { name: 'Algebra', value: 82, color: '#42BFF4' }, // cyan
+    { name: 'Geometry', value: 70, color: '#34A853' }, // green
+    { name: 'Data Analysis', value: 55, color: '#FBBC05' }, // amber
+    { name: 'Critical Thinking', value: 75, color: '#EA4335' }, // red
   ],
   title = 'Skills Breakdown'
 }: SkillsRadarChartProps) {
-  const [animatedSkills, setAnimatedSkills] = useState(skills.map(skill => ({ ...skill, value: 0 })));
+  // Start with consistent state for server-side rendering
+  const [animatedSkills, setAnimatedSkills] = useState(skills);
+  const containerRef = useRef<HTMLDivElement>(null);
+  // Use fixed initial dimensions to avoid hydration mismatch
+  const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
+  const [isClient, setIsClient] = useState(false);
 
-  // Animation effect for radar chart
+  // Only update dimensions and start animations after hydration
   useEffect(() => {
+    setIsClient(true);
+    
+    // Reset animated skills to start from 0 for animation effect
+    // Only do this on the client to avoid hydration mismatch
+    setAnimatedSkills(skills.map(skill => ({ ...skill, value: 0 })));
+    
+    const updateSize = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.clientWidth;
+        // Maintain aspect ratio but ensure minimum size
+        setDimensions({
+          width: Math.max(width, 250),
+          height: Math.max(width, 250)
+        });
+      }
+    };
+
+    // Initial size
+    updateSize();
+    
+    // Add resize listener
+    window.addEventListener('resize', updateSize);
+    
+    return () => window.removeEventListener('resize', updateSize);
+  }, [skills]);
+
+  // Animation effect - only runs on client after hydration
+  useEffect(() => {
+    if (!isClient) return;
+    
     const timer = setTimeout(() => {
       const interval = setInterval(() => {
         setAnimatedSkills(prev => {
@@ -51,21 +87,22 @@ export function SkillsRadarChart({
     }, 300); // Delay start of animation for better effect
     
     return () => clearTimeout(timer);
-  }, [skills]);
+  }, [skills, isClient]);
   
-  // Radar chart configuration
-  const centerX = 150;
-  const centerY = 150;
-  const maxRadius = 120;
+  // Radar chart configuration - static calculation for consistent server/client rendering
+  const centerX = dimensions.width / 2;
+  const centerY = dimensions.height / 2;
+  const maxRadius = Math.min(dimensions.width, dimensions.height) * 0.4; // Adjusted to match design
   
-  // Create the points for each skill on the radar
+  // Create the points for each skill on the radar - with fixed math for consistency
   const getPathCoordinates = (values: number[]) => {
     const angleStep = (Math.PI * 2) / values.length;
     
     return values.map((value, i) => {
       const radius = (value / 100) * maxRadius;
-      const x = centerX + radius * Math.sin(angleStep * i);
-      const y = centerY - radius * Math.cos(angleStep * i);
+      // Use toFixed to ensure consistent string representation between server and client
+      const x = Number((centerX + radius * Math.sin(angleStep * i)).toFixed(5));
+      const y = Number((centerY - radius * Math.cos(angleStep * i)).toFixed(5));
       return { x, y };
     });
   };
@@ -79,7 +116,7 @@ export function SkillsRadarChart({
     return path + ' Z'; // Close the path
   };
   
-  // Create the radar background grid
+  // Create the radar background grid - using fixed math for consistency
   const createBackgroundGrid = () => {
     const levels = [20, 40, 60, 80, 100];
     return levels.map(level => {
@@ -101,8 +138,9 @@ export function SkillsRadarChart({
   const createAxisLines = () => {
     return skills.map((skill, i) => {
       const angleStep = (Math.PI * 2) / skills.length;
-      const x = centerX + maxRadius * Math.sin(angleStep * i);
-      const y = centerY - maxRadius * Math.cos(angleStep * i);
+      // Use Number() with toFixed() to ensure consistent number format
+      const x = Number((centerX + maxRadius * Math.sin(angleStep * i)).toFixed(5));
+      const y = Number((centerY - maxRadius * Math.cos(angleStep * i)).toFixed(5));
       
       return (
         <line
@@ -119,18 +157,26 @@ export function SkillsRadarChart({
     });
   };
   
-  // Label positions for each skill
+  // Label positions for each skill - using fixed math for consistency
   const createLabels = () => {
     return skills.map((skill, i) => {
       const angleStep = (Math.PI * 2) / skills.length;
-      const labelRadius = maxRadius + 20;
-      const x = centerX + labelRadius * Math.sin(angleStep * i);
-      const y = centerY - labelRadius * Math.cos(angleStep * i);
+      const labelRadius = maxRadius + (dimensions.width < 300 ? 15 : 25); // Adjust for smaller screens
+      // Use Number() with toFixed() for consistent formatting
+      const x = Number((centerX + labelRadius * Math.sin(angleStep * i)).toFixed(5));
+      const y = Number((centerY - labelRadius * Math.cos(angleStep * i)).toFixed(5));
       
-      // Adjust text anchor based on position
+      // Deterministic text anchor logic based on position
       let textAnchor = 'middle';
       if (x < centerX - 10) textAnchor = 'end';
       if (x > centerX + 10) textAnchor = 'start';
+      
+      // Fixed classes to avoid server/client mismatch
+      const nameClass = "text-sm font-medium text-slate-800 dark:text-slate-200";
+      const valueClass = "text-sm font-bold text-slate-900 dark:text-white";
+      
+      // Fixed value for consistent server/client rendering
+      const valueOffset = 20;
       
       return (
         <g key={`label-${i}`}>
@@ -138,15 +184,15 @@ export function SkillsRadarChart({
             x={x}
             y={y}
             textAnchor={textAnchor}
-            className="text-xs text-slate-600 dark:text-slate-400 font-medium"
+            className={nameClass}
           >
             {skill.name}
           </text>
           <text
             x={x}
-            y={y + 16}
+            y={y + valueOffset}
             textAnchor={textAnchor}
-            className="text-xs text-slate-500 dark:text-slate-500"
+            className={valueClass}
           >
             {skill.value}%
           </text>
@@ -155,76 +201,85 @@ export function SkillsRadarChart({
     });
   };
   
-  // Get data points based on current animated values
-  const valuePoints = getPathCoordinates(animatedSkills.map(skill => skill.value));
-  
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-      <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-700">
-        <h3 className="font-medium text-slate-900 dark:text-white">{title}</h3>
+    <div className="p-4 h-full flex flex-col">
+      <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4 px-2">{title}</h3>
+      
+      <div className="flex justify-center flex-1" ref={containerRef}>
+        {/* Render different content for server vs client to avoid hydration mismatches */}
+        <ClientOnly
+          fallback={
+            <svg 
+              width="100%" 
+              height="100%" 
+              viewBox={`0 0 ${dimensions.width} ${dimensions.height}`} 
+              className="overflow-visible"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              {/* Static server-rendered version - just grid and axes */}
+              {createBackgroundGrid()}
+              {createAxisLines()}
+              {createLabels()}
+            </svg>
+          }
+        >
+          <SuppressHydrationWarning>
+            <svg 
+              width="100%" 
+              height="100%" 
+              viewBox={`0 0 ${dimensions.width} ${dimensions.height}`} 
+              className="overflow-visible"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              {/* Background grid */}
+              {createBackgroundGrid()}
+              
+              {/* Axis lines */}
+              {createAxisLines()}
+              
+              {/* Data polygon with blue fill */}
+              <path
+                d={createPath(getPathCoordinates(animatedSkills.map(skill => skill.value)))}
+                fill="rgba(79, 129, 255, 0.2)"
+                stroke="#4F81FF"
+                strokeWidth="2"
+                className="transition-all duration-300 ease-out"
+              />
+              
+              {/* Data points */}
+              {getPathCoordinates(animatedSkills.map(skill => skill.value)).map((point, i) => (
+                <circle
+                  key={`point-${i}`}
+                  cx={point.x}
+                  cy={point.y}
+                  r="5"
+                  fill={animatedSkills[i].color}
+                  stroke="white"
+                  strokeWidth="2"
+                  className="filter drop-shadow-sm"
+                />
+              ))}
+              
+              {/* Skill labels */}
+              {createLabels()}
+            </svg>
+          </SuppressHydrationWarning>
+        </ClientOnly>
       </div>
       
-      <div className="p-6">
-        <div className="flex justify-center">
-          <svg width="300" height="300" viewBox="0 0 300 300" className="overflow-visible">
-            {/* Background grid */}
-            {createBackgroundGrid()}
-            
-            {/* Axis lines */}
-            {createAxisLines()}
-            
-            {/* Data polygon with gradient fill */}
-            <defs>
-              <linearGradient id="radarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.5" />
-                <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.5" />
-              </linearGradient>
-            </defs>
-            
-            <path
-              d={createPath(valuePoints)}
-              fill="url(#radarGradient)"
-              stroke="#4f46e5"
-              strokeWidth="2"
-              className="transition-all duration-300 ease-out"
-            />
-            
-            {/* Data points */}
-            {valuePoints.map((point, i) => (
-              <circle
-                key={`point-${i}`}
-                cx={point.x}
-                cy={point.y}
-                r="4"
-                fill={animatedSkills[i].color}
-                stroke="white"
-                strokeWidth="1"
-                className="filter drop-shadow-sm"
-              />
-            ))}
-            
-            {/* Skill labels */}
-            {createLabels()}
-            
-            {/* Center dot */}
-            <circle cx={centerX} cy={centerY} r="2" fill="#cbd5e1" />
-          </svg>
-        </div>
-        
-        {/* Legend/key */}
-        <div className="mt-6 flex flex-wrap gap-3 justify-center">
-          {skills.map((skill, i) => (
-            <div key={`legend-${i}`} className="flex items-center">
-              <div 
-                className="w-3 h-3 rounded-full mr-1.5" 
-                style={{ backgroundColor: skill.color }}
-              ></div>
-              <span className="text-xs text-slate-600 dark:text-slate-400">
-                {skill.name}
-              </span>
-            </div>
-          ))}
-        </div>
+      {/* Legend/key - Clean row layout */}
+      <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 justify-center">
+        {skills.map((skill, i) => (
+          <div key={`legend-${i}`} className="flex items-center">
+            <div 
+              className="w-3 h-3 rounded-full mr-1.5" 
+              style={{ backgroundColor: skill.color }}
+            ></div>
+            <span className="text-sm text-slate-700 dark:text-slate-300">
+              {skill.name}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   )

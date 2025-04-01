@@ -9,6 +9,7 @@ import { ModularFilterBar } from '@/components/review/filters/ModularFilterBar'
 import { AnalyticsPanel } from '@/components/review/AnalyticsPanel'
 import { QuestionViewTabs } from '@/components/review/question-view-variants/QuestionViewTabs'
 import { SimpleQuestionView } from '@/components/review/question-view-variants/SimpleQuestionView'
+import { CollapsibleKanbanView } from '@/components/review/question-view-variants/CollapsibleKanbanView'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 // Add debug logging to ReviewPage
@@ -18,7 +19,7 @@ console.log('ReviewPage component loaded');
 const USE_SIMPLE_QUESTION_VIEW = false;
 
 // Define view types
-type ViewType = 'set' | 'timeline' | 'question'
+type ViewType = 'set' | 'question' | 'kanban'
 
 // State interface that will be saved
 export interface SavedReviewState {
@@ -384,18 +385,18 @@ export function ReviewPage({
               <span className="sm:hidden">Questions</span>
             </button>
             <button
-              onClick={() => setViewType('timeline')}
+              onClick={() => setViewType('kanban')}
               className={`flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 font-medium text-sm md:text-base transition-all duration-200 rounded-md ${
-                viewType === 'timeline'
+                viewType === 'kanban'
                   ? 'bg-sky-100 text-sky-700 shadow-sm dark:bg-sky-900/30 dark:text-sky-400'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700/80'
               }`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              <span className="hidden sm:inline">Timeline View</span>
-              <span className="sm:hidden">Timeline</span>
+              <span className="hidden sm:inline">Kanban View</span>
+              <span className="sm:hidden">Kanban</span>
             </button>
             
             {/* Mobile filter toggle */}
@@ -449,14 +450,16 @@ export function ReviewPage({
             onSelectSet={handleSelectSet}
             selectedSetId={selectedSetId}
           />
-        ) : viewType === 'timeline' ? (
-          <TimelineView 
-            practiceSets={filteredSets}
-            onSelectSet={handleSelectSet}
-            selectedSetId={selectedSetId}
-            sortConfig={sortConfig}
-            onSortChange={handleSortChange}
-          />
+        ) : viewType === 'kanban' ? (
+          <ErrorBoundary>
+            <CollapsibleKanbanView
+              practiceSets={filteredSets}
+              onSelectSet={handleSelectSet}
+              selectedSetId={selectedSetId}
+              sortConfig={sortConfig}
+              onSortChange={handleSortChange}
+            />
+          </ErrorBoundary>
         ) : (
           <ErrorBoundary>
             <QuestionViewTabs

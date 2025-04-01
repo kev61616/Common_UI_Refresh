@@ -39,14 +39,66 @@ Our Mock Test feature provides:
 - **Comprehensive Review**: Detailed analysis of strengths and weaknesses
 - **Performance Metrics**: Score breakdowns and improvement tracking
 
-### Question View - Matrix Grid
+### Review Section
 
-The Matrix Grid provides a comprehensive overview that organizes questions by topic and mastery level:
+The Review section provides three distinct views for analyzing performance data:
 
-- **Data Distribution**: Questions are evenly distributed across all 6 mastery columns (Very Weak, Weak, Not Attempted, Emerging, Proficient, Mastered)
-- **Challenge Icons**: Each cell includes a challenge icon that allows users to practice questions to improve their mastery level
-- **Expandable Categories**: Clicking on main topics (e.g., "Algebra Fundamentals") expands to show subcategories for more detailed analysis
-- **Visual Progress Indicators**: Color-coded cells and progress bars indicate mastery levels and performance metrics
+#### Set View
+
+The Set View presents completed practice sets in a tabular format with powerful filtering and sorting capabilities:
+
+- **Interactive Table**: Sortable columns with visual indicators for sort direction
+- **Performance Metrics**: Color-coded accuracy indicators and progress bars
+- **Mistake Analysis**: Breakdown of mistakes by type (conceptual, careless, time management)
+- **Fatigue Detection**: Visual indicators when performance decreases significantly toward the end of a set
+- **Comprehensive Filtering**: Filter by subject, difficulty, time period, and performance level
+
+#### Question View
+
+The Question View now offers multiple visualization options for reviewing questions:
+
+##### Flashcard View (New)
+- **Interactive 3D Flashcards**: Beautiful flashcards with smooth 3D flip animations
+- **Topic-Based Review**: Cards organized by topic and subtopic for focused learning
+- **Progress Tracking**: Visual progress bar showing completion percentage
+- **Subject-Based Styling**: Cards styled based on subject (Math, Reading, Writing) for easy recognition
+- **Navigation Controls**: Intuitive previous/next buttons for moving through the deck
+
+##### Matrix View
+- **Data Distribution**: Questions distributed across 6 mastery columns (Very Weak, Weak, Not Attempted, Emerging, Proficient, Mastered)
+- **Challenge Icons**: Each cell includes a practice icon that allows users to improve their mastery level
+- **Expandable Categories**: Main topics expand to show subcategories for more detailed analysis
+- **Visual Progress Indicators**: Color-coded cells and progress bars show mastery levels and performance metrics
+- **Enhanced Filtering**: Subject, topic, difficulty, and status filters with pill-shaped selections
+
+#### Board View
+
+The Board View offers a card-based organizational system for managing study tasks:
+
+- **Drag-and-Drop Interface**: Easily move cards between columns to track study progress
+- **Expandable Cards**: Cards expand with smooth animations to reveal detailed information
+- **Progress Tracking**: Visual indicators show completion status for each task
+- **Priority Markers**: Color-coded indicators highlight high-priority items
+- **Category Organization**: Group cards by subject, difficulty, or due date
+- **Enhanced Popup Views**: Category popups with comprehensive filtering and sorting options
+- **Dynamic Content Filtering**: Real-time filtering of cards in popup views by subject, difficulty, and more
+
+### Shared Components
+
+#### FilterBar
+
+The FilterBar is a standardized component used across all views with these features:
+
+- **Pill-Shaped Selections**: Modern, touch-friendly UI elements for selecting filter options
+- **Pastel Color Scheme**: Category-specific colors improve visual organization:
+  - Subject filters: Soft pink
+  - Time period filters: Soft blue
+  - Difficulty filters: Soft green
+  - Performance filters: Soft purple
+  - Sort options: Amber
+- **Active Filter Tags**: Clear visual indicators of currently applied filters
+- **Backdrop Blur**: Subtle blur effect for a modern layered interface
+- **Responsive Design**: Adapts to different screen sizes while maintaining usability
 
 ## Technical Implementation
 
@@ -76,12 +128,27 @@ The project follows the Next.js 15.2.3 special files pattern:
 ### Component Structure
 
 - `/src/app/` - Contains all page layouts and routes following the App Router pattern
+  - `/review/` - Review section route handlers
+    - `/set/` - Set View page
+    - `/question/` - Question View page
+    - `/board/` - Board View page
 - `/src/components/` - Shared components used across the application
+  - `/common/` - Common UI components used throughout the application
+    - `FilterBar.tsx` - Standardized filter component with pill UI and color categorization
   - `/dashboard/` - Dashboard-specific components
   - `/question-bank/` - Question Bank components modeled after GEPTv2
   - `/review/` - Review system components
-    - `/enhanced-matrix/` - Matrix grid components for the General View
+    - `/enhanced-matrix/` - Matrix grid components for the Question View
       - `/components/` - UI components like MatrixCell, MatrixRow, etc.
+      - `/utils/` - Utility functions for data processing and visualization
+      - `/hooks/` - Custom hooks for matrix data management
+    - `/board/` - Board view components
+      - `InteractiveBoardCard.tsx` - Expandable card component with animations
+      - `EnhancedCollapsibleBoardView.tsx` - Main board layout
+    - `/question-view-variants/` - Different question view visualizations
+      - `EnhancedMatrixGridView.tsx` - Matrix-based question visualization
+      - `SimpleQuestionView.tsx` - Simplified list-based question view
+    - `SetViewTable.tsx` - Enhanced table view for completed practice sets
 - `/src/contexts/` - React context providers for state management
 - `/src/hooks/` - Custom hooks for features like timers, tool windows, and data processing
 - `/src/lib/` - Utility functions and constants
@@ -89,11 +156,13 @@ The project follows the Next.js 15.2.3 special files pattern:
 
 ### Data Flow
 
-1. Raw question data is processed through specialized hooks
-2. Data is transformed and distributed using utility functions
-3. UI components render the data with interactive elements
-4. User interactions update state through context providers
-5. Changes are reflected in real-time throughout the application
+1. Raw question and practice set data is processed through specialized hooks
+2. Data is transformed and distributed using deterministic utility functions to avoid hydration errors
+3. The FilterBar component receives filter configuration and manages filter state
+4. Filtered data is passed to visualization components (tables, matrices, cards)
+5. UI components render the data with interactive elements
+6. User interactions update state through context providers and handler functions
+7. Changes are reflected in real-time throughout the application with animated transitions
 
 ## Development Guidelines
 
@@ -113,7 +182,7 @@ As specified in package.json:
 "dependencies": {
   "react": "^19.0.0",
   "react-dom": "^19.0.0",
-  "next": "15.2.3"
+  "next": "15.2.1"
 },
 "devDependencies": {
   "typescript": "^5",
@@ -123,7 +192,7 @@ As specified in package.json:
   "@tailwindcss/postcss": "^4",
   "tailwindcss": "^4",
   "eslint": "^9",
-  "eslint-config-next": "15.2.3",
+  "eslint-config-next": "15.2.1",
   "@eslint/eslintrc": "^3"
 }
 ```
@@ -146,10 +215,23 @@ npm start
 
 ## Recent Updates
 
-- Restored Enhanced Question View functionality by updating the Question View display flag
-- Updated to Next.js 15.2.3 with full App Router implementation
+- Added beautiful Flashcard view as the default Question View with interactive 3D flip animations
+- Enhanced Board view popup with filtering and sorting capabilities for better organization
+- Enhanced the FilterBar component with multi-select capabilities and implemented tag-based filter display
+- Added category labels to filter pills for improved usability (Subject, Difficulty, Time, Performance)
+- Implemented comprehensive solution for hydration errors with client-only components and deterministic rendering
+- Added specialized client components for dates, icons, and performance metrics with safe SSR fallbacks
+- Updated hydration error documentation with best practices for handling mock data
+- Removed the "Learning Journey" concept for a more streamlined UI
+- Renamed "Insights" to "Question View" for clearer user understanding
+- Added a new Board View as the third tab in the review section
+- Enhanced the FilterBar component with beautiful pill-shaped selections and pastel color schemes
+- Made FilterBar a standard reusable component across all views with consistent styling
+- Updated Set View with advanced sorting and filtering capabilities
+- Fixed hydration errors by implementing deterministic data generation
+- Updated to Next.js 15.2.1 with full App Router implementation
 - Added critical App Router special files (error.tsx, loading.tsx, global-error.tsx)
-- Created API route handler example using Next.js 15.2.3 route.ts convention
+- Created API route handler example using Next.js 15.2.1 route.ts convention
 - Implemented GEPTv2-style Question Bank from Brainbox2
 - Enhanced Dashboard with cleaner UI and removed complex SVG patterns
 - Fixed hydration errors by implementing static values for dynamic content
