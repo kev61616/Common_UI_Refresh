@@ -21,8 +21,7 @@ export function SkillsRadarChart({
     { name: 'Geometry', value: 70, color: '#34A853' }, // green
     { name: 'Data Analysis', value: 55, color: '#FBBC05' }, // amber
     { name: 'Critical Thinking', value: 75, color: '#EA4335' }, // red
-  ],
-  title = 'Skills Breakdown'
+  ]
 }: SkillsRadarChartProps) {
   // Start with consistent state for server-side rendering
   const [animatedSkills, setAnimatedSkills] = useState(skills);
@@ -203,8 +202,6 @@ export function SkillsRadarChart({
   
   return (
     <div className="p-4 h-full flex flex-col">
-      <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4 px-2">{title}</h3>
-      
       <div className="flex justify-center flex-1" ref={containerRef}>
         {/* Render different content for server vs client to avoid hydration mismatches */}
         <ClientOnly

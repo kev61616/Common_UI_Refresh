@@ -90,8 +90,7 @@ export function StudyStreak({
   return (
     <div className="h-full flex flex-col">
       {/* Header with streak badge */}
-      <div className="flex items-center justify-between pt-4 pb-2 px-6 border-b border-gray-100 dark:border-slate-700">
-        <h3 className="text-xl font-semibold text-slate-900 dark:text-white">Study Streak</h3>
+      <div className="flex items-center justify-end pt-4 pb-2 px-6 border-b border-gray-100 dark:border-slate-700">
         <div className="bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 px-3 py-1 rounded-full text-sm font-medium flex items-center">
           <span className="mr-1">🔥</span>
           {currentStreak} days
@@ -155,16 +154,26 @@ export function StudyStreak({
       <div className="px-6 pb-4">
         <h4 className="text-base font-medium text-slate-800 dark:text-slate-200 mb-3">Last 30 Days</h4>
         
-        {/* Calendar grid - Handle "today" highlighting with conditional rendering instead */}
-        <div className="grid grid-cols-7 lg:grid-cols-8 xl:grid-cols-10 gap-2">
+        {/* Weekday headers in a row */}
+        <div className="grid grid-cols-7 gap-2 mb-2">
+          {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, idx) => (
+            <div key={idx} className="flex justify-center">
+              <div className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                {day}
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Calendar grid - showing only day numbers with completion status */}
+        <div className="grid grid-cols-7 gap-2">
           {calendarData.map((day, idx) => {
-            const dayName = getDayName(day.date);
             const dayNumber = getDayNumber(day.date);
             const currentIsToday = isToday(day.date);
 
             // This ensures server and client render the same initial HTML
             return (
-              <div key={idx} className="flex flex-col items-center">
+              <div key={idx} className="flex justify-center">
                 {/* Use SuppressHydrationWarning to handle potential client/server differences */}
                 <SuppressHydrationWarning>
                   <div 
@@ -179,12 +188,9 @@ export function StudyStreak({
                       }
                     `}
                   >
-                    {dayName || '-'}
+                    {dayNumber || '-'}
                   </div>
                 </SuppressHydrationWarning>
-                <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  {dayNumber || '-'}
-                </div>
               </div>
             );
           })}

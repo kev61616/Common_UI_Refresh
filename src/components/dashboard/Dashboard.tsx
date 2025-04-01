@@ -213,12 +213,12 @@ export function Dashboard() {
         </div>
         
         {/* Responsive Dashboard Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-fr gap-4 dashboard-cards">
-          <DashboardCard id="studyStreak" title="Study Streak" icon={cardIcons.studyStreak} className="h-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-[auto_auto_auto] gap-4 dashboard-cards">
+          <DashboardCard id="studyStreak" title="Study Streak" icon={cardIcons.studyStreak} className="h-full md:row-span-2">
             <StudyStreak currentStreak={5} longestStreak={14} />
           </DashboardCard>
           
-          <DashboardCard id="skillsRadar" title="Skills Breakdown" icon={cardIcons.skillsRadar} className="h-full">
+          <DashboardCard id="skillsRadar" title="Skills Breakdown" icon={cardIcons.skillsRadar} className="h-full md:row-span-2">
             <SkillsRadarChart 
               skills={[
                 { name: 'Reading', value: 78, color: '#3b82f6' },
