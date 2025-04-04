@@ -2,9 +2,44 @@
 
 This project is a Next.js-based education platform with advanced features for student progress tracking and analytics.
 
+## Documentation
+
+This project aims to maintain comprehensive documentation to aid development and understanding. Key documentation resources include:
+
+*   **[`CONTRIBUTING.md`](CONTRIBUTING.md)**: Guidelines for contributing to the project.
+*   **`/docs` Directory**: Contains detailed guides on specific topics.
+    *   [`docs/architecture.md`](docs/architecture.md): (WIP) Overview of application architecture, patterns, and best practices.
+    *   [`docs/profile-section.md`](docs/profile-section.md): (WIP) Documentation for the user Profile section features.
+    *   [`docs/markdoc-usage.md`](docs/markdoc-usage.md): (WIP) Guide on how Markdoc is used for documentation pages.
+    *   [`docs/typography.md`](docs/typography.md): Guidelines and examples for the typography system (Updated).
+    *   [`docs/colors.md`](docs/colors.md): Guide to the color system, palettes, and CSS variable usage.
+    *   [`docs/use-search-params-guide.md`](docs/use-search-params-guide.md): Best practices for using the `useSearchParams` hook.
+    *   [`docs/view-planning.md`](docs/view-planning.md): High-level planning and design philosophy for UI views.
+    *   [`docs/HYDRATION_ERRORS.md`](docs/HYDRATION_ERRORS.md): Guide to understanding and fixing hydration errors (may need updates for latest patterns).
+    *   [`docs/page-structure.md`](docs/page-structure.md): Overview of the application's page structure.
+*   **This README**: Provides a high-level overview and a detailed changelog of recent updates.
+
+**Areas for Further Development:**
+
+*   Completing the WIP documentation files (`architecture.md`, `profile-section.md`, `markdoc-usage.md`).
+*   Reviewing and updating existing guides (e.g., `HYDRATION_ERRORS.md`).
+*   Adding documentation for core **Reusable Components**.
+
 ## Recent Updates
 
 - **April 2, 2025**:
+  - **New Profile Section**:
+    - Added a comprehensive "Profile" section to the main navigation
+    - Implemented "Your Brain at a Glance" main profile page with:
+      - Predicted SAT score visualization with overall and per-subject breakdowns
+      - Tag mastery map with color-coded mastery levels and trend indicators
+      - Game-style rank tiers system (Bronze → Diamond) with progress tracking
+      - Recent achievements section with visual badges and descriptions
+      - Interactive brain evolution visualization that reflects learning progress
+      - Questions answered statistics with subject-based mastery breakdown
+    - Created placeholder pages for Achievements, Mastery Map, and Timeline sections
+    - Added SVG brain visualization with colored lobes representing different learning areas
+  
   - **Dashboard Hydration Error Fixes**:
     - Fixed hydration mismatches in the Dashboard component using client-side only style application
     - Resolved type inconsistencies between server and client for numeric styling properties

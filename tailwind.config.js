@@ -115,18 +115,30 @@ export default {
         heading: ["Inter", "var(--font-sans)", ...fontFamily.sans],
       },
       fontSize: {
-        // Referenced from the utils.ts typoSizes (+4px increase from base)
-        h1: ['2.75rem', { lineHeight: '3.25rem', fontWeight: 700, letterSpacing: '0.02em' }],
-        h2: ['2.25rem', { lineHeight: '2.75rem', fontWeight: 600, letterSpacing: '0.02em' }],
-        h3: ['2rem', { lineHeight: '2.5rem', fontWeight: 600, letterSpacing: '0.02em' }],
-        h4: ['1.75rem', { lineHeight: '2.25rem', fontWeight: 600, letterSpacing: '0.02em' }],
-        h5: ['1.5rem', { lineHeight: '2rem', fontWeight: 600, letterSpacing: '0.02em' }],
-        h6: ['1.375rem', { lineHeight: '1.75rem', fontWeight: 600, letterSpacing: '0.02em' }],
-        p1: ['1.5rem', { lineHeight: '2rem', letterSpacing: '0.02em' }],
-        p2: ['1.375rem', { lineHeight: '1.75rem', letterSpacing: '0.02em' }],
-        p3: ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '0.02em' }],
-        p4: ['1.125rem', { lineHeight: '1.5rem', letterSpacing: '0.02em' }],
-        '2xs': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.02em' }],
+        // New Modular Scale (Base: 1rem = 16px) - Reverted to default letter spacing
+        'xs':   ['0.75rem',  { lineHeight: '1rem' }],      // 12px
+        'sm':   ['0.875rem', { lineHeight: '1.25rem' }],     // 14px
+        'base': ['1rem',     { lineHeight: '1.75rem' }],     // 16px (Default Body)
+        'lg':   ['1.125rem', { lineHeight: '1.75rem' }],     // 18px (Lead/Large)
+        'xl':   ['1.25rem',  { lineHeight: '1.75rem' }],     // 20px (H5)
+        '2xl':  ['1.5rem',   { lineHeight: '2rem' }],      // 24px (H4)
+        '3xl':  ['1.75rem',  { lineHeight: '2.25rem' }],     // 28px (H3)
+        '4xl':  ['2rem',     { lineHeight: '2.5rem' }],      // 32px (H2)
+        '5xl':  ['2.5rem',   { lineHeight: '3rem' }],      // 40px (H1)
+        // Removed 6xl and 7xl
+        // Retaining original custom names mapped to the standard modular scale
+        // It's recommended to migrate away from h1-h6/p1-p4 classes towards sm, base, lg, xl etc.
+        h1: ['2.5rem',   { lineHeight: '3rem', fontWeight: 700 }], // maps to 5xl
+        h2: ['2rem',     { lineHeight: '2.5rem', fontWeight: 600 }], // maps to 4xl
+        h3: ['1.75rem',  { lineHeight: '2.25rem', fontWeight: 600 }], // maps to 3xl
+        h4: ['1.5rem',   { lineHeight: '2rem', fontWeight: 600 }], // maps to 2xl
+        h5: ['1.25rem',  { lineHeight: '1.75rem', fontWeight: 600 }], // maps to xl
+        h6: ['1.125rem', { lineHeight: '1.5rem', fontWeight: 600 }], // maps to lg (semibold)
+        p1: ['1.125rem', { lineHeight: '1.75rem' }], // maps to lg (lead)
+        p2: ['1.125rem', { lineHeight: '1.75rem' }], // maps to lg (large - needs semibold applied separately)
+        p3: ['1rem',     { lineHeight: '1.75rem' }], // maps to base
+        p4: ['0.875rem', { lineHeight: '1.25rem' }], // maps to sm
+        '2xs': ['0.75rem', { lineHeight: '1rem' }], // maps to xs
       },
       spacing: {
         '18': '4.5rem',

@@ -9,6 +9,15 @@ export const navigation = [
     ],
   },
   {
+    title: 'Profile',
+    links: [
+      { title: 'Brain Overview', href: '/profile' },
+      { title: 'Achievements', href: '/profile/achievements' },
+      { title: 'Mastery Map', href: '/profile/mastery' },
+      { title: 'Progress Timeline', href: '/profile/timeline' },
+    ],
+  },
+  {
     title: 'Test',
     links: [
       { title: 'Continuous Practice', href: '/test/continuous-practice' },

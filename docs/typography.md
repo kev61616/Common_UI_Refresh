@@ -2,160 +2,129 @@
 
 > *"Typography is what language looks like."* — Ellen Lupton
 
-Our typography system creates a visual language that balances **beauty**, **readability**, and **personality** across the entire platform. We've designed a system that not only looks stunning but ensures optimal readability for extended learning sessions.
+Our typography system creates a visual language that balances **beauty**, **readability**, and **personality** across the entire platform. We've designed a system based on a modular scale and the highly readable "Inter" font family to ensure clarity and consistency.
 
 ## 🔤 Font Family: Inter
 
-<div style="background: linear-gradient(to right, #f0f9ff, #e0f2fe); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-  <p style="font-family: Inter; font-size: 40px; line-height: 1.2; margin: 0; font-weight: 700; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Inter</p>
-  <p style="font-family: Inter; font-size: 16px; margin-top: 8px; color: #334155;">A typeface carefully crafted & designed for computer screens.</p>
-</div>
+We exclusively use **Inter** (`font-sans`) for all UI text to maintain a cohesive visual identity. Its clean, modern design provides exceptional readability at all sizes and weights on screen.
 
-We exclusively use **Inter** for all typography to maintain a cohesive visual identity. Its clean, modern design provides exceptional readability at all sizes while offering distinctive character that sets our platform apart.
+## 📐 Modular Scale & Usage
 
-### Features That Make Inter Special
+Our typography is built upon a modular scale defined in `tailwind.config.js`, ranging from `text-xs` (12px) to `text-5xl` (40px). The base font size for body content is `text-base` (16px). Default letter spacing is used for optimal readability with the Inter font.
 
-* **Expert Crafting**: Optimized for screens with precise pixel alignment
-* **Dynamic Range**: Beautiful across weights from thin to bold
-* **Versatile Scale**: Remains readable from tiny labels to massive headlines
-* **OpenType Enhancements**: Special character variants for improved legibility
+The `Typography` component (`src/components/ui/typography.tsx`) provides semantic variants that map directly to this scale (e.g., `<Typography variant="p">` renders using `text-base`) and apply appropriate font weights and styles.
 
-## 🎨 Creating Beautiful Text Hierarchies
+### Scale Reference & `Typography` Variant Mapping
 
-<div style="display: flex; flex-direction: column; gap: 16px; margin: 24px 0;">
-  <div style="background: #ffffff; border-left: 4px solid #3b82f6; padding: 20px; border-radius: 0 8px 8px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-    <h1 style="font-size: 2.75rem; line-height: 1.2; margin: 0 0 8px 0; font-weight: 700; color: #1e293b;">Main Headline (h1)</h1>
-    <p style="font-size: 1rem; color: #64748b; margin: 0;">Use for page titles and main content headlines</p>
-  </div>
-  
-  <div style="background: #ffffff; border-left: 4px solid #8b5cf6; padding: 16px; border-radius: 0 8px 8px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-    <h2 style="font-size: 2.25rem; line-height: 1.3; margin: 0 0 8px 0; font-weight: 600; color: #1e293b;">Section Header (h2)</h2>
-    <p style="font-size: 1rem; color: #64748b; margin: 0;">Use for dividing content into logical sections</p>
-  </div>
-  
-  <div style="background: #ffffff; border-left: 4px solid #10b981; padding: 14px; border-radius: 0 8px 8px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-    <h3 style="font-size: 2rem; line-height: 1.3; margin: 0 0 8px 0; font-weight: 600; color: #1e293b;">Subsection Header (h3)</h3>
-    <p style="font-size: 1rem; color: #64748b; margin: 0;">Use for grouping related content within sections</p>
-  </div>
-  
-  <div style="background: #ffffff; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 0 8px 8px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-    <h4 style="font-size: 1.75rem; line-height: 1.4; margin: 0 0 8px 0; font-weight: 600; color: #1e293b;">Component Header (h4)</h4>
-    <p style="font-size: 1rem; color: #64748b; margin: 0;">Use for card headers and UI components</p>
-  </div>
-</div>
+| `Typography` Variant | Maps to Class | Size    | Weight   | Line Height | Intended Use Case            |
+| :------------------- | :------------ | :------ | :------- | :---------- | :--------------------------- |
+| `h1`                 | `text-5xl`    | `2.5rem`  | `bold`   | `3rem`      | Main page titles             |
+| `h2`                 | `text-4xl`    | `2rem`    | `semibold` | `2.5rem`    | Section headers            |
+| `h3`                 | `text-3xl`    | `1.75rem` | `semibold` | `2.25rem`   | Subsection headers         |
+| `h4`                 | `text-2xl`    | `1.5rem`  | `semibold` | `2rem`      | Card/Component headers     |
+| `h5`                 | `text-xl`     | `1.25rem` | `semibold` | `1.75rem`   | Sub-component headers      |
+| `h6`                 | `text-lg`     | `1.125rem`| `semibold` | `1.75rem`   | Smaller headers            |
+| `large`              | `text-lg`     | `1.125rem`| `semibold` | `1.75rem`   | Emphasized text            |
+| `lead`               | `text-lg`     | `1.125rem`| `normal` | `1.75rem`   | Lead paragraphs            |
+| `p` (default)        | `text-base`   | `1rem`    | `normal` | `1.75rem`   | Default body text          |
+| `blockquote`         | `text-base`   | `1rem`    | `normal` | `1.75rem`   | Blockquotes                |
+| `list`               | `text-base`   | `1rem`    | `normal` | `1.75rem`   | Lists                      |
+| `small`              | `text-sm`     | `0.875rem`| `medium` | `1.25rem`   | Smaller text, captions     |
+| `muted`              | `text-sm`     | `0.875rem`| `normal` | `1.25rem`   | Muted text                 |
+| *(Direct Use)*       | `text-xs`     | `0.75rem` | `normal` | `1rem`      | Tiny text, labels          |
 
-## 💫 Typography Component Usage
+*(Note: The `Typography` component applies default weights. Override with the `weight` prop or Tailwind classes. For `text-xs`, apply classes directly as there is no corresponding `Typography` variant.)*
 
-Our Typography component makes it easy to create beautiful, consistent text. Here are some examples of how to create stunning text elements:
+## 🎭 Component Usage Examples
+
+Use the `Typography` component for semantic correctness and consistent styling:
 
 ```tsx
-// 🌟 For attention-grabbing introductions
-<Typography variant="h1" weight="bold" className="text-gradient-blue-purple">
-  Learning That Adapts To You
+// Page Title
+<Typography variant="h1">Platform Dashboard</Typography>
+
+// Section Header with border
+<Typography variant="h2" className="border-b pb-2">
+  Performance Overview
 </Typography>
 
-// 💎 For important section headers
-<Typography variant="h2" weight="semibold" className="border-b pb-2 border-indigo-200 dark:border-indigo-800">
-  Progress Tracking
+// Subsection Header
+<Typography variant="h3">Accuracy Trends</Typography>
+
+// Lead Paragraph
+<Typography variant="lead" className="text-muted-foreground">
+  Analyze your progress over the last 30 days to identify strengths and weaknesses.
 </Typography>
 
-// 🌿 For explanatory lead text
-<Typography variant="lead" className="text-slate-600 dark:text-slate-300 mb-6 max-w-3xl">
-  Our adaptive learning system adjusts to your needs, providing personalized
-  content that evolves with your understanding.
+// Standard Paragraph (renders as text-base)
+<Typography variant="p">
+  The system tracks your answers across various subjects and difficulty levels.
+  Use the filters to narrow down the results.
 </Typography>
 
-// 💡 For emphasized important points
-<Typography weight="medium" className="text-indigo-600 dark:text-indigo-400">
-  Students using our platform improve test scores by 24% on average.
+// Emphasized Text (renders as text-lg)
+<Typography variant="large" className="text-primary">
+  Focus on areas below 70% mastery.
 </Typography>
 
-// 🔖 For beautiful quotes
-<Typography variant="blockquote" className="border-l-4 border-indigo-500 pl-4 italic text-slate-700 dark:text-slate-300">
-  "Education is not the filling of a pail, but the lighting of a fire."
+// Blockquote (renders as text-base)
+<Typography variant="blockquote">
+  "The beautiful thing about learning is that nobody can take it away from you." - B.B. King
+</Typography>
+
+// Small Muted Text (renders as text-sm)
+<Typography variant="muted">
+  Last updated: 3 minutes ago
+</Typography>
+
+// List (renders as text-base)
+<Typography variant="list">
+  <li>Review incorrect answers.</li>
+  <li>Practice targeted exercises.</li>
+  <li>Track mastery improvements.</li>
+</Typography>
+
+// Overriding weight
+<Typography variant="h4" weight="bold" className="text-accent-foreground">
+  Custom Component Title
 </Typography>
 ```
 
-## ✨ Creating Beautiful Text Effects
+## ✨ Styling Text Directly
 
-Combine typography with these techniques to create stunning text effects:
-
-### Gradient Text
+While the `Typography` component is preferred for semantic elements, you can apply text styles directly using Tailwind classes:
 
 ```tsx
-<h1 className="text-h1 font-bold bg-gradient-to-r from-blue-600 to-violet-600 text-transparent bg-clip-text">
-  Gradient Headlines
+// Gradient Headline
+<h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">
+  Adaptive Learning
 </h1>
+
+// Muted Body Text
+<p className="text-base text-muted-foreground">
+  This text is less prominent.
+</p>
+
+// Small Bold Label (using direct classes for text-xs)
+<span className="text-xs font-bold uppercase tracking-wider text-primary">
+  New Feature
+</span>
 ```
 
-<div style="background: linear-gradient(to right, #2563eb, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.75rem; font-weight: 700; margin: 20px 0;">
-  Gradient Headlines
-</div>
+## 🎨 Light & Dark Mode
 
-### Animated Text Underlines
+Our typography utilizes CSS variables for colors (e.g., `text-foreground`, `text-muted-foreground`, `text-primary`) defined in `tailwind.config.js` and `src/styles/globals.css`. This ensures text automatically adapts to light and dark modes for optimal contrast and readability.
 
-```tsx
-<h2 className="text-h2 font-semibold relative">
-  Interactive Underline
-  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-500 transform scale-x-0 transition-transform origin-left hover:scale-x-100"></span>
-</h2>
-```
+*   **Light Mode:** Typically uses dark text (`--foreground`: near black) on light backgrounds.
+*   **Dark Mode:** Typically uses light text (`--foreground`: near white) on dark backgrounds.
 
-### Text With Decorative Elements
+Refer to the Color System documentation for more details.
 
-```tsx
-<h3 className="text-h3 font-semibold flex items-center">
-  <span className="inline-block w-3 h-3 rounded-full bg-emerald-500 mr-3"></span>
-  Section With Accent
-</h3>
-```
+## 💎 Best Practices
 
-<div style="font-size: 2rem; font-weight: 600; display: flex; align-items: center; margin: 20px 0;">
-  <span style="display: inline-block; width: 12px; height: 12px; border-radius: 9999px; background-color: #10b981; margin-right: 12px;"></span>
-  Section With Accent
-</div>
-
-## 📏 Typography Scale Reference
-
-| Class | Use For | Example |
-|-------|---------|---------|
-| <code>text-h1</code> | Page titles | <div style="font-size: 2.75rem; font-weight: 700; line-height: 1.2;">Main Headline</div> |
-| <code>text-h2</code> | Section headers | <div style="font-size: 2.25rem; font-weight: 600; line-height: 1.3;">Section Header</div> |
-| <code>text-h3</code> | Subsection headers | <div style="font-size: 2rem; font-weight: 600; line-height: 1.3;">Subsection Title</div> |
-| <code>text-p1</code> | Lead paragraphs | <div style="font-size: 1.5rem; line-height: 1.4;">Opening paragraph text that introduces a section with impact.</div> |
-| <code>text-p2</code> | Important content | <div style="font-size: 1.375rem; line-height: 1.4;">Secondary content that deserves prominence.</div> |
-| <code>text-p3</code> | Body text | <div style="font-size: 1.25rem; line-height: 1.5;">Standard body text used throughout the application.</div> |
-
-## 🎭 Light & Dark Mode Typography
-
-Our typography system is designed to shine in both light and dark modes:
-
-<div style="display: flex; gap: 16px; margin: 24px 0;">
-  <div style="flex: 1; background: white; padding: 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-    <h3 style="font-size: 1.5rem; font-weight: 600; color: #000000; margin-top: 0;">Light Mode</h3>
-    <p style="font-size: 1rem; color: #1e293b; margin-bottom: 8px;">Primary text uses true black for maximum contrast.</p>
-    <p style="font-size: 0.875rem; color: #475569; margin-bottom: 0;">Secondary text uses dark slate for readability while maintaining hierarchy.</p>
-  </div>
-  
-  <div style="flex: 1; background: #0f172a; padding: 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-    <h3 style="font-size: 1.5rem; font-weight: 600; color: #ffffff; margin-top: 0;">Dark Mode</h3>
-    <p style="font-size: 1rem; color: #f8fafc; margin-bottom: 8px;">Primary text uses pure white for maximum contrast.</p>
-    <p style="font-size: 0.875rem; color: #cbd5e1; margin-bottom: 0;">Secondary text uses light slate to reduce eye strain while maintaining visibility.</p>
-  </div>
-</div>
-
-## 💎 Best Practices for Beautiful Typography
-
-1. **Create Clear Hierarchy** – Guide users through content using size, weight and color to establish importance.
-
-2. **Maintain Consistent Spacing** – Use multiples of 4px for margins and line height to create harmony.
-
-3. **Limit Type Variations** – Stick to 2-3 sizes per page to maintain visual cohesion.
-
-4. **Use Color Intentionally** – Reserve colored text for important information or interactive elements.
-
-5. **Embrace White Space** – Give text room to breathe with generous margins and padding.
-
-6. **Consider Line Length** – Aim for 60-75 characters per line for optimal readability.
-
-7. **Pair with Beautiful UI Elements** – Combine typography with subtle shadows, gradients and borders.
+1.  **Use Semantic Variants:** Prefer the `Typography` component variants (`h1`-`h6`, `p`, `blockquote`, `list`) for accessibility and structure.
+2.  **Maintain Hierarchy:** Use the defined scale consistently to guide the user's eye. Avoid skipping heading levels.
+3.  **Prioritize Readability:** Ensure sufficient contrast between text and background colors. Use the defined line heights for comfortable reading (e.g., `leading-7` / `1.75rem` for `text-base`).
+4.  **Limit Variations:** Avoid using too many different font sizes and weights on a single screen. Stick to the established scale and semantic variants.
+5.  **Intentional Color:** Use color (`text-primary`, `text-accent`, etc.) purposefully for emphasis or interactive states, not just decoration. `text-foreground` and `text-muted-foreground` should cover most text needs.
+6.  **Consider Line Length:** While not strictly enforced by the system, aim for comfortable line lengths (typically 50-75 characters) for extended reading.
