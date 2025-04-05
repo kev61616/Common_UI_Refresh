@@ -3,7 +3,8 @@ import Image from 'next/image'
 import clsx from 'clsx'
 import { Highlight } from 'prism-react-renderer'
 
-import { Button } from '@/components/Button'
+// Replace import for custom Button with Catalyst Button
+import { Button } from '@/components/catalyst/button'
 import { HeroBackground } from '@/components/HeroBackground'
 import blurCyanImage from '@/images/blur-cyan.png'
 import blurIndigoImage from '@/images/blur-indigo.png'
@@ -56,8 +57,10 @@ export function Hero() {
                 so your code never even has to run at all.
               </p>
               <div className="mt-8 flex gap-4 md:justify-center lg:justify-start">
+                {/* Use Catalyst Button - default solid variant */}
                 <Button href="/">Get started</Button>
-                <Button href="/" variant="secondary">
+                {/* Use Catalyst Button - outline variant */}
+                <Button href="/" outline>
                   View on GitHub
                 </Button>
               </div>

@@ -7,10 +7,11 @@ import { QuestionViewProps } from './types'
 interface ExtendedQuestionViewProps extends QuestionViewProps {
   initialTab?: 'flashcard' | 'list' | 'time' | 'performance';
 }
-import { EnhancedMatrixGridView } from './EnhancedMatrixGridView'
+// Removed EnhancedMatrixGridView import
 import { SimpleQuestionView } from './SimpleQuestionView'
 import { FlashcardView } from './FlashcardView'
 import { getDataWithFallback } from '@/lib/dataUtils'
+import { Notebook, LayoutGrid, Clock, BarChart } from 'lucide-react' // Use Lucide icons
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { PerformanceInsights } from '@/components/review/performance-insights/PerformanceInsightsSimple'
 
@@ -50,9 +51,7 @@ export function QuestionViewTabs(props: ExtendedQuestionViewProps) {
               }`}
             >
               <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
-                </svg>
+                <Notebook className="h-4 w-4 mr-2" /> {/* Use Lucide icon */}
                 Flashcards
               </div>
               {activeView === 'flashcard' && (
@@ -69,9 +68,7 @@ export function QuestionViewTabs(props: ExtendedQuestionViewProps) {
               }`}
             >
               <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-                </svg>
+                <LayoutGrid className="h-4 w-4 mr-2" /> {/* Use Lucide icon */}
                 Matrix View
               </div>
               {activeView === 'list' && (
@@ -88,9 +85,7 @@ export function QuestionViewTabs(props: ExtendedQuestionViewProps) {
               }`}
             >
               <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                </svg>
+                <Clock className="h-4 w-4 mr-2" /> {/* Use Lucide icon */}
                 Time View
               </div>
               {activeView === 'time' && (
@@ -107,9 +102,7 @@ export function QuestionViewTabs(props: ExtendedQuestionViewProps) {
               }`}
             >
               <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
-                </svg>
+                <BarChart className="h-4 w-4 mr-2" /> {/* Use Lucide icon */}
                 Performance
               </div>
               {activeView === 'performance' && (
@@ -137,28 +130,22 @@ export function QuestionViewTabs(props: ExtendedQuestionViewProps) {
             <ErrorBoundary fallback={<SimpleQuestionView {...dataWithFallback} />}>
               <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-4 flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-                  </svg>
+                  <LayoutGrid className="h-5 w-5 mr-2 text-indigo-500" /> {/* Use Lucide icon */}
                   Matrix View
                 </h3>
-                <EnhancedMatrixGridView {...dataWithFallback} />
+                {/* Removed EnhancedMatrixGridView */}
+                <p className="text-sm text-muted-foreground">Matrix view component needs to be implemented or replaced.</p>
               </div>
             </ErrorBoundary>
           ) : activeView === 'time' ? (
             <ErrorBoundary fallback={<SimpleQuestionView {...dataWithFallback} />}>
               <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-4 flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                  </svg>
+                  <Clock className="h-5 w-5 mr-2 text-indigo-500" /> {/* Use Lucide icon */}
                   Questions by Completion Time
                 </h3>
-                {/* Use the same view but with time-based sorting for now */}
-                <EnhancedMatrixGridView 
-                  {...dataWithFallback}
-                  sortConfig={{key: 'timeUsed', direction: 'asc'}}
-                />
+                {/* Removed EnhancedMatrixGridView */}
+                <p className="text-sm text-muted-foreground">Time view component needs to be implemented or replaced.</p>
               </div>
             </ErrorBoundary>
           ) : (

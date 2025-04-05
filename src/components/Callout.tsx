@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-
-import { Icon } from '@/components/Icon'
+// Removed custom Icon import
+import { Lightbulb, AlertTriangle } from 'lucide-react' // Import Lucide icons
 
 const styles = {
   note: {
@@ -17,11 +17,10 @@ const styles = {
   },
 }
 
+// Update icons mapping to use Lucide components
 const icons = {
-  note: (props: { className?: string }) => <Icon icon="lightbulb" {...props} />,
-  warning: (props: { className?: string }) => (
-    <Icon icon="warning" color="amber" {...props} />
-  ),
+  note: Lightbulb,
+  warning: AlertTriangle,
 }
 
 export function Callout({
@@ -34,10 +33,13 @@ export function Callout({
   type?: keyof typeof styles
 }) {
   let IconComponent = icons[type]
+  // Determine icon color class based on type
+  const iconColorClass = type === 'warning' ? 'text-amber-900 dark:text-amber-500' : 'text-sky-900 dark:text-sky-400'
 
   return (
     <div className={clsx('my-8 flex rounded-3xl p-6', styles[type].container)}>
-      <IconComponent className="h-8 w-8 flex-none" />
+      {/* Apply color class directly */}
+      <IconComponent className={clsx("h-8 w-8 flex-none", iconColorClass)} />
       <div className="ml-4 flex-auto">
         <p className={clsx('m-0 font-display text-xl', styles[type].title)}>
           {title}

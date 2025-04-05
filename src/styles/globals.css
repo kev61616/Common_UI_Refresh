@@ -1,3 +1,8 @@
+@import './prism.css';
+@import './animations.css'; /* Added import for custom animations */
+@import './custom-animations.css'; /* Added import for more custom animations */
+@import './components/set-view.css'; /* Added import for component-specific styles (scrollbar) */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,12 +12,66 @@
   html {
     letter-spacing: 0.04em; /* Increased from 0.02em for better character separation */
     font-size: 16px; /* Ensure base font size is reasonable */
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11'; /* Added from tailwind.css */
   }
   
   @media (max-width: 768px) {
     html {
       font-size: 18px; /* Slightly larger on small screens */
     }
+  }
+
+  /* Added from tailwind.css */
+  body {
+    @apply text-black dark:text-white;
+    font-size: 17px;
+    line-height: 1.65;
+    letter-spacing: -0.015em;
+  }
+
+  /* Added from tailwind.css */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-semibold tracking-tight;
+  }
+  
+  h1 {
+    font-size: 37px;
+    line-height: 45px;
+  }
+  
+  h2 {
+    font-size: 29px;
+    line-height: 33px;
+  }
+  
+  h3 {
+    font-size: 25px;
+    line-height: 29px;
+  }
+  
+  h4 {
+    font-size: 21px;
+    line-height: 29px;
+  }
+  
+  h5 {
+    font-size: 17px;
+    line-height: 25px;
+  }
+  
+  h6 {
+    font-size: 15px;
+    line-height: 21px;
+  }
+
+  /* Added from tailwind.css */
+  button, a {
+    @apply transition-all duration-200;
+  }
+
+  /* Added from tailwind.css */
+  [inert] ::-webkit-scrollbar {
+    display: none;
   }
   
   :root {

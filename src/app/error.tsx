@@ -1,7 +1,8 @@
 'use client' // Error boundaries must be Client Components
 
 import { useEffect } from 'react'
-import { Button } from '@/components/Button'
+// Replace import for custom Button with Catalyst Button
+import { Button } from '@/components/catalyst/button'
 
 export default function Error({
   error,
@@ -25,8 +26,10 @@ export default function Error({
           We've encountered an unexpected error.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
+          {/* Use Catalyst Button - default solid variant */}
           <Button onClick={reset}>Try again</Button>
-          <Button href="/" variant="secondary">
+          {/* Use Catalyst Button - outline variant */}
+          <Button href="/" outline>
             Go back home
           </Button>
         </div>

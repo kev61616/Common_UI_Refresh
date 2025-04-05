@@ -5,7 +5,7 @@
 
 ## 1. Introduction
 
-This document outlines potential improvements related to the User Interface (UI), User Experience (UX), and the consistency and completeness of the Design System for the Syntax education platform.
+This document outlines potential improvements related to the User Interface (UI), User Experience (UX), and the consistency and completeness of the Design System for the Syntax education platform. **A key part of this plan involves adopting the Catalyst UI kit (from Tailwind UI) as the foundation for our component library to accelerate development and ensure a high-quality, consistent look and feel.**
 
 ## 2. Goals
 
@@ -19,42 +19,44 @@ This document outlines potential improvements related to the User Interface (UI)
 
 ### 3.1. Design System Refinement & Documentation
 
-*   **Objective:** Solidify and document the core elements of the design system (colors, typography, spacing, components) for better consistency and developer efficiency.
-*   **Measurable Goal:** Documented and implemented spacing scale. Documented icon system. Audited and documented core UI components. Central `design-system.md` created.
+*   **Objective:** Solidify and document the core elements of the design system, leveraging the Catalyst UI kit as the primary component source, supplemented by custom elements where necessary.
+*   **Measurable Goal:** Catalyst components integrated. Documented guidelines for using Catalyst vs. custom components. Documented spacing, colors, typography, and iconography. Central `design-system.md` updated.
 *   **Action Items:**
-    *   **Spacing System:** Define a numeric spacing scale in `tailwind.config.js` (e.g., `1: 0.25rem`, `2: 0.5rem`, `4: 1rem`, `6: 1.5rem`, `8: 2rem`, etc.) based on a 4px/8px grid. Document this in `docs/design-system.md`. Refactor key layout components and common spacing utilities (`p-6`, `mb-4`) to use the scale.
-    *   **Color System:** Review semantic variable definitions in `src/styles/globals.css`. Verify contrast ratios (aim for WCAG AA minimum). Add specific guidance in `docs/colors.md` on semantic vs. palette usage.
-    *   **Typography:** Verify consistent application of the scale defined in `docs/typography.md`.
-    *   **Iconography:** Standardize on `lucide-react`. Enhance `src/components/Icon.tsx` for consistent size, stroke width, and color (`currentColor` + text classes). Replace ad-hoc SVGs in key areas (e.g., navigation, profile cards). Document in `docs/design-system.md`.
-    *   **Component Library (`src/components/ui`):** Audit `Button`, `Card`. Document props/usage via JSDoc. Identify/create/document missing core elements (`Input`, `Select`, `Checkbox`, `RadioGroup`, `Tooltip`, `Dropdown`, `Modal`). Consider setting up Storybook for interactive documentation.
-    *   **Create Central Design System Doc:** Create `docs/design-system.md` linking to specific docs (`colors.md`, `typography.md`) and summarizing spacing, iconography, and component principles.
-*   **Dependencies:** Requires frontend development time for refactoring and documentation. Storybook setup is optional but beneficial.
+    *   **[X] Integrate Catalyst UI Kit:** Copied Catalyst TypeScript components into `src/components/catalyst/`. Installed required dependencies (`@headlessui/react`, `framer-motion`, `clsx`) and updated `tailwindcss` to v4.
+    *   **[X] Define Component Strategy:** Initial strategy documented in `docs/design-system.md`. This outlines prioritizing Catalyst components and provides criteria for using custom components.
+    *   **[~] Spacing System:** Defined scale in `tailwind.config.js`. Catalyst components generally adhere to Tailwind defaults. **[ ]** Document any project-specific overrides or conventions in `docs/design-system.md`. **[ ]** Refactor remaining custom components to use the scale.
+    *   **[~] Color System:** Applied semantic colors in some refactored components. **[ ]** Align project's semantic colors with Catalyst's approach where possible. **[ ]** Review variable definitions & contrast, especially when combining Catalyst and custom components. **[ ]** Update `docs/colors.md` guidance.
+    *   **[~] Typography:** Verified consistent application in refactored components. Catalyst provides base typography styles. **[ ]** Ensure consistency between Catalyst text styles and project styles. (Custom `Typography` component deprecated).
+    *   **[X] Iconography:** Standardize on `lucide-react`. **Deprecated custom `Icon` component (`src/components/Icon.tsx`) and associated icons (`src/components/icons/`).** Strategy is to import directly from `lucide-react` and style with Tailwind. Documented in `docs/design-system.md`. **[ ]** Replace remaining ad-hoc SVGs and usages of the old `Icon` component (High Priority).
+    *   **[X] Custom Component Library (`src/components/ui`):** **[X] Audited `Card` - Marked for deprecation.** **[X] Audited `Button` (at `src/components/Button.tsx`) - Marked for deprecation.** **[X] Audited `Skeleton` - Marked for deprecation.** **[X] Audited `tool-window.tsx` - Marked to keep, needs refactoring.** **[X] Audited `typography.tsx` - Marked for deprecation.** Initial audit complete. **[ ]** Systematically replace usages of deprecated components (High Priority). **[ ]** Refactor `tool-window.tsx` (Medium Priority).
+    *   **[X] Create/Update Central Design System Doc:** Created `docs/design-system.md` and added initial component strategy. Will require ongoing updates as system evolves.
+*   **Dependencies:** Requires frontend development time for refactoring, documentation, and potential component replacement analysis.
 *   **Related Plans:** Architecture Plan (TypeScript, Component Modularization).
 
 ### 3.2. UI Polish & Visual Appeal
 
-*   **Objective:** Enhance the overall aesthetic quality and perceived polish of the application.
-*   **Measurable Goal:** Consistent application of shadows and animations. Visually appealing loading/empty states implemented for key areas. Positive user feedback on visual design.
+*   **Objective:** Enhance the overall aesthetic quality and perceived polish of the application, leveraging Catalyst's built-in styling and components.
+*   **Measurable Goal:** Consistent application of Catalyst styles (shadows, transitions, etc.). Visually appealing loading/empty states implemented using Catalyst patterns where applicable. Positive user feedback on visual design.
 *   **Action Items:**
-    *   **Review Visual Hierarchy:** Audit key pages (Dashboard, Profile, Review) for clear hierarchy using the established design system (typography, spacing, color).
-    *   **Microinteractions & Animations:** Identify opportunities for subtle transitions on hover/focus states, loading indicators, and state changes (e.g., using `tailwindcss-animate`). Document standard animation timings/easings. Ensure `prefers-reduced-motion` is respected.
-    *   **Shadows & Elevation:** Define standard elevation levels using Tailwind shadows (`shadow-sm`, `shadow-md`, `shadow-lg`, custom `shadow-soft`). Apply consistently to cards, modals, popovers.
-    *   **Gradients & Effects:** Refine existing gradients (e.g., profile cards) to use semantic/palette colors consistently. Use effects like blur or transparency purposefully.
-    *   **Empty States & Loading States:** Design and implement consistent, branded empty states (with icons/messages) and loading skeletons/spinners for data-heavy sections (Dashboard, Review pages, Search results). Integrate with React Suspense where applicable.
-*   **Dependencies:** Design System Refinement (provides base styles).
+    *   **[ ] Review Visual Hierarchy:** Audit key pages (Dashboard, Profile, Review) for clear hierarchy, utilizing Catalyst components and adhering to its design principles (Medium Priority).
+    *   **[ ] Microinteractions & Animations:** Leverage Catalyst's built-in transitions and animations. Identify areas for custom animations if needed (Low Priority).
+    *   **[ ] Shadows & Elevation:** Adopt Catalyst's approach to shadows and elevation consistently (Medium Priority).
+    *   **[~] Gradients & Effects:** Refined some gradients during component refactoring. **[ ]** Align with Catalyst's styling or define clear rules for custom effects (Low Priority).
+    *   **[ ] Empty States & Loading States:** Design and implement consistent empty/loading states using Catalyst/Tailwind (Medium Priority).
+*   **Dependencies:** Design System Refinement (Integration of Catalyst).
 *   **Related Plans:** Performance Plan (Loading States, Animations).
 
 ### 3.3. User Experience (UX) Enhancements
 
-*   **Objective:** Improve the usability and intuitiveness of key user flows.
-*   **Measurable Goal:** Reduction in user-reported confusion on specific tasks. Improved task completion rates (if measurable via analytics or testing).
+*   **Objective:** Improve the usability and intuitiveness of key user flows by leveraging well-designed Catalyst components.
+*   **Measurable Goal:** Reduction in user-reported confusion on specific tasks. Improved task completion rates (if measurable via analytics or testing). Consistent interaction patterns based on Catalyst components.
 *   **Action Items:**
-    *   **Navigation Review:** Conduct heuristic evaluation or usability testing on main navigation and information discovery flows. Simplify structure if needed.
-    *   **Information Architecture:** Analyze complex pages (Dashboard, Review) using card sorting or tree testing methods (optional) to optimize information layout.
-    *   **Form Design:** Standardize form layout, input styling (using UI components), validation messages, and submission feedback across all forms (Settings, Search filters, etc.).
-    *   **Feedback Mechanisms:** Ensure consistent visual feedback (e.g., button loading states, success/error toasts/notifications) for all asynchronous actions or important state changes.
-    *   **Onboarding & Contextual Help:** Implement tooltips (using UI component) for complex icons or features. Consider a brief guided tour for new users or major feature introductions.
-*   **Dependencies:** Design System Refinement (provides UI components for forms, feedback). Requires UX design/research input.
+    *   **[ ] Navigation Review:** Evaluate main navigation (potentially using Catalyst `Navbar` or `Sidebar` components) and information discovery flows. Simplify structure if needed.
+    *   **[ ] Information Architecture:** Analyze complex pages (Dashboard, Review) to optimize information layout, potentially using Catalyst layout components (`StackedLayout`, etc.) or `DescriptionList`.
+    *   **[~] Form Design:** Standardized `FilterBar` and basic `Settings` form. **[ ]** Audit and refactor other forms (e.g., Search, Login/Signup if applicable) using Catalyst components (High Priority, once forms are identified/created).
+    *   **[ ] Feedback Mechanisms:** Utilize Catalyst components like `Alert` or `Dialog` for feedback (Medium Priority).
+    *   **[ ] Onboarding & Contextual Help:** Implement tooltips or use Catalyst `Dropdown` / `Dialog` components (Low Priority).
+*   **Dependencies:** Design System Refinement (Integration of Catalyst). Requires UX design/research input.
 *   **Related Plans:** Architecture Plan (Error Handling).
 
 ### 3.4. Accessibility (a11y) Audit & Improvements
@@ -62,30 +64,35 @@ This document outlines potential improvements related to the User Interface (UI)
 *   **Objective:** Ensure the application meets WCAG 2.1 AA standards or higher.
 *   **Measurable Goal:** Zero critical/serious automated accessibility violations. Successful completion of key flows using keyboard-only and screen reader. WCAG AA compliance for color contrast.
 *   **Action Items:**
-    *   **Automated Audit:** Integrate Axe DevTools (`@axe-core/react`) into development workflow or CI pipeline for continuous checking. Run Lighthouse audits regularly.
-    *   **Manual Audit (Key Flows):**
-        *   **Color Contrast:** Systematically verify contrast ratios using tools like WebAIM Contrast Checker or browser devtools. Pay special attention to text on gradients, disabled states, `muted`/`secondary` text. Adjust semantic color variables in `globals.css` as needed.
-        *   **Keyboard Navigation:** Perform thorough keyboard-only testing on all interactive elements (links, buttons, inputs, custom controls). Ensure logical focus order and visible `focus:ring` states.
-        *   **Screen Reader Testing:** Test core user flows with VoiceOver/NVDA. Verify semantic correctness, appropriate labels (`aria-label`, `aria-labelledby`), state announcements (e.g., `aria-expanded`), and descriptive links/buttons.
-        *   **ARIA Usage:** Audit custom UI components (`Dropdown`, `Modal`, `Tabs`, etc.) for correct ARIA patterns.
-    *   **Image Alt Text:** Review all `next/image` components and SVGs. Add descriptive `alt` text for informative images; use `alt=""` for decorative ones.
-    *   **Form Labels & Errors:** Ensure all inputs have associated labels (visible `<label>` preferred, `aria-label` as fallback). Use `aria-describedby` to link error messages to inputs.
-    *   **Create `docs/accessibility.md`:** Document accessibility guidelines, common patterns (e.g., accessible forms, modals), testing procedures, and link to WCAG resources.
-*   **Dependencies:** Requires dedicated testing time. May require adjustments to Design System (colors, focus styles).
+    *   **[ ] Automated Audit:** Integrate Axe DevTools (`@axe-core/react`) or similar (High Priority). Run Lighthouse audits regularly.
+    *   **[ ] Manual Audit (Key Flows):** Begin manual testing (Keyboard, Screen Reader, Contrast) on refactored areas (FilterBar, Navigation, Dashboard) and high-traffic pages (High Priority).
+        *   **[~] Color Contrast:** Identified potential issues. **[ ]** Systematically verify contrast ratios. **[ ]** Adjust semantic colors as needed.
+        *   **[ ] Keyboard Navigation:** Perform thorough keyboard-only testing.
+        *   **[ ] Screen Reader Testing:** Test core user flows.
+        *   **[ ] ARIA Usage:** Audit custom components (`ToolWindow`, charts, etc.) and Catalyst compositions.
+    *   **[ ] Image Alt Text:** Audit `next/image` usage and SVGs (Medium Priority).
+    *   **[ ] Form Labels & Errors:** Ensure accessible labels/errors during form refactoring (High Priority).
+    *   **[X] Create `docs/accessibility.md`:** Initial guidelines created. Update as needed.
+*   **Dependencies:** Requires dedicated testing time. May require adjustments to Design System.
 *   **Related Plans:** Architecture Plan (Testing Strategy).
 
-## 4. Prioritization (Example)
+## 4. Prioritization (Updated Example)
 
-1.  Define & Document Spacing System (High Priority)
-2.  Accessibility Audit & High-Impact Fixes (e.g., Contrast, Keyboard Nav) (High Priority)
-3.  Refine UI Component Library & Documentation (Medium Priority)
-4.  Review & Improve UI Polish (Microinteractions, Shadows) (Medium Priority)
-5.  UX Review of Key Flows (Navigation, Forms) (Medium Priority)
-6.  Establish Consistent Iconography (Low Priority)
+1.  **[ ] Replace Deprecated Component Usages (`Card`, `Button`, `Skeleton`, `Typography`, `Icon`) (High Priority)**
+2.  **[ ] Accessibility Audit & High-Impact Fixes (High Priority)** - Start automated/manual checks.
+3.  **[ ] Refactor Remaining Key UI Areas (Forms, Profile Pages, etc.) using Catalyst (High Priority)**
+4.  **[ ] Review & Align Color/Spacing/Typography with Catalyst (Medium Priority)**
+5.  **[ ] Refactor `tool-window.tsx` (Medium Priority)**
+6.  **[ ] Implement Consistent Empty/Loading States (Medium Priority)**
+7.  **[ ] Review & Improve UI Polish (Shadows, Animations, Hierarchy) (Low Priority)**
+8.  **[X] Define Component Strategy & Document (High Priority)** - Done.
+9.  **[X] Refactor FilterBar & Navigation (High Priority)** - Done.
+10. **[X] Audit `src/components/ui` (Medium Priority)** - Done.
+11. **[X] Establish Iconography Strategy (Low Priority)** - Done.
 
-## 5. Next Steps
+## 5. Next Steps (Updated)
 
-*   Discuss and refine the proposed improvement areas.
-*   Prioritize action items based on impact and effort.
-*   Begin implementation, starting with foundational items like the spacing system and accessibility fixes.
-*   Create or update relevant documentation (`docs/design-system.md`, `docs/accessibility.md`, etc.).
+*   Begin replacing usages of deprecated components (`Typography`, `Button`, `Card`, `Skeleton`, `Icon`).
+*   Start accessibility audits (automated checks, initial manual keyboard/screen reader tests).
+*   Continue refactoring other key UI areas (e.g., identify and refactor forms).
+*   Update documentation as refactoring progresses and patterns solidify.

@@ -23,9 +23,24 @@ This project aims to maintain comprehensive documentation to aid development and
 
 *   Completing the WIP documentation files (`architecture.md`, `profile-section.md`, `markdoc-usage.md`).
 *   Reviewing and updating existing guides (e.g., `HYDRATION_ERRORS.md`).
-*   Adding documentation for core **Reusable Components**.
+*   Adding documentation for core **Reusable Components**, including the strategy for using the **Catalyst UI Kit (`src/components/catalyst`)** alongside custom components (`src/components/ui`). See `planning/ui-ux-design-system-plan.md` for details.
 
 ## Recent Updates
+
+- **April 5, 2025**:
+  - **CSS Parsing Error Fixes**:
+    - Fixed CSS parsing errors in the Tailwind CSS build process caused by problematic CSS variable usage.
+    - Updated components to avoid using non-integer values inside `calc(var(...))` constructs.
+    - Modified `src/components/catalyst/combobox.tsx`, `src/components/catalyst/listbox.tsx`, and `src/components/catalyst/dialog.tsx`.
+    - Replaced complex arbitrary value classes like `[--gutter:--spacing(8)]` with standard Tailwind utility classes.
+    - Added documentation in `docs/tailwind-css-issues.md` to prevent similar issues in future development.
+  - **UI Kit Integration (Catalyst)**:
+    - Integrated the Catalyst UI kit from Tailwind UI as the foundational component library.
+    - Copied Catalyst TypeScript components into `src/components/catalyst/`.
+    - Installed required dependencies: `@headlessui/react`, `framer-motion`, `clsx`.
+    - Updated `tailwindcss` to v4.0 (`@latest`) and added `@tailwindcss/postcss@^4`.
+    - Updated `react` and `react-dom` to `^19.0.0` along with corresponding `@types`.
+    - Updated `planning/ui-ux-design-system-plan.md` to reflect the adoption of Catalyst and outline the component strategy.
 
 - **April 2, 2025**:
   - **New Profile Section**:

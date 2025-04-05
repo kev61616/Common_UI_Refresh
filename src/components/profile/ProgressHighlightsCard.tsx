@@ -1,7 +1,9 @@
 'use client'
 
 import React from 'react'
-import { Typography } from '@/components/ui/typography' // Assuming Typography component exists
+// Removed Typography import
+import { Heading } from '@/components/catalyst/heading' // Use Catalyst Heading
+import { Text } from '@/components/catalyst/text' // Use Catalyst Text
 
 interface SubjectMastery {
   subject: string
@@ -49,11 +51,12 @@ export function ProgressHighlightsCard({
     <div className="bg-card text-card-foreground rounded-xl shadow-sm overflow-hidden border border-border">
       <div className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <Typography variant="h3" className="text-foreground">Questions Answered</Typography>
-          {/* Use primary color */}
-          <Typography variant="large" weight="semibold" className="text-primary">
+          {/* Use Catalyst Heading */}
+          <Heading level={2} className="text-lg font-semibold">Questions Answered</Heading>
+          {/* Use Catalyst Text */}
+          <Text className="text-lg font-semibold text-primary">
             {questionsAnswered}
-          </Typography>
+          </Text>
         </div>
 
         <div className="flex items-center justify-center my-4">
@@ -86,12 +89,12 @@ export function ProgressHighlightsCard({
 
             <div className="absolute inset-0 flex items-center justify-center text-center">
               <div>
-                {/* Use Typography */}
-                <Typography variant="h4" weight="bold" className="text-foreground"> {/* Use h4 (2xl) */}
+                {/* Use Catalyst Heading */}
+                <Heading level={3} className="text-2xl font-bold text-foreground">
                   {overallMastery}%
-                </Typography>
-                {/* Use span with direct classes */}
-                <span className="text-xs text-muted-foreground">Overall Mastery</span>
+                </Heading>
+                {/* Use Catalyst Text */}
+                <Text className="text-xs text-muted-foreground">Overall Mastery</Text>
               </div>
             </div>
           </div>
@@ -104,9 +107,9 @@ export function ProgressHighlightsCard({
               <div
                 className={`w-3 h-3 rounded-full mx-auto mb-1 ${subjectColorMapping[subject.color] || 'bg-muted-foreground'}`}
               ></div>
-              {/* Use span with direct classes */}
-              <span className="text-xs font-medium text-muted-foreground block">{subject.subject}</span>
-              <span className="text-sm font-semibold text-foreground block">{subject.level}%</span>
+              {/* Use Catalyst Text */}
+              <Text className="text-xs font-medium text-muted-foreground block">{subject.subject}</Text>
+              <Text className="text-sm font-semibold text-foreground block">{subject.level}%</Text>
             </div>
           ))}
         </div>

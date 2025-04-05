@@ -30,3 +30,36 @@ export const typoSizes = {
   small: { size: '1rem', /* 16px */ lineHeight: '1.375rem' /* 22px */ },
   tiny: { size: '0.875rem', /* 14px */ lineHeight: '1.125rem' /* 18px */ },
 }
+
+/**
+ * Formats time in seconds to MM:SS format
+ */
+export const formatTime = (seconds: number): string => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+/**
+ * Formats a date string to a more readable format (e.g., "Apr 4, 2025, 11:06 PM")
+ */
+export const formatDate = (dateString: string): string => {
+  try {
+    const date = new Date(dateString);
+    // Check if date is valid before formatting
+    if (isNaN(date.getTime())) {
+      return "Invalid Date";
+    }
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      // timeZoneName: 'short', // Optional: Add timezone if needed
+    }).format(date);
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "Invalid Date";
+  }
+}

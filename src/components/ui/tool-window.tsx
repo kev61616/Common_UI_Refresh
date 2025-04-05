@@ -2,6 +2,9 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { X } from "lucide-react";
+import { Button } from "@/components/catalyst/button"; // Use Catalyst Button
+import { Text } from "@/components/catalyst/text"; // Use Catalyst Text
+import { cn } from "@/lib/utils"; // Import cn for combining classes
 
 interface ToolWindowProps {
   id: string;
@@ -19,22 +22,24 @@ export function ToolWindow({
   position,
   onClose,
   onPositionChange,
+  className, // Allow passing additional classes
   ...props
 }: ToolWindowProps & React.HTMLAttributes<HTMLDivElement>) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const windowRef = useRef<HTMLDivElement>(null);
 
-  // Handle dragging
+  // Handle dragging (Keep original logic)
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
-      if (windowRef.current) {
+      if (windowRef.current && (e.target as HTMLElement).closest('.tool-window-drag-handle')) { // Only drag by handle
         const rect = windowRef.current.getBoundingClientRect();
         setDragOffset({
           x: e.clientX - rect.left,
           y: e.clientY - rect.top,
         });
         setIsDragging(true);
+        document.body.classList.add('user-select-none');
       }
     },
     []
@@ -54,8 +59,11 @@ export function ToolWindow({
   );
 
   const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+    if (isDragging) {
+      setIsDragging(false);
+      document.body.classList.remove('user-select-none');
+    }
+  }, [isDragging]);
 
   useEffect(() => {
     if (isDragging) {
@@ -69,75 +77,54 @@ export function ToolWindow({
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      document.body.classList.remove('user-select-none');
     };
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
     <div
       ref={windowRef}
+      // Apply Tailwind classes instead of inline styles
+      className={cn(
+        "fixed z-50 flex flex-col w-[480px] h-[400px] rounded-lg shadow-lg overflow-hidden resize border border-border bg-card text-card-foreground",
+        // Add a class for resize handle visibility if needed, e.g., 'resize-handle'
+        // Note: `resize: both` might need a custom utility or plugin if not default
+        className
+      )}
       style={{
-        position: "fixed",
         top: position.y,
         left: position.x,
-        zIndex: 50,
-        width: "480px",
-        height: "400px",
-        display: "flex",
-        flexDirection: "column",
-        borderRadius: "0.5rem",
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-        overflow: "hidden",
-        resize: "both",
       }}
       {...props}
     >
+      {/* Header - Add drag handle class */}
       <div
         onMouseDown={handleMouseDown}
-        style={{
-          padding: "0.75rem",
-          backgroundColor: "white",
-          borderBottom: "1px solid #e5e7eb",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          cursor: "move",
-        }}
+        className="p-3 bg-card border-b border-border flex items-center justify-between cursor-move tool-window-drag-handle" // Added handle class
       >
-        <div
-          style={{
-            fontWeight: 500,
-            fontSize: "0.875rem",
-          }}
-        >
-          {title}
-        </div>
-        <button
-          onClick={onClose}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "0.25rem",
-            borderRadius: "0.25rem",
-            backgroundColor: "transparent",
-            transition: "background-color 0.2s",
-          }}
-        >
+        <Text className="font-medium text-sm text-foreground">{title}</Text>
+        <Button plain onClick={onClose} aria-label="Close" className="p-1">
           <X size={16} />
-          <span className="sr-only">Close</span>
-        </button>
+        </Button>
       </div>
-      <div style={{ flexGrow: 1, backgroundColor: "white" }}>
+      {/* Content */}
+      <div className="flex-grow bg-white dark:bg-slate-800"> {/* Use white/dark bg for iframe contrast */}
         <iframe
           src={url}
           title={title}
-          style={{
-            width: "100%",
-            height: "100%",
-            border: "none",
-          }}
+          className="w-full h-full border-none"
         />
       </div>
     </div>
   );
 }
+
+// Add global style for user-select-none if needed, or handle via JS as above
+// <style jsx global>{`
+//   .user-select-none {
+//     user-select: none;
+//     -webkit-user-select: none; /* Safari */
+//     -moz-user-select: none; /* Firefox */
+//     -ms-user-select: none; /* IE10+/Edge */
+//   }
+// `}</style>

@@ -5,11 +5,9 @@ import clsx from 'clsx'
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
 
-import '@/styles/globals.css'
-import '@/styles/tailwind.css'
-import '@/styles/custom-animations.css'
-import '@/styles/timeline-animations.css'
-import '@/components/review/timeline-view-variants/bookshelf-styles.css'
+import '@/styles/globals.css' // Main global styles entry point
+// Removed direct imports for tailwind.css, custom-animations.css, timeline-animations.css as they are handled via globals.css or config
+import '@/components/review/timeline-view-variants/bookshelf-styles.css' // Keep specific component styles for now
 
 // Configure Inter with all weights and variable support
 const inter = Inter({

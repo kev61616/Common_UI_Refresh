@@ -1,9 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from 'next/link' // Keep original Link import
+import { Badge } from '@/components/catalyst/badge' // Use Catalyst Badge
+import { Button } from '@/components/catalyst/button' // Use Catalyst Button
+import { Heading } from '@/components/catalyst/heading' // Use Catalyst Heading
+import { Text } from '@/components/catalyst/text' // Use Catalyst Text
+import { Link as CatalystLink } from '@/components/catalyst/link' // Use Catalyst Link
+import { ArrowRight, CalendarDays } from 'lucide-react' // Use Lucide icons
 
-// Mock upcoming test data
+// Mock upcoming test data (Keep original mock data)
 const upcomingTestsMock = [
   {
     id: 'test1',
@@ -43,12 +49,11 @@ const upcomingTestsMock = [
 export function UpcomingTests() {
   const [activeTab, setActiveTab] = useState<'all' | 'practice' | 'official'>('all')
   const [animatedTests, setAnimatedTests] = useState<string[]>([])
-  
-  // Animate tests appearing one by one
+
+  // Animate tests appearing one by one (Keep original effect)
   useEffect(() => {
     const testIds = upcomingTestsMock.map(test => test.id)
     let currentIndex = 0
-    
     const interval = setInterval(() => {
       if (currentIndex < testIds.length) {
         setAnimatedTests(prev => [...prev, testIds[currentIndex]])
@@ -57,77 +62,57 @@ export function UpcomingTests() {
         clearInterval(interval)
       }
     }, 200)
-    
     return () => clearInterval(interval)
   }, [])
-  
-  // Filter tests based on active tab
-  const filteredTests = upcomingTestsMock.filter(test => 
+
+  // Filter tests based on active tab (Keep original logic)
+  const filteredTests = upcomingTestsMock.filter(test =>
     activeTab === 'all' || test.type === activeTab
   ).sort((a, b) => a.date.getTime() - b.date.getTime())
-  
-  // Format date for display
+
+  // Format date for display (Keep original logic)
   const formatDate = (date: Date) => {
-    const options: Intl.DateTimeFormatOptions = { 
-      month: 'short', 
-      day: 'numeric'
-    }
+    const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' }
     return new Intl.DateTimeFormat('en-US', options).format(date)
   }
-  
-  // Calculate days remaining
+
+  // Calculate days remaining (Keep original logic)
   const getDaysRemaining = (date: Date) => {
     const today = new Date()
     const diffTime = date.getTime() - today.getTime()
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
     if (diffDays === 0) return 'Today'
     if (diffDays === 1) return 'Tomorrow'
     return `${diffDays}d`
   }
-  
-  // Get bar color based on preparedness
+
+  // Get bar color based on preparedness (Keep original logic)
   const getPreparednessColor = (score: number) => {
     if (score >= 90) return 'bg-emerald-500'
     if (score >= 75) return 'bg-amber-500'
     return 'bg-rose-500'
   }
-  
-  // Get type badge style
+
+  // Get type badge style (Keep original logic)
   const getTypeBadge = (type: string) => {
     switch(type) {
-      case 'official': 
-        return {
-          bg: 'bg-indigo-100 dark:bg-indigo-900/30',
-          text: 'text-indigo-700 dark:text-indigo-300',
-          short: 'OFF'
-        }
-      case 'practice': 
-        return {
-          bg: 'bg-blue-100 dark:bg-blue-900/30',
-          text: 'text-blue-700 dark:text-blue-300',
-          short: 'PRX'
-        }
-      default: 
-        return {
-          bg: 'bg-purple-100 dark:bg-purple-900/30',
-          text: 'text-purple-700 dark:text-purple-300',
-          short: 'AST'
-        }
+      case 'official': return { bg: 'bg-indigo-100 dark:bg-indigo-900/30', text: 'text-indigo-700 dark:text-indigo-300', short: 'OFF' }
+      case 'practice': return { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-300', short: 'PRX' }
+      default: return { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-300', short: 'AST' }
     }
   }
-  
+
   return (
     <div className="p-3 h-full flex flex-col">
-      {/* Tab navigation - Simplified */}
+      {/* Tab navigation - Original button implementation with updated styles */}
       <div className="flex justify-end mb-2">
-        <div className="flex rounded-md overflow-hidden border border-slate-200 dark:border-slate-700 text-[10px] font-medium">
+        <div className="flex rounded-md overflow-hidden border border-border dark:border-slate-700 text-[10px] font-medium">
           <button
             onClick={() => setActiveTab('all')}
             className={`px-2 py-1 transition-colors ${
-              activeTab === 'all' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
+              activeTab === 'all'
+                ? 'bg-primary text-primary-foreground' // Use semantic colors
+                : 'bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground'
             }`}
           >
             All
@@ -135,9 +120,9 @@ export function UpcomingTests() {
           <button
             onClick={() => setActiveTab('practice')}
             className={`px-2 py-1 transition-colors ${
-              activeTab === 'practice' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
+              activeTab === 'practice'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground'
             }`}
           >
             Practice
@@ -145,16 +130,17 @@ export function UpcomingTests() {
           <button
             onClick={() => setActiveTab('official')}
             className={`px-2 py-1 transition-colors ${
-              activeTab === 'official' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
+              activeTab === 'official'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground'
             }`}
           >
             Official
           </button>
         </div>
       </div>
-      
+
+      {/* Test List or Empty State */}
       {filteredTests.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 flex-grow">
           {filteredTests.map((test, index) => {
@@ -163,11 +149,12 @@ export function UpcomingTests() {
             const daysRemaining = getDaysRemaining(test.date)
             const isUrgent = daysRemaining === 'Today' || daysRemaining === 'Tomorrow'
             const isAnimated = animatedTests.includes(test.id)
-            
+
             return (
-              <div 
+              <div
                 key={test.id}
-                className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden shadow-sm hover:shadow transition-all duration-300"
+                // Apply standard card styles
+                className="rounded-lg border border-border bg-card text-card-foreground shadow-sm hover:shadow transition-all duration-300 overflow-hidden"
                 style={{
                   opacity: isAnimated ? 1 : 0,
                   transform: isAnimated ? 'translateY(0)' : 'translateY(15px)',
@@ -179,51 +166,44 @@ export function UpcomingTests() {
                   <div className="absolute top-0 left-0 right-0 h-1">
                     <div className={`h-full ${barColor}`} style={{ width: `${test.preparedness}%` }}></div>
                   </div>
-                
+
                   <div className="pt-2 px-3 pb-3">
                     <div className="flex justify-between items-start mb-1.5">
-                      <h4 className="text-sm font-medium text-slate-900 dark:text-white truncate max-w-[140px]">
+                      {/* Use Catalyst Heading */}
+                      <Heading level={6} className="text-sm font-medium truncate max-w-[140px] dark:text-white">
                         {test.title}
-                      </h4>
-                      
-                      <div className={`text-xs font-bold px-1.5 py-0.5 rounded flex items-center ${
-                        isUrgent 
-                          ? 'bg-rose-100 text-rose-600 dark:bg-rose-900/20 dark:text-rose-400' 
-                          : 'text-slate-700 dark:text-slate-300'
-                      }`}>
+                      </Heading>
+                      {/* Use Catalyst Badge for urgency */}
+                      <Badge color={isUrgent ? 'red' : 'zinc'} className="text-xs font-bold px-1.5 py-0.5">
                         {isUrgent && (
-                          <span className="inline-block w-1.5 h-1.5 bg-rose-500 rounded-full mr-1 animate-pulse"></span>
+                          <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mr-1 animate-pulse"></span>
                         )}
                         {daysRemaining}
-                      </div>
+                      </Badge>
                     </div>
-                    
+
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-1.5">
-                        <span className={`px-1.5 py-0.5 rounded-sm text-[10px] font-medium ${typeBadge.bg} ${typeBadge.text}`}>
+                        {/* Use Catalyst Badge for type */}
+                        <Badge color={typeBadge.text.includes('indigo') ? 'indigo' : typeBadge.text.includes('blue') ? 'blue' : 'purple'} className="text-[10px] px-1.5 py-0.5">
                           {typeBadge.short}
-                        </span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400">{test.duration}m</span>
+                        </Badge>
+                        <Text className="text-[10px] text-muted-foreground">{test.duration}m</Text>
                       </div>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">{formatDate(test.date)}</span>
+                      <Text className="text-[10px] text-muted-foreground">{formatDate(test.date)}</Text>
                     </div>
-                    
+
                     {/* Ready indicator and action */}
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-1">
-                        <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{test.preparedness}%</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400">ready</span>
+                        <Text className="text-xs font-medium text-foreground">{test.preparedness}%</Text>
+                        <Text className="text-[10px] text-muted-foreground">ready</Text>
                       </div>
-                      
-                      <Link
-                        href={`/test/prep/${test.id}`}
-                        className="flex items-center px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-md transition-colors shadow-sm"
-                      >
+                      {/* Use Catalyst Button as Link */}
+                      <Button href={`/test/prep/${test.id}`} color="dark/zinc" className="!py-1 !px-2 !text-xs">
                         Prepare
-                        <svg className="ml-1 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                      </Link>
+                        <ArrowRight className="size-3 ml-1" /> {/* Use Lucide icon */}
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -232,33 +212,29 @@ export function UpcomingTests() {
           })}
         </div>
       ) : (
-        <div className="p-3 text-center h-40 flex flex-col items-center justify-center">
-          <div className="w-10 h-10 mb-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
-            <svg className="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+        // Empty State
+        <div className="p-3 text-center h-40 flex flex-col items-center justify-center flex-grow">
+          <div className="w-10 h-10 mb-2 bg-primary/10 rounded-full flex items-center justify-center">
+            <CalendarDays className="size-5 text-primary" /> {/* Use Lucide icon */}
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">No upcoming tests</p>
-          <Link
-            href="/test/schedule"
-            className="text-xs px-2 py-1 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
-          >
+          <Text className="text-xs text-muted-foreground mb-2">No upcoming tests</Text>
+          {/* Use Catalyst Button as Link */}
+          <Button href="/test/schedule" color="dark/zinc" className="!text-xs !py-1 !px-2">
             Schedule Test
-          </Link>
+          </Button>
         </div>
       )}
-      
+
       {/* Link to calendar */}
-      <div className="mt-auto pt-2 border-t border-slate-200 dark:border-slate-700">
-        <Link 
+      <div className="mt-auto pt-2 border-t border-border dark:border-slate-700">
+        {/* Use Catalyst Link */}
+        <CatalystLink
           href="/test/calendar"
-          className="flex items-center justify-center text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300"
+          className="flex items-center justify-center text-xs"
         >
-          <svg className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
+          <CalendarDays className="size-3.5 mr-1" /> {/* Use Lucide icon */}
           View calendar
-        </Link>
+        </CatalystLink>
       </div>
     </div>
   )

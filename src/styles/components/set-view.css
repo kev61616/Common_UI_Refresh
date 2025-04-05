@@ -1,19 +1,4 @@
-/* Global styles for advanced view variants in set view */
-
-/* Animation for pulsing effects */
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-.animate-pulse-slow {
-  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Timeline scroll styling */
+/* Custom scrollbar styling for timeline elements */
 .timeline-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
@@ -29,87 +14,11 @@
   background: #ccc;
 }
 .dark .timeline-scrollbar::-webkit-scrollbar-track {
-  background: #2d3748;
+  background: #2d3748; /* Equivalent to Tailwind's slate-800 */
 }
 .dark .timeline-scrollbar::-webkit-scrollbar-thumb {
-  background: #4a5568;
+  background: #4a5568; /* Equivalent to Tailwind's slate-600 */
 }
 .dark .timeline-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #718096;
-}
-
-/* Enhanced shadow effects */
-.shadow-hover {
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
-}
-.shadow-hover:hover {
-  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-  transform: translateY(-2px);
-}
-
-/* Enhanced card transitions */
-.card-transition {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.card-transition:hover {
-  transform: translateY(-4px);
-}
-
-/* Panel slide-in animation */
-@keyframes slide-in-right {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-.animate-slide-in-right {
-  animation: slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Gradient backgrounds */
-.bg-gradient-blue-purple {
-  background: linear-gradient(135deg, #4f46e5, #7e22ce);
-}
-.bg-gradient-green-blue {
-  background: linear-gradient(135deg, #10b981, #3b82f6);
-}
-.bg-gradient-orange-pink {
-  background: linear-gradient(135deg, #f59e0b, #ec4899);
-}
-
-/* Text gradients */
-.text-gradient {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-.text-gradient-blue-purple {
-  background-image: linear-gradient(135deg, #4f46e5, #7e22ce);
-}
-.text-gradient-green-blue {
-  background-image: linear-gradient(135deg, #10b981, #3b82f6);
-}
-.text-gradient-orange-pink {
-  background-image: linear-gradient(135deg, #f59e0b, #ec4899);
-}
-
-/* Enhanced focus styles */
-.focus-ring {
-  transition: box-shadow 0.2s ease;
-}
-.focus-ring:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.6);
-}
-
-/* Responsive adjustments */
-@media (max-width: 640px) {
-  .sm-text-center {
-    text-align: center;
-  }
-  .sm-flex-col {
-    flex-direction: column;
-  }
+  background: #718096; /* Equivalent to Tailwind's slate-500 */
 }

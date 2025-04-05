@@ -1,7 +1,9 @@
 'use client'
 
 import React from 'react'
-import { Typography } from '@/components/ui/typography' // Assuming Typography component exists
+// Removed Typography import
+import { Heading } from '@/components/catalyst/heading' // Use Catalyst Heading
+import { Text } from '@/components/catalyst/text' // Use Catalyst Text
 
 interface ProfileInfoCardProps {
   username: string
@@ -20,8 +22,10 @@ export function ProfileInfoCard({ username, joinDate }: ProfileInfoCardProps) {
             {username.charAt(0)}
           </div>
           <div className="ml-4">
-            <Typography variant="h5" weight="bold" className="text-foreground">{username}</Typography> {/* Use Typography h5 (xl) */}
-            <Typography variant="small" className="text-muted-foreground">Member since {joinDate}</Typography> {/* Use Typography small */}
+            {/* Use Catalyst Heading */}
+            <Heading level={3} className="text-xl font-bold text-foreground">{username}</Heading>
+            {/* Use Catalyst Text */}
+            <Text className="text-sm text-muted-foreground">Member since {joinDate}</Text>
           </div>
         </div>
       </div>

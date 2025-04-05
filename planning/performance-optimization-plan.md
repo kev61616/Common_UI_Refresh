@@ -19,40 +19,40 @@ This document outlines potential improvements related to the performance, loadin
 
 ### 3.1. Bundle Size Analysis & Optimization
 
-*   **Objective:** Identify and reduce the size of JavaScript bundles delivered to the client.
-*   **Measurable Goal:** Reduce first load JS size by X% (measured by bundle analyzer/devtools). Keep individual page bundles below Y kB gzipped.
+*   **Objective:** Identify and reduce the size of JavaScript bundles delivered to the client, considering the impact of integrated UI kits.
+*   **Measurable Goal:** Reduce first load JS size by X% (measured by bundle analyzer/devtools). Keep individual page bundles below Y kB gzipped. Understand the bundle size contribution of Catalyst and its dependencies.
 *   **Action Items:**
-    *   **Analyze Bundles:** Regularly use `@next/bundle-analyzer` (e.g., via an `npm run analyze` script) to visualize bundle composition after major changes. Identify large dependencies (e.g., charting libraries, date formatters) and large custom components/pages.
-    *   **Code Splitting:** Strategically apply `next/dynamic` with `ssr: false` for client-only components that are heavy or not immediately visible (e.g., complex charts in the `AnalyticsPanel`, potentially some view variants if loaded conditionally). Use loading states provided by `next/dynamic`.
-    *   **Dependency Audit:** Use tools like `depcheck` or `npm-check` to identify unused dependencies. Critically evaluate large libraries (e.g., check `bundlephobia.com`) and seek lighter alternatives if functionality allows (e.g., `date-fns` instead of `moment.js` if only specific functions are needed).
-    *   **Tree Shaking:** Verify that library imports are structured to support tree shaking (e.g., `import { specificFunction } from 'library'` vs `import library from 'library'`). Ensure `sideEffects: false` is appropriately set in `package.json` if applicable.
-    *   **Image Optimization:** Enforce usage of `next/image` for all user-facing images. Configure `deviceSizes` and `imageSizes` in `next.config.mjs` if necessary. Audit images in `public/` and optimize them using tools like Squoosh or ImageOptim before committing. Use modern formats like WebP or AVIF where possible.
+    *   **[ ] Analyze Bundles:** Regularly use `@next/bundle-analyzer` to visualize bundle composition. **Specifically analyze the impact of Catalyst components and their dependencies (`@headlessui/react`, `framer-motion`, `clsx`)**. Identify large custom components/pages and opportunities for replacement with potentially smaller Catalyst equivalents or further code splitting.
+    *   **[~] Code Splitting:** Modularization helps. **[ ]** Strategically apply `next/dynamic` with `ssr: false` for heavy client components (including potentially complex Catalyst compositions if needed, though Catalyst components are generally well-optimized).
+    *   **[ ] Dependency Audit:** Use tools like `depcheck` or `npm-check`. Critically evaluate large libraries. Ensure Catalyst dependencies are necessary where used.
+    *   **[ ] Tree Shaking:** Verify library imports (including Catalyst) and `package.json` `sideEffects`.
+    *   **[ ] Image Optimization:** Enforce `next/image`. Audit/optimize images in `public/`. Configure `next.config.mjs`.
 *   **Dependencies:** Requires build tooling setup. Ongoing effort.
-*   **Related Plans:** UI/UX Plan (Image Optimization).
+*   **Related Plans:** UI/UX Plan (Image Optimization, Component Strategy). Architecture Plan (Component Modularization).
 
 ### 3.2. Rendering Strategy Optimization
 
-*   **Objective:** Ensure optimal use of Next.js rendering strategies (Server Components, Client Components, ISR, SSG) for different types of content.
-*   **Measurable Goal:** Improved LCP and TTI metrics for key pages. Reduced client-side JavaScript execution time.
+*   **Objective:** Ensure optimal use of Next.js rendering strategies, considering the client-side nature of interactive UI components.
+*   **Measurable Goal:** Improved LCP and TTI metrics for key pages. Reduced client-side JavaScript execution time. Clear separation of Server/Client concerns.
 *   **Action Items:**
-    *   **Review Component Boundaries:** Audit `'use client'` usage. Refactor components to move client logic further down the tree where possible. Pass data from Server Components via props instead of fetching on the client unnecessarily.
-    *   **Static Site Generation (SSG):** Convert purely static pages (e.g., documentation, about pages) to SSG by removing dynamic functions or ensuring `dynamic = 'force-static'`.
-    *   **Incremental Static Regeneration (ISR):** Implement ISR with appropriate `revalidate` times for pages like the main dashboard or content overviews that change periodically but not in real-time.
-    *   **Server Components for Data Fetching:** Ensure primary data fetching occurs in Server Components using `async/await` and leverages Next.js caching.
-*   **Dependencies:** Understanding of data freshness requirements for different pages.
+    *   **[ ] Review Component Boundaries:** Audit `'use client'` usage. **Note that Catalyst components are inherently Client Components due to interactivity and hooks.** Refactor application structure to keep Server Components at the top level where possible, passing data down to Client Components (including those using Catalyst) via props. Avoid unnecessary wrapping of large sections in `'use client'`.
+    *   **[ ] Static Site Generation (SSG):** Convert purely static pages (e.g., documentation) to SSG.
+    *   **[ ] Incremental Static Regeneration (ISR):** Implement ISR for pages like the main dashboard or content overviews, ensuring interactive elements (likely using Catalyst) hydrate correctly.
+    *   **[ ] Server Components for Data Fetching:** Ensure primary data fetching occurs in Server Components and leverages Next.js caching.
+*   **Dependencies:** Understanding of data freshness requirements. Careful component architecture.
 *   **Related Plans:** Architecture Plan (Component Modularization).
 
 ### 3.3. Runtime Performance
 
-*   **Objective:** Optimize the performance of client-side interactions and rendering updates.
-*   **Measurable Goal:** Reduced INP metric. Smoother animations and interactions (target 60 FPS). Reduced component render times identified by Profiler.
+*   **Objective:** Optimize the performance of client-side interactions and rendering updates, including those involving UI kit components.
+*   **Measurable Goal:** Reduced INP metric. Smoother animations and interactions (target 60 FPS). Reduced component render times identified by Profiler, including time spent within Catalyst/Headless UI/Framer Motion.
 *   **Action Items:**
-    *   **React Profiler:** Regularly profile key interactive pages (e.g., Review page with complex views, Dashboard, Search) using React DevTools Profiler during development to identify expensive render commits and component bottlenecks. Address components with long render times (> 16ms).
-    *   **Memoization:** Strategically apply `React.memo`, `useMemo`, `useCallback` where profiling indicates unnecessary re-renders due to prop changes or expensive calculations. Avoid premature optimization.
-    *   **Virtualization:** Implement virtualization using `tanstack-virtual` or `react-window` for identified long lists (e.g., question bank > 100 items) causing performance degradation.
-    *   **Debounce/Throttle:** Implement debouncing (~300ms) for search/filter inputs. Throttle scroll/resize handlers if complex logic is attached.
-    *   **Web Workers:** Consider for specific, isolated, CPU-intensive tasks if identified (low priority unless clear bottleneck exists).
-*   **Dependencies:** Requires profiling tools and careful implementation to avoid complexity.
+    *   **[ ] React Profiler:** Regularly profile key interactive pages (Review, Dashboard, Search), paying attention to interactions involving Catalyst components (dropdowns, dialogs, animations). Identify bottlenecks in custom code or potentially expensive compositions.
+    *   **[~] Memoization:** Applied `useMemo`/`useCallback` in extracted hooks. **[ ]** Apply strategically elsewhere based on profiling, especially around props passed to Catalyst components if re-renders are costly.
+    *   **[ ] Virtualization:** Investigate using `tanstack-virtual` or `react-window` for long lists, potentially within Catalyst structures like Tables or Lists if needed.
+    *   **[ ] Debounce/Throttle:** Implement debouncing for search/filter inputs (potentially using Catalyst `Input` or `Combobox`). Throttle scroll/resize handlers.
+    *   **[ ] Web Workers:** Consider for isolated, CPU-intensive tasks (low priority).
+*   **Dependencies:** Requires profiling tools. Understanding of Catalyst component behavior.
 *   **Related Plans:** UI/UX Plan (Animations). Architecture Plan (Utility Hooks for Debounce/Throttle).
 
 ### 3.4. Caching Strategies
@@ -60,10 +60,10 @@ This document outlines potential improvements related to the performance, loadin
 *   **Objective:** Leverage caching effectively at different levels (browser, CDN, server-side) to improve load times and reduce server load.
 *   **Measurable Goal:** Improved cache hit ratios. Reduced load times for repeat visits. Lower server load for cacheable resources.
 *   **Action Items:**
-    *   **Next.js Data Cache:** Define and document clear caching strategies (`cache` options, `revalidate` times) for different data types fetched in Server Components. Audit existing fetches for optimal configuration.
-    *   **Client-Side Caching:** Implement TanStack Query (React Query) or SWR if significant client-side state fetching/synchronization is needed, replacing manual `fetch` calls in `useEffect`.
-    *   **HTTP Caching Headers:** Verify optimal `Cache-Control` headers for static assets via hosting platform settings (e.g., Vercel). Ensure long cache times for immutable assets.
-    *   **CDN:** Confirm CDN is enabled and configured correctly via hosting platform.
+    *   **[ ] Next.js Data Cache:** Define/document caching strategies for Server Component fetches. Audit existing fetches.
+    *   **[ ] Client-Side Caching:** Evaluate/implement TanStack Query (React Query) or SWR if needed for client-side fetching.
+    *   **[ ] HTTP Caching Headers:** Verify optimal `Cache-Control` headers via hosting platform.
+    *   **[ ] CDN:** Confirm CDN is enabled and configured correctly.
 *   **Dependencies:** Understanding of data characteristics (volatility, importance). Potential library addition (React Query/SWR).
 *   **Related Plans:** Architecture Plan (State Management).
 
@@ -72,9 +72,9 @@ This document outlines potential improvements related to the performance, loadin
 *   **Objective:** Optimize the build time and ensure a smooth, reliable deployment pipeline.
 *   **Measurable Goal:** Reduce average CI build time by X%. Ensure reliable deployments.
 *   **Action Items:**
-    *   **Analyze Build Times:** Monitor CI/CD build logs to identify slow steps. Use Next.js build output analysis if needed.
-    *   **CI/CD Optimization:** Implement dependency caching, build caching (if supported by platform), and potentially parallelize build/test steps in the CI pipeline (e.g., GitHub Actions workflow).
-    *   **Environment Variables:** Use a validation library (e.g., Zod) to parse and validate environment variables at build time or application start to catch configuration errors early.
+    *   **[ ] Analyze Build Times:** Monitor CI/CD build logs.
+    *   **[ ] CI/CD Optimization:** Implement dependency/build caching, parallelization in CI pipeline.
+    *   **[ ] Environment Variables:** Implement validation (e.g., Zod).
 *   **Dependencies:** CI/CD platform capabilities.
 *   **Related Plans:** Architecture Plan (Testing Strategy).
 

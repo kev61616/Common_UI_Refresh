@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/Button'
+// Removed incorrect Button import
+import { Button as CatalystButton } from '@/components/catalyst/button' // Use Catalyst Button
 import { mockPracticeSets, PracticeSet } from '@/lib/mockData'
 import { SetViewTable } from '@/components/review/SetViewTable'
 import { TimelineView } from '@/components/review/TimelineView'
@@ -11,6 +12,7 @@ import { QuestionViewTabs } from '@/components/review/question-view-variants/Que
 import { SimpleQuestionView } from '@/components/review/question-view-variants/SimpleQuestionView'
 import { CollapsibleKanbanView } from '@/components/review/question-view-variants/CollapsibleKanbanView'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { LayoutList, HelpCircle, KanbanSquare, Filter, X } from 'lucide-react' // Use Lucide icons
 
 // Add debug logging to ReviewPage
 console.log('ReviewPage component loaded');
@@ -354,19 +356,17 @@ export function ReviewPage({
         style={{ top: 'var(--navbar-height, 4.75rem)' }}
       >
         <div className="pb-0 space-y-2 min-h-[8rem]">
-          {/* View toggle - updated to match the style of Question View tabs */}
+          {/* View toggle - Keep button implementation, update icons and styles */}
           <div className="flex flex-wrap gap-2 md:gap-3 pb-0 px-1">
             <button
               onClick={() => setViewType('set')}
               className={`flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 font-medium text-sm md:text-base transition-all duration-200 rounded-md ${
                 viewType === 'set'
-                  ? 'bg-sky-100 text-sky-700 shadow-sm dark:bg-sky-900/30 dark:text-sky-400'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700/80'
+                  ? 'bg-primary/10 text-primary shadow-sm' // Use semantic colors
+                  : 'bg-muted/50 text-muted-foreground hover:bg-accent hover:text-accent-foreground'
               }`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-              </svg>
+              <LayoutList className="size-4 md:size-5 mr-1.5" /> {/* Use Lucide icon */}
               <span className="hidden sm:inline">Set View</span>
               <span className="sm:hidden">Sets</span>
             </button>
@@ -374,13 +374,11 @@ export function ReviewPage({
               onClick={() => setViewType('question')}
               className={`flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 font-medium text-sm md:text-base transition-all duration-200 rounded-md ${
                 viewType === 'question'
-                  ? 'bg-sky-100 text-sky-700 shadow-sm dark:bg-sky-900/30 dark:text-sky-400'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700/80'
+                  ? 'bg-primary/10 text-primary shadow-sm'
+                  : 'bg-muted/50 text-muted-foreground hover:bg-accent hover:text-accent-foreground'
               }`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <HelpCircle className="size-4 md:size-5 mr-1.5" /> {/* Use Lucide icon */}
               <span className="hidden sm:inline">Question View</span>
               <span className="sm:hidden">Questions</span>
             </button>
@@ -388,42 +386,39 @@ export function ReviewPage({
               onClick={() => setViewType('kanban')}
               className={`flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 font-medium text-sm md:text-base transition-all duration-200 rounded-md ${
                 viewType === 'kanban'
-                  ? 'bg-sky-100 text-sky-700 shadow-sm dark:bg-sky-900/30 dark:text-sky-400'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700/80'
+                  ? 'bg-primary/10 text-primary shadow-sm'
+                  : 'bg-muted/50 text-muted-foreground hover:bg-accent hover:text-accent-foreground'
               }`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
+              <KanbanSquare className="size-4 md:size-5 mr-1.5" /> {/* Use Lucide icon */}
               <span className="hidden sm:inline">Kanban View</span>
               <span className="sm:hidden">Kanban</span>
             </button>
-            
-            {/* Mobile filter toggle */}
+
+            {/* Mobile filter toggle - Use Catalyst Button */}
             <div className="flex-grow flex justify-end md:hidden">
-              <button
+              <CatalystButton
+                outline
                 onClick={() => setShowMobileFilters(!showMobileFilters)}
-                className="px-3 py-2 text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition-colors flex items-center gap-2 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+                className="text-sm" // Adjust size via class
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                </svg>
-                Filters
-                {Object.values(filters).some(val => 
-                  Array.isArray(val) && val.length > 0 || 
-                  (val as any)[0] !== 0 || 
+                <Filter className="size-4" /> {/* Use Lucide icon */}
+                <span className="ml-2">Filters</span>
+                {Object.values(filters).some(val =>
+                  Array.isArray(val) && val.length > 0 ||
+                  (val as any)[0] !== 0 ||
                   (val as any)[1] !== 100 && (val as any)[1] !== 120
                 ) && (
-                  <span className="ml-1 w-5 h-5 flex items-center justify-center bg-sky-500 text-white text-xs rounded-full">
+                  <span className="ml-1 w-5 h-5 flex items-center justify-center bg-primary text-primary-foreground text-xs rounded-full"> {/* Use semantic colors */}
                     {/* Count active filters */}
-                    {(filters.subject.length > 0 ? 1 : 0) + 
-                     (filters.type.length > 0 ? 1 : 0) + 
+                    {(filters.subject.length > 0 ? 1 : 0) +
+                     (filters.type.length > 0 ? 1 : 0) +
                      (filters.dates.length > 0 ? 1 : 0) +
                      (filters.accuracyRange[0] > 0 || filters.accuracyRange[1] < 100 ? 1 : 0) +
                      (filters.timeRange[0] > 0 || filters.timeRange[1] < 120 ? 1 : 0)}
                   </span>
                 )}
-              </button>
+              </CatalystButton>
             </div>
           </div>
           

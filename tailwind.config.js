@@ -126,25 +126,34 @@ export default {
         '4xl':  ['2rem',     { lineHeight: '2.5rem' }],      // 32px (H2)
         '5xl':  ['2.5rem',   { lineHeight: '3rem' }],      // 40px (H1)
         // Removed 6xl and 7xl
-        // Retaining original custom names mapped to the standard modular scale
-        // It's recommended to migrate away from h1-h6/p1-p4 classes towards sm, base, lg, xl etc.
-        h1: ['2.5rem',   { lineHeight: '3rem', fontWeight: 700 }], // maps to 5xl
-        h2: ['2rem',     { lineHeight: '2.5rem', fontWeight: 600 }], // maps to 4xl
-        h3: ['1.75rem',  { lineHeight: '2.25rem', fontWeight: 600 }], // maps to 3xl
-        h4: ['1.5rem',   { lineHeight: '2rem', fontWeight: 600 }], // maps to 2xl
-        h5: ['1.25rem',  { lineHeight: '1.75rem', fontWeight: 600 }], // maps to xl
-        h6: ['1.125rem', { lineHeight: '1.5rem', fontWeight: 600 }], // maps to lg (semibold)
-        p1: ['1.125rem', { lineHeight: '1.75rem' }], // maps to lg (lead)
-        p2: ['1.125rem', { lineHeight: '1.75rem' }], // maps to lg (large - needs semibold applied separately)
-        p3: ['1rem',     { lineHeight: '1.75rem' }], // maps to base
-        p4: ['0.875rem', { lineHeight: '1.25rem' }], // maps to sm
+        // Removed deprecated h1-h6, p1-p4 aliases
         '2xs': ['0.75rem', { lineHeight: '1rem' }], // maps to xs
       },
       spacing: {
-        '18': '4.5rem',
-        '68': '17rem',
-        '84': '21rem',
-        '128': '32rem',
+        // Add standard 4px based scale
+        '0.5': '0.125rem', // 2px
+        '1': '0.25rem',   // 4px
+        '1.5': '0.375rem', // 6px
+        '2': '0.5rem',    // 8px
+        '2.5': '0.625rem', // 10px
+        '3': '0.75rem',   // 12px
+        '3.5': '0.875rem', // 14px
+        '4': '1rem',      // 16px
+        '5': '1.25rem',   // 20px
+        '6': '1.5rem',    // 24px
+        '7': '1.75rem',   // 28px
+        '8': '2rem',      // 32px
+        '9': '2.25rem',   // 36px
+        '10': '2.5rem',   // 40px
+        '11': '2.75rem',  // 44px
+        '12': '3rem',     // 48px
+        '14': '3.5rem',   // 56px
+        '16': '4rem',     // 64px
+        // Keep existing custom ones (or remap/remove if desired later)
+        '18': '4.5rem',   // 72px
+        '68': '17rem',    // 272px
+        '84': '21rem',    // 336px
+        '128': '32rem',   // 512px
       },
       boxShadow: {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
@@ -155,7 +164,15 @@ export default {
         'float': 'float 3s ease-in-out infinite',
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        // Added from timeline-animations.css
+        'fadeIn': 'fadeIn 0.6s ease-in-out forwards',
+        'fadeInUp': 'fadeInUp 0.5s ease-out forwards',
+        'pulse-subtle': 'pulseSubtle 2s infinite',
+        'bounce-subtle': 'bounceSubtle 1.5s infinite',
+        'expandVertical': 'expandVertical 0.3s ease-out forwards',
+        'slide-in-right': 'slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1)', // Added from set-view.css
       },
       keyframes: {
         float: {
@@ -169,6 +186,52 @@ export default {
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
+        },
+        // Added from timeline-animations.css
+        fadeIn: {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+        fadeInUp: {
+          from: {
+            opacity: '0',
+            transform: 'translateY(20px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+        pulseSubtle: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
+        bounceSubtle: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        },
+        expandVertical: {
+          from: { 
+            opacity: '0',
+            maxHeight: '0', 
+            transform: 'scaleY(0)',
+            transformOrigin: 'top',
+          },
+          to: { 
+            opacity: '1',
+            maxHeight: '500px', // Use a reasonable max-height for expansion
+            transform: 'scaleY(1)',
+            transformOrigin: 'top',
+          },
+        },
+        // Added from set-view.css
+        'slide-in-right': {
+          from: {
+            transform: 'translateX(100%)',
+          },
+          to: {
+            transform: 'translateX(0)',
+          },
         },
       },
       typography: (theme) => ({

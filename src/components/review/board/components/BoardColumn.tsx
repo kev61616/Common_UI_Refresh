@@ -5,14 +5,16 @@ import { Question } from '@/lib/mockData'
 import { BoardCard } from './BoardCard'
 import { BoardEmptyState } from './BoardEmptyState'
 import { ClientOnlyCount } from '@/components/review/ClientOnlyCount'
+// Removed MasteryIcons import
 import { 
-  VeryWeakIcon, 
-  WeakIcon, 
-  NotAttemptedIcon, 
-  EmergingIcon, 
-  ProficientIcon, 
-  MasteredIcon 
-} from '@/components/icons/MasteryIcons'
+  XCircle, 
+  AlertCircle, 
+  CircleDashed, 
+  SignalMedium, 
+  CheckCircle, 
+  CheckCheck,
+  ChevronDown // Import ChevronDown
+} from 'lucide-react' // Use Lucide icons
 
 interface MasteryLevel {
   id: string;
@@ -58,19 +60,20 @@ export function BoardColumn({
   
   // Get the correct icon based on level id
   const renderIcon = () => {
+    const iconProps = { size: 16, color: "white" }; // Define common props
     switch(level.id) {
       case 'very-weak': 
-        return <VeryWeakIcon size={16} color="white" />;
+        return <XCircle {...iconProps} />;
       case 'weak': 
-        return <WeakIcon size={16} color="white" />;
+        return <AlertCircle {...iconProps} />;
       case 'not-attempted': 
-        return <NotAttemptedIcon size={16} color="white" />;
+        return <CircleDashed {...iconProps} />;
       case 'emerging': 
-        return <EmergingIcon size={16} color="white" />;
+        return <SignalMedium {...iconProps} />;
       case 'proficient': 
-        return <ProficientIcon size={16} color="white" />;
+        return <CheckCircle {...iconProps} />;
       case 'mastered': 
-        return <MasteredIcon size={16} color="white" />;
+        return <CheckCheck {...iconProps} />;
       default:
         return null;
     }
@@ -102,22 +105,17 @@ export function BoardColumn({
         
         <div className="flex items-center gap-2">
           <ClientOnlyCount count={questionCount} />
-          <button 
+          <button
             className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
             disabled={isAnyCardFocused}
             onClick={(e) => {
               e.stopPropagation();
               onExpand(level.id);
             }}
+            aria-label={isExpanded ? "Collapse section" : "Expand section"} // Add aria-label
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className={`h-5 w-5 transition-transform duration-300 ${isExpanded ? 'transform rotate-180' : ''}`} 
-              viewBox="0 0 20 20" 
-              fill="currentColor"
-            >
-              <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-            </svg>
+            {/* Use Lucide ChevronDown */}
+            <ChevronDown className={`size-5 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
           </button>
         </div>
       </div>

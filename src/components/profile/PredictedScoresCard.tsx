@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react'
-import { Typography } from '@/components/ui/typography' // Assuming Typography component exists
+import { Heading } from '@/components/catalyst/heading' // Use Catalyst Heading
+import { Text } from '@/components/catalyst/text' // Use Catalyst Text
 
 interface Scores {
   overall: number
@@ -18,8 +19,8 @@ export function PredictedScoresCard({ scores }: PredictedScoresCardProps) {
   // Map subject names to colors (using palette names)
   // TODO: Define this mapping more centrally if needed
   const subjectColorMapping: Record<string, string> = {
-    Reading: 'bg-primary-500', // Blue
-    Writing: 'bg-accent-500', // Purple/Violet
+    Reading: 'bg-primary-500', // Blue -> Primary
+    Writing: 'bg-accent-500', // Purple -> Accent
     Math: 'bg-cyan-500', // Keep cyan for now, or map to another palette like teal/success if available
   }
 
@@ -27,15 +28,17 @@ export function PredictedScoresCard({ scores }: PredictedScoresCardProps) {
     // Use semantic colors
     <div className="bg-card text-card-foreground rounded-xl shadow-sm overflow-hidden border border-border">
       <div className="p-6">
-        <Typography variant="h3" className="text-foreground mb-4">Predicted Scores</Typography>
+        {/* Use Catalyst Heading */}
+        <Heading level={2} className="text-lg font-semibold mb-4">Predicted Scores</Heading>
 
         <div className="mb-6">
           <div className="text-center mb-2">
-            {/* Use Typography h2 (maps to text-4xl) and primary color */}
-            <Typography variant="h2" weight="bold" className="text-primary">
+            {/* Use Catalyst Heading */}
+            <Heading level={1} className="text-4xl font-bold text-primary">
               {scores.overall}
-            </Typography>
-            <Typography variant="small" className="text-muted-foreground">Overall Score</Typography>
+            </Heading>
+            {/* Use Catalyst Text */}
+            <Text className="text-sm text-muted-foreground">Overall Score</Text>
           </div>
 
           {/* Use muted background and primary foreground for progress */}
@@ -47,12 +50,12 @@ export function PredictedScoresCard({ scores }: PredictedScoresCardProps) {
           </div>
 
           <div className="flex justify-between text-xs text-muted-foreground mt-1">
-            {/* Revert to span with direct classes as 'as' prop is not supported */}
-            <span className="text-xs">0</span>
-            <span className="text-xs">400</span>
-            <span className="text-xs">800</span>
-            <span className="text-xs">1200</span>
-            <span className="text-xs">1600</span>
+            {/* Use Catalyst Text */}
+            <Text className="text-xs">0</Text>
+            <Text className="text-xs">400</Text>
+            <Text className="text-xs">800</Text>
+            <Text className="text-xs">1200</Text>
+            <Text className="text-xs">1600</Text>
           </div>
         </div>
 
@@ -60,8 +63,9 @@ export function PredictedScoresCard({ scores }: PredictedScoresCardProps) {
           {/* Reading */}
           <div>
             <div className="flex justify-between mb-1">
-              <Typography variant="small" weight="medium" className="text-foreground">Reading</Typography>
-              <Typography variant="small" weight="semibold" className="text-foreground">{scores.reading}/800</Typography>
+              {/* Use Catalyst Text */}
+              <Text className="text-sm font-medium text-foreground">Reading</Text>
+              <Text className="text-sm font-semibold text-foreground">{scores.reading}/800</Text>
             </div>
             <div className="h-2 bg-muted rounded-full overflow-hidden">
               <div
@@ -74,8 +78,9 @@ export function PredictedScoresCard({ scores }: PredictedScoresCardProps) {
           {/* Writing */}
           <div>
             <div className="flex justify-between mb-1">
-              <Typography variant="small" weight="medium" className="text-foreground">Writing</Typography>
-              <Typography variant="small" weight="semibold" className="text-foreground">{scores.writing}/400</Typography>
+              {/* Use Catalyst Text */}
+              <Text className="text-sm font-medium text-foreground">Writing</Text>
+              <Text className="text-sm font-semibold text-foreground">{scores.writing}/400</Text>
             </div>
             <div className="h-2 bg-muted rounded-full overflow-hidden">
               <div
@@ -88,8 +93,9 @@ export function PredictedScoresCard({ scores }: PredictedScoresCardProps) {
           {/* Math */}
           <div>
             <div className="flex justify-between mb-1">
-              <Typography variant="small" weight="medium" className="text-foreground">Math</Typography>
-              <Typography variant="small" weight="semibold" className="text-foreground">{scores.math}/800</Typography>
+              {/* Use Catalyst Text */}
+              <Text className="text-sm font-medium text-foreground">Math</Text>
+              <Text className="text-sm font-semibold text-foreground">{scores.math}/800</Text>
             </div>
             <div className="h-2 bg-muted rounded-full overflow-hidden">
               <div

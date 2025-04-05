@@ -2,7 +2,10 @@
 
 import React from 'react'
 import Image from 'next/image'
-import { Typography } from '@/components/ui/typography' // Assuming Typography component exists
+// Removed Typography import
+import { Heading } from '@/components/catalyst/heading' // Use Catalyst Heading
+import { Text } from '@/components/catalyst/text' // Use Catalyst Text
+import { Badge } from '@/components/catalyst/badge' // Use Catalyst Badge
 
 interface BrainEvolutionCardProps {
   rankProgress: number
@@ -15,7 +18,8 @@ export function BrainEvolutionCard({ rankProgress }: BrainEvolutionCardProps) {
     // Use semantic colors
     <div className="bg-card text-card-foreground rounded-xl shadow-sm overflow-hidden border border-border">
       <div className="p-6">
-        <Typography variant="h3" className="text-foreground mb-4">Brain Evolution</Typography>
+        {/* Use Catalyst Heading */}
+        <Heading level={2} className="text-lg font-semibold mb-4">Brain Evolution</Heading>
 
         <div className="h-48 flex items-center justify-center relative">
           {/* Brain visualization */}
@@ -39,16 +43,17 @@ export function BrainEvolutionCard({ rankProgress }: BrainEvolutionCardProps) {
 
           {/* Level indicator */}
           <div className="absolute bottom-0 left-0 right-0 text-center">
-            {/* Revert to span with direct classes as 'as' prop is not supported */}
-            <span className="inline-block px-3 py-1 bg-gradient-to-r from-primary-500/10 to-accent-500/10 text-primary rounded-full text-sm font-medium border border-primary/20">
+            {/* Use Catalyst Badge */}
+            <Badge color="blue" className="border border-primary/20 bg-gradient-to-r from-primary-500/10 to-accent-500/10">
               Brain Level: {brainLevel}
-            </span>
+            </Badge>
           </div>
         </div>
 
-        <Typography variant="small" className="text-muted-foreground text-center mt-4">
+        {/* Use Catalyst Text */}
+        <Text className="text-sm text-muted-foreground text-center mt-4">
           Your brain evolves as you master more subjects and improve your overall performance.
-        </Typography>
+        </Text>
       </div>
     </div>
   )

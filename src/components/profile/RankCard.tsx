@@ -1,7 +1,9 @@
 'use client'
 
 import React from 'react'
-import { Typography } from '@/components/ui/typography' // Assuming Typography component exists
+// Removed Typography import
+import { Heading } from '@/components/catalyst/heading' // Use Catalyst Heading
+import { Text } from '@/components/catalyst/text' // Use Catalyst Text
 
 interface RankCardProps {
   scoreRank: string
@@ -28,7 +30,8 @@ export function RankCard({ scoreRank, rankProgress }: RankCardProps) {
   return (
     // Use semantic colors
     <div className="bg-card text-card-foreground rounded-xl shadow-sm overflow-hidden border border-border p-6">
-      <Typography variant="h3" className="text-foreground mb-4">Current Rank</Typography>
+      {/* Use Catalyst Heading */}
+      <Heading level={2} className="text-lg font-semibold mb-4">Current Rank</Heading>
       <div className="relative">
         {/* Apply semantic gradient */}
         <div className={`bg-gradient-to-r ${rankGradientClass} text-primary-foreground rounded-lg p-4 shadow-sm`}> {/* Assuming gradients work well with primary-foreground */}
@@ -41,17 +44,19 @@ export function RankCard({ scoreRank, rankProgress }: RankCardProps) {
               {scoreRank === 'Bronze' && '🥉'}
             </div>
             <div>
-              <Typography variant="h5" weight="bold" className="text-inherit">{scoreRank}</Typography> {/* Inherit color from parent */}
-              <Typography variant="small" className="text-inherit opacity-90">Level {rankLevel}</Typography> {/* Inherit color */}
+              {/* Use Catalyst Heading */}
+              <Heading level={3} className="text-xl font-bold text-inherit">{scoreRank}</Heading>
+              {/* Use Catalyst Text */}
+              <Text className="text-sm text-inherit opacity-90">Level {rankLevel}</Text>
             </div>
           </div>
 
           {/* Progress bar to next rank */}
           <div className="mt-2">
             <div className="text-sm mb-1 flex justify-between text-inherit opacity-90"> {/* Inherit color */}
-              {/* Revert to span with direct classes as 'as' prop is not supported */}
-              <span className="text-sm">Progress to next rank</span>
-              <span className="text-sm">{rankProgress}%</span>
+              {/* Use Catalyst Text */}
+              <Text className="text-sm">Progress to next rank</Text>
+              <Text className="text-sm">{rankProgress}%</Text>
             </div>
             <div className="h-2 bg-white/20 rounded-full overflow-hidden"> {/* Keep bg-white/20 */}
               <div
@@ -66,23 +71,23 @@ export function RankCard({ scoreRank, rankProgress }: RankCardProps) {
         <div className="mt-4 flex justify-between text-muted-foreground">
           <div className="text-center">
             <div className="h-4 w-4 bg-warning-600 rounded-full mx-auto mb-1"></div> {/* Use warning palette */}
-            <span className="text-xs text-muted-foreground">Bronze</span> {/* Use span */}
+            <Text className="text-xs text-muted-foreground">Bronze</Text> {/* Use Text */}
           </div>
           <div className="text-center">
             <div className="h-4 w-4 bg-slate-400 rounded-full mx-auto mb-1"></div> {/* Use slate */}
-            <span className="text-xs text-muted-foreground">Silver</span> {/* Use span */}
+            <Text className="text-xs text-muted-foreground">Silver</Text> {/* Use Text */}
           </div>
           <div className="text-center">
             <div className="h-4 w-4 bg-warning-400 rounded-full mx-auto mb-1"></div> {/* Use warning palette */}
-            <span className="text-xs text-muted-foreground">Gold</span> {/* Use span */}
+            <Text className="text-xs text-muted-foreground">Gold</Text> {/* Use Text */}
           </div>
           <div className="text-center">
             <div className="h-4 w-4 bg-primary-400 rounded-full mx-auto mb-1"></div> {/* Use primary palette */}
-            <span className="text-xs text-muted-foreground">Platinum</span> {/* Use span */}
+            <Text className="text-xs text-muted-foreground">Platinum</Text> {/* Use Text */}
           </div>
           <div className="text-center">
             <div className="h-4 w-4 bg-accent-400 rounded-full mx-auto mb-1"></div> {/* Use accent palette */}
-            <span className="text-xs text-muted-foreground">Diamond</span> {/* Use span */}
+            <Text className="text-xs text-muted-foreground">Diamond</Text> {/* Use Text */}
           </div>
         </div>
       </div>

@@ -1,34 +1,37 @@
 'use client'
 
 import React from 'react'
-import Link from 'next/link'
+import { Heading } from '@/components/catalyst/heading' // Use Catalyst Heading
+import { Text } from '@/components/catalyst/text' // Use Catalyst Text
+import { Button } from '@/components/catalyst/button' // Use Catalyst Button
+import { ChevronLeft } from 'lucide-react' // Use Lucide icon
 
 export default function AchievementsPage() {
   return (
-    <div className="py-6 px-4 sm:px-6 md:px-8 dark:bg-slate-900">
+    // Use standard padding
+    <div className="py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col space-y-6">
           {/* Header */}
           <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+            {/* Use Catalyst Heading */}
+            <Heading level={1} className="text-2xl font-semibold dark:text-white">
               Your Achievements
-            </h1>
-            <Link 
-              href="/profile"
-              className="px-4 py-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg flex items-center text-sm font-medium transition-colors hover:bg-indigo-100 dark:hover:bg-indigo-900/50"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
+            </Heading>
+            {/* Use Catalyst Button as Link */}
+            <Button href="/profile" outline>
+              <ChevronLeft className="size-4 mr-2" />
               Back to Profile
-            </Link>
+            </Button>
           </header>
 
           {/* Content - Placeholder */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-            <p className="text-slate-600 dark:text-slate-400">
+          {/* Apply standard card styles */}
+          <div className="bg-card text-card-foreground rounded-xl shadow-sm border border-border p-6">
+            {/* Use Catalyst Text */}
+            <Text className="text-muted-foreground">
               This page will display all of your achievements and badges.
-            </p>
+            </Text>
           </div>
         </div>
       </div>
