@@ -3,19 +3,25 @@
 @tailwind utilities;
 
 @layer base {
-  /* Base text size and improved letter spacing for enhanced readability */
+  /* Base text settings from typography config */
   html {
-    letter-spacing: 0.04em; /* Increased from 0.02em for better character separation */
-    font-size: 16px; /* Ensure base font size is reasonable */
+    letter-spacing: var(--letter-spacing);
+    font-size: var(--base-font-size);
   }
   
   @media (max-width: 768px) {
     html {
-      font-size: 18px; /* Slightly larger on small screens */
+      font-size: var(--mobile-font-size);
     }
   }
   
   :root {
+    /* Base typography settings */
+    --letter-spacing: 0.05em; /* Increased for better clarity */
+    --base-font-size: 18px;   /* Increased by 2px */
+    --mobile-font-size: 20px; /* Increased by 2px */
+    
+    /* Color settings */
     --background: 0 0% 100%;
     --foreground: 240 10% 0%; /* Increased to true black for better contrast */
     --card: 0 0% 100%;

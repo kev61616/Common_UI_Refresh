@@ -1,5 +1,5 @@
-'use client'
+'use client';
 
-import { CelestialObservatoryView } from '../CelestialObservatoryView'
+import { CelestialObservatoryView } from '../CelestialObservatoryView';
 
-export default CelestialObservatoryView
+export default CelestialObservatoryView;

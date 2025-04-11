@@ -1,30 +1,30 @@
-'use client'
+'use client';
 
 // Based on TagCloudView
 // Night sky visualization where tags form constellations connected by starry lines
 
-import React, { useState, useEffect } from 'react'
-import { QuestionViewProps } from '../types'
-import { QuestionWithMetadata } from '../../question-view/types'
-import { extractQuestionsWithMetadata } from '../../question-view/utils'
+import React, { useState, useEffect } from 'react';
+import { QuestionViewProps } from '../types';
+import { QuestionWithMetadata } from '../../question-view/types';
+import { extractQuestionsWithMetadata } from '../../question-view/utils';
 
 /**
  * Tag Cloud View (Question View Variant 7)
  * Interactive visualization showing question topics/subtopics as tags with size indicating frequency
  */
 export function ConstellationTagCloudView({ practiceSets, onSelectSet, selectedSetId }: QuestionViewProps) {
-  const [allQuestions, setAllQuestions] = useState<QuestionWithMetadata[]>([])
-  const [selectedTag, setSelectedTag] = useState<string | null>(null)
-  const [filter, setFilter] = useState<'topic' | 'subtopic' | 'difficulty'>('topic')
-  const [minFontSize, setMinFontSize] = useState(12)
-  const [maxFontSize, setMaxFontSize] = useState(32)
-  
+  const [allQuestions, setAllQuestions] = useState<QuestionWithMetadata[]>([]);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'topic' | 'subtopic' | 'difficulty'>('topic');
+  const [minFontSize, setMinFontSize] = useState(12);
+  const [maxFontSize, setMaxFontSize] = useState(32);
+
   // Process questions when practiceSets change
   useEffect(() => {
-    const questions = extractQuestionsWithMetadata(practiceSets)
-    setAllQuestions(questions)
-  }, [practiceSets])
-  
+    const questions = extractQuestionsWithMetadata(practiceSets);
+    setAllQuestions(questions);
+  }, [practiceSets]);
+
   // Calculate frequency of tags from the data based on the selected filter
   const calculateTagFrequency = () => {
     const tagMap = new Map<string, {
@@ -32,17 +32,17 @@ export function ConstellationTagCloudView({ practiceSets, onSelectSet, selectedS
       correctCount: number;
       setIds: Set<string>;
     }>();
-    
-    allQuestions.forEach(question => {
+
+    allQuestions.forEach((question) => {
       let tag: string;
       if (filter === 'topic') {
         tag = question.topic;
       } else if (filter === 'subtopic') {
         tag = question.subtopic;
-      } else { // difficulty
+      } else {// difficulty
         tag = question.difficulty;
       }
-      
+
       if (!tagMap.has(tag)) {
         tagMap.set(tag, {
           count: 0,
@@ -50,7 +50,7 @@ export function ConstellationTagCloudView({ practiceSets, onSelectSet, selectedS
           setIds: new Set()
         });
       }
-      
+
       const tagInfo = tagMap.get(tag)!;
       tagInfo.count += 1;
       if (question.correct) {
@@ -58,195 +58,195 @@ export function ConstellationTagCloudView({ practiceSets, onSelectSet, selectedS
       }
       tagInfo.setIds.add(question.setId);
     });
-    
+
     return tagMap;
   };
-  
+
   const tagFrequency = calculateTagFrequency();
-  
+
   // Convert Map to Array for easier rendering
   const tagData = Array.from(tagFrequency.entries()).map(([tag, info]) => ({
     tag,
     count: info.count,
     correctCount: info.correctCount,
-    accuracy: info.count > 0 ? (info.correctCount / info.count) * 100 : 0,
+    accuracy: info.count > 0 ? info.correctCount / info.count * 100 : 0,
     setIds: Array.from(info.setIds)
   }));
-  
+
   // Sort by count (most frequent first)
   tagData.sort((a, b) => b.count - a.count);
-  
+
   // Calculate font size based on frequency
-  const maxCount = Math.max(...tagData.map(t => t.count));
+  const maxCount = Math.max(...tagData.map((t) => t.count));
   const calculateFontSize = (count: number) => {
-    return minFontSize + ((count / maxCount) * (maxFontSize - minFontSize));
+    return minFontSize + count / maxCount * (maxFontSize - minFontSize);
   };
-  
+
   // Get color based on accuracy
   const getAccuracyColor = (accuracy: number) => {
     if (accuracy >= 80) return 'text-emerald-600 dark:text-emerald-400';
     if (accuracy >= 60) return 'text-amber-600 dark:text-amber-400';
     return 'text-rose-600 dark:text-rose-400';
   };
-  
+
   // Questions related to the selected tag
-  const relatedQuestions = selectedTag ? 
-    allQuestions.filter(q => {
-      if (filter === 'topic') return q.topic === selectedTag;
-      if (filter === 'subtopic') return q.subtopic === selectedTag;
-      return q.difficulty === selectedTag;
-    }) : [];
-  
+  const relatedQuestions = selectedTag ?
+  allQuestions.filter((q) => {
+    if (filter === 'topic') return q.topic === selectedTag;
+    if (filter === 'subtopic') return q.subtopic === selectedTag;
+    return q.difficulty === selectedTag;
+  }) : [];
+
   return (
-    <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
-      <h3 className="text-xl font-bold mb-6 text-center">85. Constellation Tag Cloud</h3>
+    <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-oid="76757gp">
+      <h3 className="text-xl font-bold mb-6 text-center" data-oid="kwcnk6-">85. Constellation Tag Cloud</h3>
       
       {/* Controls */}
-      <div className="flex justify-between mb-6">
-        <div className="flex space-x-2">
+      <div className="flex justify-between mb-6" data-oid=":k85aeu">
+        <div className="flex space-x-2" data-oid="y7581:k">
           <button
             onClick={() => setFilter('topic')}
             className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-              filter === 'topic'
-                ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300'
-                : 'bg-white text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-            }`}
-          >
+            filter === 'topic' ?
+            'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300' :
+            'bg-white text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`
+            } data-oid="tjfb9is">
+
             Topic Tags
           </button>
           <button
             onClick={() => setFilter('subtopic')}
             className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-              filter === 'subtopic'
-                ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300'
-                : 'bg-white text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-            }`}
-          >
+            filter === 'subtopic' ?
+            'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300' :
+            'bg-white text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`
+            } data-oid="srjn7sa">
+
             Subtopic Tags
           </button>
           <button
             onClick={() => setFilter('difficulty')}
             className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-              filter === 'difficulty'
-                ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300'
-                : 'bg-white text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-            }`}
-          >
+            filter === 'difficulty' ?
+            'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-300' :
+            'bg-white text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`
+            } data-oid=".7ba5io">
+
             Difficulty Tags
           </button>
         </div>
         
-        <div className="flex items-center space-x-4">
-          <div className="flex space-x-1 items-center">
-            <span className="text-xs text-slate-500 dark:text-slate-400">Size:</span>
+        <div className="flex items-center space-x-4" data-oid="trrsqyp">
+          <div className="flex space-x-1 items-center" data-oid="wsg__4u">
+            <span className="text-xs text-slate-500 dark:text-slate-400" data-oid="zw39yqr">Size:</span>
             <input
               type="range"
               min="8"
               max="40"
               value={maxFontSize}
               onChange={(e) => setMaxFontSize(parseInt(e.target.value))}
-              className="w-20"
-            />
+              className="w-20" data-oid="pv64xzw" />
+
           </div>
         </div>
       </div>
       
       {/* Tag Cloud */}
-      <div className="min-h-[300px] bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-8 flex flex-wrap justify-center items-center content-center gap-3 gap-y-6">
-        {tagData.map(({ tag, count, accuracy }) => (
-          <div
-            key={tag}
-            onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-            className={`cursor-pointer transition-all px-2 py-1 hover:bg-slate-100 dark:hover:bg-slate-700/30 rounded ${
-              selectedTag === tag ? 'bg-slate-100 dark:bg-slate-700/50 rounded-md shadow-sm' : ''
-            }`}
-            style={{
-              fontSize: `${calculateFontSize(count)}px`,
-              fontWeight: count > maxCount * 0.7 ? 'bold' : 'normal',
-            }}
-          >
-            <span className={getAccuracyColor(accuracy)}>{tag}</span>
-            <span className="text-[10px] text-slate-400 ml-1 align-top">
+      <div className="min-h-[300px] bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-8 flex flex-wrap justify-center items-center content-center gap-3 gap-y-6" data-oid="0nd93a-">
+        {tagData.map(({ tag, count, accuracy }) =>
+        <div
+          key={tag}
+          onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
+          className={`cursor-pointer transition-all px-2 py-1 hover:bg-slate-100 dark:hover:bg-slate-700/30 rounded ${
+          selectedTag === tag ? 'bg-slate-100 dark:bg-slate-700/50 rounded-md shadow-sm' : ''}`
+          }
+          style={{
+            fontSize: `${calculateFontSize(count)}px`,
+            fontWeight: count > maxCount * 0.7 ? 'bold' : 'normal'
+          }} data-oid="hv-_k8j">
+
+            <span className={getAccuracyColor(accuracy)} data-oid="dseh3dh">{tag}</span>
+            <span className="text-[10px] text-slate-400 ml-1 align-top" data-oid="b:y38e2">
               {count}
             </span>
           </div>
-        ))}
+        )}
         
-        {tagData.length === 0 && (
-          <div className="text-slate-500 dark:text-slate-400 text-center p-12">
+        {tagData.length === 0 &&
+        <div className="text-slate-500 dark:text-slate-400 text-center p-12" data-oid="jqt1_6w">
             No data available for the selected filter.
           </div>
-        )}
+        }
       </div>
       
       {/* Selected Tag Info */}
-      {selectedTag && (
-        <div className="mt-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
-          <div className="flex justify-between items-center mb-3">
-            <h4 className="font-semibold">
+      {selectedTag &&
+      <div className="mt-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700" data-oid="tf6ih80">
+          <div className="flex justify-between items-center mb-3" data-oid="5rm8vju">
+            <h4 className="font-semibold" data-oid="81lhn7-">
               Questions with{' '}
               {filter === 'topic' ? 'Topic' : filter === 'subtopic' ? 'Subtopic' : 'Difficulty'}:{' '}
               <span className={getAccuracyColor(
-                tagFrequency.get(selectedTag)?.count ? 
-                (tagFrequency.get(selectedTag)!.correctCount / tagFrequency.get(selectedTag)!.count) * 100 : 0
-              )}>
+              tagFrequency.get(selectedTag)?.count ?
+              tagFrequency.get(selectedTag)!.correctCount / tagFrequency.get(selectedTag)!.count * 100 : 0
+            )} data-oid="w_xb:0z">
                 {selectedTag}
               </span>
             </h4>
             <button
-              onClick={() => setSelectedTag(null)}
-              className="text-xs px-2 py-1 bg-white dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600"
-            >
+            onClick={() => setSelectedTag(null)}
+            className="text-xs px-2 py-1 bg-white dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600" data-oid="_6ghzxw">
+
               Close
             </button>
           </div>
           
-          <div className="space-y-2 max-h-[250px] overflow-y-auto">
-            {relatedQuestions.map(question => (
-              <div
-                key={question.id}
-                onClick={() => onSelectSet && onSelectSet(question.setId)}
-                className={`p-3 border rounded-md flex items-center justify-between cursor-pointer ${
-                  selectedSetId === question.setId
-                    ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800'
-                    : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50'
-                }`}
-              >
-                <div>
-                  <div className="font-medium text-sm flex items-center">
+          <div className="space-y-2 max-h-[250px] overflow-y-auto" data-oid="p3cep2j">
+            {relatedQuestions.map((question) =>
+          <div
+            key={question.id}
+            onClick={() => onSelectSet && onSelectSet(question.setId)}
+            className={`p-3 border rounded-md flex items-center justify-between cursor-pointer ${
+            selectedSetId === question.setId ?
+            'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800' :
+            'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50'}`
+            } data-oid="pfsfl:_">
+
+                <div data-oid="c8ievhy">
+                  <div className="font-medium text-sm flex items-center" data-oid="mj274kv">
                     <span className={`inline-block w-2 h-2 rounded-full mr-2 ${
-                      question.correct
-                        ? 'bg-green-500 dark:bg-green-400'
-                        : 'bg-red-500 dark:bg-red-400'
-                    }`}></span>
+                question.correct ?
+                'bg-green-500 dark:bg-green-400' :
+                'bg-red-500 dark:bg-red-400'}`
+                } data-oid="-ku0h5d"></span>
                     {question.topic} - {question.subtopic}
                   </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                  <div className="text-xs text-slate-500 dark:text-slate-400" data-oid="72i2ffs">
                     From {question.setType} • {question.setSubject}
                   </div>
                 </div>
-                <div className="text-right text-xs">
+                <div className="text-right text-xs" data-oid="74hzibh">
                   <div className={`inline-block px-2 py-1 rounded-full ${
-                    question.difficulty === 'Easy'
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                      : question.difficulty === 'Medium'
-                        ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
-                        : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
-                  }`}>
+              question.difficulty === 'Easy' ?
+              'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
+              question.difficulty === 'Medium' ?
+              'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
+              'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'}`
+              } data-oid="azfz0yz">
                     {question.difficulty}
                   </div>
                 </div>
               </div>
-            ))}
+          )}
             
-            {relatedQuestions.length === 0 && (
-              <div className="py-6 text-center text-slate-500 dark:text-slate-400">
-                <p>No questions available for this tag.</p>
+            {relatedQuestions.length === 0 &&
+          <div className="py-6 text-center text-slate-500 dark:text-slate-400" data-oid="84brgpg">
+                <p data-oid="so-ix6l">No questions available for this tag.</p>
               </div>
-            )}
+          }
           </div>
         </div>
-      )}
-    </div>
-  )
+      }
+    </div>);
+
 }

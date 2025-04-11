@@ -17,9 +17,9 @@ interface QuestionContextType {
   openFormulaSheet: () => void;
   windows: ReturnType<typeof useToolWindows>["windows"];
   updateWindowPosition: (
-    id: string,
-    position: { x: number; y: number },
-  ) => void;
+  id: string,
+  position: {x: number;y: number;})
+  => void;
   closeWindow: (id: string) => void;
   // Countdown timer for reading sections
   countdownTime: TimerState;
@@ -31,17 +31,17 @@ interface QuestionContextType {
 
 const QuestionContext = createContext<QuestionContextType | null>(null);
 
-export function QuestionProvider({ children }: { children: React.ReactNode }) {
+export function QuestionProvider({ children }: {children: React.ReactNode;}) {
   const { time, isRunning, start, pause, reset } = useTimer();
   // Add countdown timer for reading section (40 minutes = 2400 seconds)
-  const { 
-    time: countdownTime, 
-    isRunning: isCountdownRunning, 
-    start: startCountdown, 
-    pause: pauseCountdown, 
-    reset: resetCountdown 
+  const {
+    time: countdownTime,
+    isRunning: isCountdownRunning,
+    start: startCountdown,
+    pause: pauseCountdown,
+    reset: resetCountdown
   } = useCountdownTimer(2400);
-  
+
   const { windows, openWindow, closeWindow, updatePosition } = useToolWindows();
   const [isVisible, setIsVisible] = useState(true);
 
@@ -89,12 +89,12 @@ export function QuestionProvider({ children }: { children: React.ReactNode }) {
         openFormulaSheet,
         windows,
         updateWindowPosition: updatePosition,
-        closeWindow,
-      }}
-    >
+        closeWindow
+      }}>
+
       {children}
-    </QuestionContext.Provider>
-  );
+    </QuestionContext.Provider>);
+
 }
 
 export function useQuestion() {

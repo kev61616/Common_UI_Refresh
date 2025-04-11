@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { QuestionViewProps } from './types';
 import { CardDeckView as CardDeckViewImpl } from './CardDeckView';
@@ -22,40 +22,40 @@ import { QuestionTimelineView as QuestionTimelineViewImpl } from './QuestionTime
 // Helper function for rendering placeholder components with numbered titles
 function renderPlaceholder(props: QuestionViewProps, title: string, description: string) {
   return (
-    <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
-      <h3 className="text-xl font-bold mb-6 text-center">{title}</h3>
-      <div className="min-h-[500px] flex justify-center items-center">
-        <div className="text-center p-8 max-w-xl">
-          <div className="p-4 bg-sky-50 dark:bg-sky-900/20 rounded-lg mb-8">
-            <div className="text-lg font-bold text-sky-700 dark:text-sky-300 mb-2">
+    <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-oid="vsd9t-l">
+      <h3 className="text-xl font-bold mb-6 text-center" data-oid="zam_49.">{title}</h3>
+      <div className="min-h-[500px] flex justify-center items-center" data-oid="qh_t86y">
+        <div className="text-center p-8 max-w-xl" data-oid=":t8xmgi">
+          <div className="p-4 bg-sky-50 dark:bg-sky-900/20 rounded-lg mb-8" data-oid="746s86g">
+            <div className="text-lg font-bold text-sky-700 dark:text-sky-300 mb-2" data-oid="5_osn0x">
               {title}
             </div>
-            <p className="text-sky-600 dark:text-sky-400 text-sm">
+            <p className="text-sky-600 dark:text-sky-400 text-sm" data-oid="q7fvxnx">
               {description}
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {props.practiceSets.slice(0, 4).map(set => (
-              <div 
-                key={set.id}
-                onClick={() => props.onSelectSet(set.id)} 
-                className="p-3 bg-white dark:bg-slate-800 rounded-lg shadow cursor-pointer hover:shadow-md transition-shadow"
-              >
-                <div className="font-medium">{set.subject}: {set.type}</div>
-                <div className="flex justify-between mt-2">
-                  <div className="text-sm">{set.accuracy}% accuracy</div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" data-oid="ighcjxb">
+            {props.practiceSets.slice(0, 4).map((set) =>
+            <div
+              key={set.id}
+              onClick={() => props.onSelectSet(set.id)}
+              className="p-3 bg-white dark:bg-slate-800 rounded-lg shadow cursor-pointer hover:shadow-md transition-shadow" data-oid="dpxtcij">
+
+                <div className="font-medium" data-oid="iv72en2">{set.subject}: {set.type}</div>
+                <div className="flex justify-between mt-2" data-oid="acqxl7d">
+                  <div className="text-sm" data-oid="batg-rg">{set.accuracy}% accuracy</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400" data-oid="dfeupq1">
                     {new Date(set.dateCompleted).toLocaleDateString()}
                   </div>
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // Exported components - using actual implementations where available

@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react'
-import { SetViewProps } from '../types'
+import React, { useState, useEffect } from 'react';
+import { SetViewProps } from '../types';
 
 /**
  * Celestial Observatory View
@@ -14,34 +14,34 @@ import { SetViewProps } from '../types'
  * - Orbital paths and movement for an immersive experience
  */
 export function Component({ practiceSets, onSelectSet, selectedSetId }: SetViewProps) {
-  const [hoveredSet, setHoveredSet] = useState<string | null>(null)
-  const [stars, setStars] = useState<Array<{ x: number; y: number; size: number; opacity: number }>>([])
+  const [hoveredSet, setHoveredSet] = useState<string | null>(null);
+  const [stars, setStars] = useState<Array<{x: number;y: number;size: number;opacity: number;}>>([]);
 
   // Generate random stars for the background
   useEffect(() => {
     const generateStars = () => {
-      const newStars = []
+      const newStars = [];
       for (let i = 0; i < 100; i++) {
         newStars.push({
           x: Math.random() * 100,
           y: Math.random() * 100,
           size: Math.random() * 0.2 + 0.1,
           opacity: Math.random() * 0.5 + 0.3
-        })
+        });
       }
-      setStars(newStars)
-    }
+      setStars(newStars);
+    };
 
-    generateStars()
-  }, [])
+    generateStars();
+  }, []);
 
   // Helper function to get celestial body type based on set attributes
   const getCelestialBodyType = (set: typeof practiceSets[0]) => {
-    if (set.difficulty === 'Hard') return 'planet'
-    if (set.questions.length > 20) return 'star'
-    if (set.accuracy > 85) return 'comet'
-    return 'asteroid'
-  }
+    if (set.difficulty === 'Hard') return 'planet';
+    if (set.questions.length > 20) return 'star';
+    if (set.accuracy > 85) return 'comet';
+    return 'asteroid';
+  };
 
   // Helper function to get color scheme based on subject
   const getSubjectColors = (subject: string) => {
@@ -53,7 +53,7 @@ export function Component({ practiceSets, onSelectSet, selectedSetId }: SetViewP
           ring: 'from-blue-400/30 via-indigo-500/20 to-purple-500/30',
           text: 'text-blue-200',
           accent: 'bg-blue-400'
-        }
+        };
       case 'Reading':
         return {
           primary: 'from-purple-600 to-indigo-900',
@@ -61,7 +61,7 @@ export function Component({ practiceSets, onSelectSet, selectedSetId }: SetViewP
           ring: 'from-fuchsia-400/30 via-purple-500/20 to-indigo-500/30',
           text: 'text-purple-200',
           accent: 'bg-purple-400'
-        }
+        };
       case 'Writing':
         return {
           primary: 'from-emerald-600 to-teal-900',
@@ -69,7 +69,7 @@ export function Component({ practiceSets, onSelectSet, selectedSetId }: SetViewP
           ring: 'from-green-400/30 via-emerald-500/20 to-teal-500/30',
           text: 'text-emerald-200',
           accent: 'bg-emerald-400'
-        }
+        };
       default:
         return {
           primary: 'from-gray-600 to-gray-900',
@@ -77,61 +77,61 @@ export function Component({ practiceSets, onSelectSet, selectedSetId }: SetViewP
           ring: 'from-gray-400/30 via-gray-500/20 to-gray-500/30',
           text: 'text-gray-200',
           accent: 'bg-gray-400'
-        }
+        };
     }
-  }
+  };
 
   // Helper function to get animation delay based on set index
   const getAnimationDelay = (index: number) => {
-    return `${index * 2}s`
-  }
+    return `${index * 2}s`;
+  };
 
   return (
-    <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-lg overflow-hidden">
-      <h3 className="text-xl font-bold mb-6 text-center">Celestial Observatory View</h3>
+    <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-lg overflow-hidden" data-oid="tpr50:b">
+      <h3 className="text-xl font-bold mb-6 text-center" data-oid="rokrd:1">Celestial Observatory View</h3>
       
       {/* Observatory dome */}
-      <div className="relative rounded-t-[180px] rounded-b-xl h-[600px] overflow-hidden bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 p-8">
+      <div className="relative rounded-t-[180px] rounded-b-xl h-[600px] overflow-hidden bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 p-8" data-oid="sfi9kuk">
         {/* Star background */}
-        <div className="absolute inset-0 overflow-hidden">
-          {stars.map((star, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-white animate-twinkle"
-              style={{
-                left: `${star.x}%`,
-                top: `${star.y}%`,
-                width: `${star.size}rem`,
-                height: `${star.size}rem`,
-                opacity: star.opacity,
-                animationDelay: `${i % 5}s`
-              }}
-            />
-          ))}
+        <div className="absolute inset-0 overflow-hidden" data-oid="7zcjtmv">
+          {stars.map((star, i) =>
+          <div
+            key={i}
+            className="absolute rounded-full bg-white animate-twinkle"
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: `${star.size}rem`,
+              height: `${star.size}rem`,
+              opacity: star.opacity,
+              animationDelay: `${i % 5}s`
+            }} data-oid="vz5wbp5" />
+
+          )}
           
           {/* Nebula effects */}
-          <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-purple-700/10 blur-3xl" />
-          <div className="absolute bottom-1/4 -right-20 w-96 h-96 rounded-full bg-blue-700/10 blur-3xl" />
-          <div className="absolute top-1/2 left-1/3 w-64 h-64 rounded-full bg-emerald-700/10 blur-3xl" />
+          <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-purple-700/10 blur-3xl" data-oid="41lh1-f" />
+          <div className="absolute bottom-1/4 -right-20 w-96 h-96 rounded-full bg-blue-700/10 blur-3xl" data-oid="sy4bpd4" />
+          <div className="absolute top-1/2 left-1/3 w-64 h-64 rounded-full bg-emerald-700/10 blur-3xl" data-oid="x4aw_3x" />
         </div>
         
         {/* Observatory dome structure */}
-        <div className="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-slate-700 to-transparent" />
-        <div className="absolute inset-x-[10%] top-0 h-[1px] bg-slate-600/50" />
-        <div className="absolute inset-y-0 left-[10%] w-[1px] bg-slate-600/30" />
-        <div className="absolute inset-y-0 right-[10%] w-[1px] bg-slate-600/30" />
-        <div className="absolute inset-x-[20%] top-[5%] h-[1px] bg-slate-600/20" />
-        <div className="absolute inset-x-[30%] top-[15%] h-[1px] bg-slate-600/20" />
+        <div className="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-slate-700 to-transparent" data-oid="n.dcz08" />
+        <div className="absolute inset-x-[10%] top-0 h-[1px] bg-slate-600/50" data-oid="9udwbqw" />
+        <div className="absolute inset-y-0 left-[10%] w-[1px] bg-slate-600/30" data-oid="k1g9veh" />
+        <div className="absolute inset-y-0 right-[10%] w-[1px] bg-slate-600/30" data-oid="d.o31ba" />
+        <div className="absolute inset-x-[20%] top-[5%] h-[1px] bg-slate-600/20" data-oid="3qnctid" />
+        <div className="absolute inset-x-[30%] top-[15%] h-[1px] bg-slate-600/20" data-oid="1slm2:2" />
         
         {/* Celestial bodies container */}
-        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-16">
+        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-16" data-oid="hlczgez">
           {practiceSets.map((set, index) => {
-            const isSelected = selectedSetId === set.id
-            const isHovered = hoveredSet === set.id
-            const celestialType = getCelestialBodyType(set)
-            const colors = getSubjectColors(set.subject)
-            const animationDelay = getAnimationDelay(index)
-            
+            const isSelected = selectedSetId === set.id;
+            const isHovered = hoveredSet === set.id;
+            const celestialType = getCelestialBodyType(set);
+            const colors = getSubjectColors(set.subject);
+            const animationDelay = getAnimationDelay(index);
+
             return (
               <div
                 key={set.id}
@@ -142,16 +142,16 @@ export function Component({ practiceSets, onSelectSet, selectedSetId }: SetViewP
                 `}
                 onClick={() => onSelectSet(set.id)}
                 onMouseEnter={() => setHoveredSet(set.id)}
-                onMouseLeave={() => setHoveredSet(null)}
-              >
+                onMouseLeave={() => setHoveredSet(null)} data-oid="055qj6s">
+
                 {/* Orbit rings */}
-                {(isSelected || isHovered) && (
-                  <>
-                    <div className={`absolute -inset-6 rounded-full border border-slate-500/20 animate-spin-slow`} style={{ animationDuration: '60s' }} />
-                    <div className={`absolute -inset-12 rounded-full border border-slate-500/15 animate-spin-slow-reverse`} style={{ animationDuration: '120s' }} />
-                    <div className={`absolute -inset-16 rounded-full border border-slate-500/10 animate-spin-slow`} style={{ animationDuration: '180s' }} />
+                {(isSelected || isHovered) &&
+                <>
+                    <div className={`absolute -inset-6 rounded-full border border-slate-500/20 animate-spin-slow`} style={{ animationDuration: '60s' }} data-oid="2qm-h9f" />
+                    <div className={`absolute -inset-12 rounded-full border border-slate-500/15 animate-spin-slow-reverse`} style={{ animationDuration: '120s' }} data-oid="16ffvpp" />
+                    <div className={`absolute -inset-16 rounded-full border border-slate-500/10 animate-spin-slow`} style={{ animationDuration: '180s' }} data-oid="xqxhwb7" />
                   </>
-                )}
+                }
                 
                 {/* Celestial body */}
                 <div className={`
@@ -160,80 +160,80 @@ export function Component({ practiceSets, onSelectSet, selectedSetId }: SetViewP
                   transition-all duration-500 ease-out shadow-xl
                   bg-gradient-to-br ${colors.primary}
                   ${isSelected || isHovered ? 'shadow-lg shadow-indigo-500/20' : ''}
-                `}>
+                `} data-oid="mu8h6c7">
                   {/* Glow effect */}
                   <div className={`
                     absolute inset-0 opacity-70 mix-blend-soft-light
                     bg-gradient-to-br ${colors.secondary}
-                  `} />
+                  `} data-oid="uiga9l2" />
                   
                   {/* Rings for planets */}
-                  {celestialType === 'planet' && (
-                    <div className={`
+                  {celestialType === 'planet' &&
+                  <div className={`
                       absolute -inset-3 opacity-40 rounded-full
                       bg-gradient-to-r ${colors.ring}
                       blur-md z-0 transform -rotate-12 scale-[0.7]
-                    `} />
-                  )}
+                    `} data-oid="..97:in" />
+                  }
                   
                   {/* Comet tail */}
-                  {celestialType === 'comet' && (
-                    <div className={`
+                  {celestialType === 'comet' &&
+                  <div className={`
                       absolute -right-24 top-1/2 w-32 h-8 -translate-y-1/2
                       bg-gradient-to-l ${colors.ring} blur-md
                       animate-pulse
-                    `} />
-                  )}
+                    `} data-oid="9dct8xd" />
+                  }
                   
                   {/* Content */}
-                  <div className="relative z-10 flex flex-col items-center">
+                  <div className="relative z-10 flex flex-col items-center" data-oid="ydq6pkd">
                     {/* Subject icon */}
-                    <div className={`w-12 h-12 rounded-full ${colors.accent} bg-opacity-30 flex items-center justify-center mb-2`}>
-                      {set.subject === 'Math' ? (
-                        <span className="text-white text-lg">∑</span>
-                      ) : set.subject === 'Reading' ? (
-                        <span className="text-white text-lg">📚</span>
-                      ) : (
-                        <span className="text-white text-lg">✏️</span>
-                      )}
+                    <div className={`w-12 h-12 rounded-full ${colors.accent} bg-opacity-30 flex items-center justify-center mb-2`} data-oid="pmwrjv5">
+                      {set.subject === 'Math' ?
+                      <span className="text-white text-lg" data-oid="3xdeojl">∑</span> :
+                      set.subject === 'Reading' ?
+                      <span className="text-white text-lg" data-oid="iq6aflw">📚</span> :
+
+                      <span className="text-white text-lg" data-oid="emt91a3">✏️</span>
+                      }
                     </div>
                     
                     {/* Set info */}
-                    <h4 className="text-white font-bold">{set.type}</h4>
-                    <p className={`text-xs ${colors.text} mt-1 mb-2`}>{set.difficulty} • {set.questions.length} questions</p>
+                    <h4 className="text-white font-bold" data-oid=".x8.98.">{set.type}</h4>
+                    <p className={`text-xs ${colors.text} mt-1 mb-2`} data-oid="wba5gvw">{set.difficulty} • {set.questions.length} questions</p>
                     
                     {/* Accuracy gauge */}
-                    <div className="w-full max-w-[80%] h-1.5 bg-slate-700/50 rounded-full overflow-hidden mt-2">
-                      <div 
+                    <div className="w-full max-w-[80%] h-1.5 bg-slate-700/50 rounded-full overflow-hidden mt-2" data-oid="vha9scf">
+                      <div
                         className={`h-full ${colors.accent}`}
-                        style={{ width: `${set.accuracy}%` }}
-                      />
+                        style={{ width: `${set.accuracy}%` }} data-oid=".afdjck" />
+
                     </div>
-                    <p className={`text-xs ${colors.text} mt-1`}>{set.accuracy}% accuracy</p>
+                    <p className={`text-xs ${colors.text} mt-1`} data-oid="8:p80hh">{set.accuracy}% accuracy</p>
                     
                     {/* Date */}
-                    <p className="text-slate-400 text-xs mt-2">
+                    <p className="text-slate-400 text-xs mt-2" data-oid="p6aqiyv">
                       {new Date(set.dateCompleted).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 
                 {/* Selection indicator */}
-                {isSelected && (
-                  <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-                )}
-              </div>
-            )
+                {isSelected &&
+                <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)]" data-oid="edxobf9" />
+                }
+              </div>);
+
           })}
         </div>
         
         {/* Observatory base */}
-        <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-800/70 to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 h-1 bg-slate-600" />
+        <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-800/70 to-transparent" data-oid="d4xerr-" />
+        <div className="absolute bottom-0 inset-x-0 h-1 bg-slate-600" data-oid="nc21lca" />
       </div>
       
       {/* CSS Animations */}
-      <style jsx>{`
+      <style jsx data-oid="i.2_evq">{`
         @keyframes twinkle {
           0%, 100% { opacity: 0.1; }
           50% { opacity: 0.7; }
@@ -261,6 +261,6 @@ export function Component({ practiceSets, onSelectSet, selectedSetId }: SetViewP
           animation: spin-slow-reverse 120s linear infinite;
         }
       `}</style>
-    </div>
-  )
+    </div>);
+
 }

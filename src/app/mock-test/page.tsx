@@ -10,14 +10,14 @@ export const revalidate = 3600; // Revalidate every hour
 
 export default function MockTestPage() {
   return (
-    <LayoutProvider>
-      <SelectionProvider>
-        <QuestionProvider>
-          <Suspense fallback={<div className="h-screen bg-white">Loading...</div>}>
-            <QuestionLayout />
+    <LayoutProvider data-oid="fo3oozk">
+      <SelectionProvider data-oid="afj7c40">
+        <QuestionProvider data-oid="777b3yd">
+          <Suspense fallback={<div className="h-screen bg-white" data-oid="a.r6:v5">Loading...</div>} data-oid="8bheshb">
+            <QuestionLayout data-oid="cut27ot" />
           </Suspense>
         </QuestionProvider>
       </SelectionProvider>
-    </LayoutProvider>
-  );
+    </LayoutProvider>);
+
 }

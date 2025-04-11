@@ -11,16 +11,16 @@ export function TipsSection() {
         <p className="text-gray-600 dark:text-gray-300 mb-4">
           Get a good night's sleep, eat a healthy breakfast, and arrive early to your testing location. During the test, manage your time carefully and don't spend too long on any single question.
         </p>
-        <Link 
+        <Link
           href="/resources/test-tips"
-          className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-md transition-all shadow-sm"
-        >
+          className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-md transition-all shadow-sm">
+
           <span>View All Test Day Tips</span>
           <ChevronRight className="h-4 w-4 ml-1" />
         </Link>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 export function WeeklyChallengeBanner() {
@@ -35,13 +35,13 @@ export function WeeklyChallengeBanner() {
           <p className="text-sm text-gray-600 dark:text-gray-300">Complete a full test this week and earn bonus points</p>
         </div>
       </div>
-      <Link 
-        href="/challenges/weekly" 
-        className="inline-flex items-center px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md shadow-sm transition-colors duration-300"
-      >
+      <Link
+        href="/challenges/weekly"
+        className="inline-flex items-center px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md shadow-sm transition-colors duration-300">
+
         <span>View Challenge</span>
         <ChevronRight className="h-4 w-4 ml-1.5" />
       </Link>
-    </div>
-  );
+    </div>);
+
 }

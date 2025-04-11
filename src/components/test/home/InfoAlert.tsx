@@ -16,6 +16,6 @@ export function InfoAlert() {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

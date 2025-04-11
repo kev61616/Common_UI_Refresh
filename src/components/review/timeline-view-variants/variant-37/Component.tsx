@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { RiverDeltaTimeline } from '../RiverDeltaTimeline'
+import { RiverDeltaTimeline } from '../RiverDeltaTimeline';
 
 // Export the component directly
-export default RiverDeltaTimeline
+export default RiverDeltaTimeline;

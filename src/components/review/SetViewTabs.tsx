@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 // Import all modular tab components
 import {
@@ -8,12 +8,12 @@ import {
   MuseumTabs,
   CrystalTabsDemo,
   MuseumTabsDemo,
-  TabProps
-} from './tabs'
+  TabProps } from
+'./tabs';
 
 interface SetViewTabsProps extends TabProps {
-  variant?: 'crystal' | 'museum'
-  showAllVariants?: boolean
+  variant?: 'crystal' | 'museum';
+  showAllVariants?: boolean;
 }
 
 /**
@@ -36,9 +36,9 @@ export function SetViewTabs({
   showAllVariants = false
 }: SetViewTabsProps) {
   // Local state for variant tabs when showing all variants
-  const [crystalTab, setCrystalTab] = useState(0)
-  const [museumTab, setMuseumTab] = useState(0)
-  
+  const [crystalTab, setCrystalTab] = useState(0);
+  const [museumTab, setMuseumTab] = useState(0);
+
   // When showing a single variant, render the appropriate tab component
   if (!showAllVariants) {
     switch (variant) {
@@ -48,18 +48,18 @@ export function SetViewTabs({
             tabLabels={tabLabels}
             activeTab={activeTab}
             onTabChange={onTabChange}
-            className={className}
-          />
-        )
+            className={className} data-oid="k2re0uz" />);
+
+
       case 'museum':
         return (
           <MuseumTabs
             tabLabels={tabLabels}
             activeTab={activeTab}
             onTabChange={onTabChange}
-            className={className}
-          />
-        )
+            className={className} data-oid="ns:amv9" />);
+
+
       default:
         // Default to crystal if variant is not recognized
         return (
@@ -67,30 +67,30 @@ export function SetViewTabs({
             tabLabels={tabLabels}
             activeTab={activeTab}
             onTabChange={onTabChange}
-            className={className}
-          />
-        )
+            className={className} data-oid="x:icdad" />);
+
+
     }
   }
-  
+
   // When showing all variants, render the demo showcase
   return (
-    <div className={className}>
+    <div className={className} data-oid="daybyyr">
       {/* Main tab with selected variant - always Crystal in demo mode */}
       <CrystalTabsDemo
         tabLabels={tabLabels}
         selectedTab={activeTab}
-        onSelectTab={onTabChange}
-      />
+        onSelectTab={onTabChange} data-oid="skzrcj8" />
+
 
       {/* Museum Gallery Variant */}
-      <div className="space-y-2 pt-4">
+      <div className="space-y-2 pt-4" data-oid="e6jvblv">
         <MuseumTabsDemo
           tabLabels={tabLabels}
           selectedTab={museumTab}
-          onSelectTab={setMuseumTab}
-        />
+          onSelectTab={setMuseumTab} data-oid="jh6ze4l" />
+
       </div>
-    </div>
-  )
+    </div>);
+
 }

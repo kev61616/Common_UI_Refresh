@@ -9,25 +9,25 @@ interface LayoutContextType {
 
 const LayoutContext = React.createContext<LayoutContextType>({
   isSATLayout: false,
-  setIsSATLayout: () => {},
+  setIsSATLayout: () => {}
 });
 
-export function LayoutProvider({ children }: { children: React.ReactNode }) {
+export function LayoutProvider({ children }: {children: React.ReactNode;}) {
   const [isSATLayout, setIsSATLayout] = React.useState(false);
 
   const contextValue = React.useMemo(
     () => ({
       isSATLayout,
-      setIsSATLayout,
+      setIsSATLayout
     }),
-    [isSATLayout],
+    [isSATLayout]
   );
 
   return (
     <LayoutContext.Provider value={contextValue}>
       {children}
-    </LayoutContext.Provider>
-  );
+    </LayoutContext.Provider>);
+
 }
 
 export function useLayout() {

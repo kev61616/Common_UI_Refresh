@@ -1,12 +1,12 @@
 'use client';
 
-import { 
-  LightbulbIcon, 
-  BarChart3, 
-  CalendarDays, 
+import {
+  LightbulbIcon,
+  BarChart3,
+  CalendarDays,
   TrendingUp,
-  Target
-} from "lucide-react";
+  Target } from
+"lucide-react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { KnowledgeAreas } from "../shared/KnowledgeAreaProgress";
@@ -53,25 +53,25 @@ export function ProgressSection() {
           Based on your recent performance, we suggest focusing on these areas:
         </p>
         <ul className="space-y-3">
-          {userData.recommendedTopics.map((topic, index) => (
-            <li key={index} className="flex items-start">
+          {userData.recommendedTopics.map((topic, index) =>
+          <li key={index} className="flex items-start">
               <div className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full p-1 mr-2 flex-shrink-0">
                 <Target className="h-4 w-4" />
               </div>
               <span className="text-gray-700 dark:text-gray-300">{topic}</span>
             </li>
-          ))}
+          )}
         </ul>
         <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-          <Link 
+          <Link
             href="/test/continuous-practice/ai-recommended"
-            className="flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
-          >
+            className="flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
+
             <span>Start focused practice</span>
             <ChevronRight className="h-4 w-4 ml-1" />
           </Link>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

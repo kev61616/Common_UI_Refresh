@@ -21,13 +21,13 @@ export default function QuestionLayout() {
   }, [setIsSATLayout]);
 
   return (
-    <div className="relative">
-      <div className="min-h-screen bg-white">
-        <div className="flex flex-col">
-          <Breadcrumb />
-          <div className="mx-auto w-full max-w-screen-xl px-4 py-6">
-            <div className="bg-white border rounded-lg shadow-sm mb-6">
-              <QuestionContent />
+    <div className="relative" data-oid="eh8n6px">
+      <div className="min-h-screen bg-white" data-oid="zx-an4r">
+        <div className="flex flex-col" data-oid="6hx:n2e">
+          <Breadcrumb data-oid="fw06o.o" />
+          <div className="mx-auto w-full max-w-screen-xl px-4 py-6" data-oid="2hn_1du">
+            <div className="bg-white border rounded-lg shadow-sm mb-6" data-oid="8tcv:-o">
+              <QuestionContent data-oid="dekvseg" />
             </div>
           </div>
         </div>
@@ -36,21 +36,21 @@ export default function QuestionLayout() {
       {/* Tool windows */}
       {windows.map(
         (window) =>
-          window.isOpen && (
-            <ToolWindow
-              key={window.id}
-              id={window.id}
-              title={window.title}
-              url={window.url}
-              position={window.position}
-              onClose={() => closeWindow(window.id)}
-              onPositionChange={(pos) => updateWindowPosition(window.id, pos)}
-            />
-          )
+        window.isOpen &&
+        <ToolWindow
+          key={window.id}
+          id={window.id}
+          title={window.title}
+          url={window.url}
+          position={window.position}
+          onClose={() => closeWindow(window.id)}
+          onPositionChange={(pos) => updateWindowPosition(window.id, pos)} data-oid="qvj1bnl" />
+
+
       )}
 
       {/* Word definition popup that appears when double-clicking on words */}
-      <WordDefinitionPopup />
-    </div>
-  );
+      <WordDefinitionPopup data-oid="noa3skw" />
+    </div>);
+
 }

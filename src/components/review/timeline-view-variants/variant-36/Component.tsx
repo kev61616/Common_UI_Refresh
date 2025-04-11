@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { TrainJourneyTimeline } from '../TrainJourneyTimeline'
+import { TrainJourneyTimeline } from '../TrainJourneyTimeline';
 
 // Export the component directly
-export default TrainJourneyTimeline
+export default TrainJourneyTimeline;

@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { SpiralGalaxyTimeline } from '../SpiralGalaxyTimeline'
+import { SpiralGalaxyTimeline } from '../SpiralGalaxyTimeline';
 
 // Export the component directly
-export default SpiralGalaxyTimeline
+export default SpiralGalaxyTimeline;

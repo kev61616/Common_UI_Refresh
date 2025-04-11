@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 // Import interface
 import { TimelineViewProps } from './types';
@@ -65,12 +65,12 @@ function renderPlaceholder(props: TimelineViewProps, title: string, description:
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {props.practiceSets.slice(0, 4).map(set => (
-              <div 
-                key={set.id}
-                onClick={() => props.onSelectSet(set.id)} 
-                className="p-3 bg-white dark:bg-slate-800 rounded-lg shadow cursor-pointer hover:shadow-md transition-shadow"
-              >
+            {props.practiceSets.slice(0, 4).map((set) =>
+            <div
+              key={set.id}
+              onClick={() => props.onSelectSet(set.id)}
+              className="p-3 bg-white dark:bg-slate-800 rounded-lg shadow cursor-pointer hover:shadow-md transition-shadow">
+
                 <div className="font-medium">{set.subject}: {set.type}</div>
                 <div className="flex justify-between mt-2">
                   <div className="text-sm">{set.accuracy}% accuracy</div>
@@ -79,10 +79,10 @@ function renderPlaceholder(props: TimelineViewProps, title: string, description:
                   </div>
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

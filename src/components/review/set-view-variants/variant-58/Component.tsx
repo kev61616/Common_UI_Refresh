@@ -1,5 +1,5 @@
-'use client'
+'use client';
 
-import { AncientCivilizationView } from '../AncientCivilizationView'
+import { AncientCivilizationView } from '../AncientCivilizationView';
 
-export default AncientCivilizationView
+export default AncientCivilizationView;

@@ -1,20 +1,20 @@
-import { Metadata } from 'next'
-import { Suspense } from 'react'
-import { TabsDemo } from '@/components/review/tabs/TabsDemo'
+import { Metadata } from 'next';
+import { Suspense } from 'react';
+import { TabsDemo } from '@/components/review/tabs/TabsDemo';
 
 export const metadata: Metadata = {
   title: 'Tab Component Demo - Syntax',
-  description: 'Interactive showcase of tab component variants with different visual themes',
-}
+  description: 'Interactive showcase of tab component variants with different visual themes'
+};
 
 // Loading spinner component for Suspense fallback
 function TabsDemoLoading() {
   return (
-    <div className="flex justify-center items-center min-h-[50vh]">
-      <div className="h-8 w-8 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin mb-4"></div>
-      <p className="text-slate-600 dark:text-slate-400 ml-3">Loading tab components...</p>
-    </div>
-  );
+    <div className="flex justify-center items-center min-h-[50vh]" data-oid="rnpg.1f">
+      <div className="h-8 w-8 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin mb-4" data-oid="gzjcaq2"></div>
+      <p className="text-slate-600 dark:text-slate-400 ml-3" data-oid="bf2teyc">Loading tab components...</p>
+    </div>);
+
 }
 
 /**
@@ -28,8 +28,8 @@ function TabsDemoLoading() {
  */
 export default function TabsDemoPage() {
   return (
-    <Suspense fallback={<TabsDemoLoading />}>
-      <TabsDemo />
-    </Suspense>
-  )
+    <Suspense fallback={<TabsDemoLoading data-oid="k8cpa8v" />} data-oid="9q:xqjx">
+      <TabsDemo data-oid="u3:ubou" />
+    </Suspense>);
+
 }

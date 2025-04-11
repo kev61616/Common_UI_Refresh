@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { WeatherPatternTimeline } from '../WeatherPatternTimeline'
+import { WeatherPatternTimeline } from '../WeatherPatternTimeline';
 
 // Export the component directly
-export default WeatherPatternTimeline
+export default WeatherPatternTimeline;

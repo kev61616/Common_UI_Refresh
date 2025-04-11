@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { initialFilters } from './filterData';
@@ -49,15 +49,15 @@ export function FilterProvider({
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   // Update a specific filter
-  const updateFilter = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
+  const updateFilter = <K extends keyof FilterState,>(key: K, value: FilterState[K]) => {
     console.log(`Updating filter ${String(key)}:`, value);
-    
+
     // Create new filters object
     const newFilters = { ...filters, [key]: value };
-    
+
     // Update state
     setFilters(newFilters);
-    
+
     // Call the callback if provided, but in a setTimeout to avoid the React warning
     // about updating during render
     if (onFiltersChanged) {
@@ -71,12 +71,12 @@ export function FilterProvider({
   const resetFilters = () => {
     console.log('Resetting all filters');
     setFilters(initialState);
-    
+
     // Call the callbacks if provided
     if (onFiltersChanged) {
       onFiltersChanged(initialState);
     }
-    
+
     if (onResetFilters) {
       onResetFilters();
     }
@@ -92,10 +92,10 @@ export function FilterProvider({
   };
 
   return (
-    <FilterContext.Provider value={value}>
+    <FilterContext.Provider value={value} data-oid="i2e5im4">
       {children}
-    </FilterContext.Provider>
-  );
+    </FilterContext.Provider>);
+
 }
 
 /**
@@ -104,10 +104,10 @@ export function FilterProvider({
  */
 export function useFilters() {
   const context = useContext(FilterContext);
-  
+
   if (context === undefined) {
     throw new Error('useFilters must be used within a FilterProvider');
   }
-  
+
   return context;
 }

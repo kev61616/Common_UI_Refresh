@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import { PracticeSet } from '@/lib/mockData'
-import { ListView } from '@/components/review/ListView'
-import { ListView2 } from '@/components/review/ListView2'
-import { ListView3 } from '@/components/review/ListView3'
-import { ListView4 } from '@/components/review/ListView4'
-import { getSetViewVariant } from './set-view-variants'
+import { PracticeSet } from '@/lib/mockData';
+import { ListView } from '@/components/review/ListView';
+import { ListView2 } from '@/components/review/ListView2';
+import { ListView3 } from '@/components/review/ListView3';
+import { ListView4 } from '@/components/review/ListView4';
+import { getSetViewVariant } from './set-view-variants';
 
 // Define view types
-export type SetViewVariant = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30
+export type SetViewVariant = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30;
 
 interface SetViewVariantsProps {
-  variant: SetViewVariant
-  practiceSets: PracticeSet[]
-  onSelectSet: (id: string) => void
-  selectedSetId: string | null
+  variant: SetViewVariant;
+  practiceSets: PracticeSet[];
+  onSelectSet: (id: string) => void;
+  selectedSetId: string | null;
 }
 
 /**
@@ -22,8 +22,8 @@ interface SetViewVariantsProps {
  * The implementation has been modularized for better maintainability
  * Each view variant is in a separate file in the set-view-variants directory
  */
-export function SetViewVariants({ 
-  variant, 
+export function SetViewVariants({
+  variant,
   practiceSets,
   onSelectSet,
   selectedSetId
@@ -34,48 +34,48 @@ export function SetViewVariants({
     switch (variant) {
       case 1: // Standard Card View
         return (
-          <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
-            <h3 className="text-xl font-bold mb-6 text-center">1. Standard Cards View</h3>
-            <ListView 
+          <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-oid="gqfqwt3">
+            <h3 className="text-xl font-bold mb-6 text-center" data-oid="ouotf4e">1. Standard Cards View</h3>
+            <ListView
               practiceSets={practiceSets}
               onSelectSet={onSelectSet}
-              selectedSetId={selectedSetId}
-            />
-          </div>
-        );
+              selectedSetId={selectedSetId} data-oid="8wty6pr" />
+
+          </div>);
+
       case 2: // Compact Table/Grid View
         return (
-          <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
-            <h3 className="text-xl font-bold mb-6 text-center">2. Compact Table/Grid View</h3>
+          <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-oid="gjh:3y4">
+            <h3 className="text-xl font-bold mb-6 text-center" data-oid="bpl5bb8">2. Compact Table/Grid View</h3>
             <ListView2
               practiceSets={practiceSets}
               onSelectSet={onSelectSet}
-              selectedSetId={selectedSetId}
-            />
-          </div>
-        );
+              selectedSetId={selectedSetId} data-oid="af8pei7" />
+
+          </div>);
+
       case 3: // Timeline-Inspired View
         return (
-          <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
-            <h3 className="text-xl font-bold mb-6 text-center">3. Timeline-Inspired View</h3>
+          <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-oid="mwutc9x">
+            <h3 className="text-xl font-bold mb-6 text-center" data-oid="ci_93bc">3. Timeline-Inspired View</h3>
             <ListView3
               practiceSets={practiceSets}
               onSelectSet={onSelectSet}
-              selectedSetId={selectedSetId}
-            />
-          </div>
-        );
+              selectedSetId={selectedSetId} data-oid="7xg72.o" />
+
+          </div>);
+
       case 4: // Masonry Grid
         return (
-          <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
-            <h3 className="text-xl font-bold mb-6 text-center">4. Masonry Grid View</h3>
+          <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-oid="oc9dpfd">
+            <h3 className="text-xl font-bold mb-6 text-center" data-oid="p6k9hlo">4. Masonry Grid View</h3>
             <ListView4
               practiceSets={practiceSets}
               onSelectSet={onSelectSet}
-              selectedSetId={selectedSetId}
-            />
-          </div>
-        );
+              selectedSetId={selectedSetId} data-oid="8b4b5cu" />
+
+          </div>);
+
       default:
         return null; // Should never happen since we're checking variant <= 4
     }

@@ -9,9 +9,9 @@ function Skeleton({
   return (
     <div
       className={cn("animate-pulse rounded-md bg-gray-200", className)}
-      {...props}
-    />
-  );
+      {...props} />);
+
+
 }
 
 export { Skeleton };

@@ -33,16 +33,16 @@ export function IntroSection() {
                 Detailed Scoring
               </div>
             </div>
-            <Link 
+            <Link
               href="/test/full-test/about"
-              className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
-            >
+              className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+
               <span>Learn more about our test format</span>
               <ArrowRight className="h-4 w-4 ml-1" />
             </Link>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

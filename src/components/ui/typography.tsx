@@ -1,79 +1,69 @@
-import { cn } from "@/lib/utils"
-import { cva, type VariantProps } from "class-variance-authority"
-import * as React from "react"
+import { cn } from "@/lib/utils";
+import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
+// Import from our ESM module
+import * as typography from "../../config/typography.mjs";
 
+// Define variant type based on available typography variants
+type TypographyVariant = keyof typeof typography.typographyVariants;
+
+// Import variant classes from the centralized typography configuration
 const typographyVariants = cva("text-foreground", {
   variants: {
-    variant: {
-      // Reverted: Map semantic variants directly to Tailwind scale classes
-      h1: "scroll-m-20 text-5xl font-bold tracking-tight", // h1 -> 5xl
-      h2: "scroll-m-20 border-b pb-2 text-4xl font-semibold tracking-tight first:mt-0", // h2 -> 4xl
-      h3: "scroll-m-20 text-3xl font-semibold tracking-tight", // h3 -> 3xl
-      h4: "scroll-m-20 text-2xl font-semibold tracking-tight", // h4 -> 2xl
-      h5: "scroll-m-20 text-xl font-semibold tracking-tight", // h5 -> xl
-      h6: "scroll-m-20 text-lg font-semibold tracking-tight", // h6 -> lg
-      p: "text-base leading-7 [&:not(:first-child)]:mt-6", // p -> base (default)
-      blockquote: "mt-6 border-l-2 pl-6 italic text-base", // blockquote -> base
-      list: "my-6 ml-6 list-disc text-base [&>li]:mt-2", // list -> base
-      lead: "text-lg text-foreground", // lead -> lg
-      large: "text-lg font-semibold", // large -> lg
-      small: "text-sm font-medium leading-tight", // small -> sm
-      muted: "text-sm text-muted-foreground", // muted -> sm
-    },
+    variant: typography.getTypographyVariantClasses() as Record<string, string>,
     weight: {
       normal: "font-normal",
       medium: "font-medium",
       semibold: "font-semibold",
-      bold: "font-bold",
+      bold: "font-bold"
     },
     font: {
       default: "font-sans",
       heading: "font-sans",
-      mono: "font-mono",
-    },
+      mono: "font-mono"
+    }
   },
   defaultVariants: {
     variant: "p",
     weight: "normal",
-    font: "default",
-  },
-})
+    font: "default"
+  }
+});
 
-export interface TypographyProps
-  extends React.HTMLAttributes<HTMLParagraphElement>,
-    VariantProps<typeof typographyVariants> {}
+export interface TypographyProps extends 
+  Omit<React.HTMLAttributes<HTMLElement>, "as">, 
+  Omit<VariantProps<typeof typographyVariants>, 'variant'> {
+    variant?: TypographyVariant;
+}
 
+// Using a more versatile approach to handle different element types
 const Typography = React.forwardRef<HTMLElement, TypographyProps>(
-  ({ className, variant, weight, font, ...props }, ref) => {
-    const Component = 
-      variant === 'blockquote' 
-        ? 'blockquote' 
-        : variant === 'list' 
-          ? 'ul' 
-          : variant === 'h1' 
-            ? 'h1'
-          : variant === 'h2' 
-            ? 'h2'
-          : variant === 'h3' 
-            ? 'h3'
-          : variant === 'h4' 
-            ? 'h4'
-          : variant === 'h5' 
-            ? 'h5'
-          : variant === 'h6' 
-            ? 'h6'
-          : 'p'
-    
+  ({ className, variant = "p", weight, font, ...props }, ref) => {
+    const Comp = React.useMemo(() => {
+      switch(variant) {
+        case 'h1': return 'h1';
+        case 'h2': return 'h2';
+        case 'h3': return 'h3';
+        case 'h4': return 'h4';
+        case 'h5': return 'h5';
+        case 'h6': return 'h6';
+        case 'blockquote': return 'blockquote';
+        case 'list': return 'ul';
+        default: return 'p';
+      }
+    }, [variant]);
+
     return React.createElement(
-      Component,
+      Comp,
       {
         className: cn(typographyVariants({ variant, weight, font, className })),
         ref,
         ...props
       }
-    )
+    );
   }
-)
-Typography.displayName = "Typography"
+);
 
-export { Typography, typographyVariants }
+Typography.displayName = "Typography";
+
+export { Typography, typographyVariants };

@@ -1,109 +1,109 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect, useRef } from 'react'
-import { PracticeSet } from '@/lib/mockData'
-import { TimelineViewProps } from './types'
-import { format, parseISO, differenceInDays } from 'date-fns'
+import React, { useState, useEffect, useRef } from 'react';
+import { PracticeSet } from '@/lib/mockData';
+import { TimelineViewProps } from './types';
+import { format, parseISO, differenceInDays } from 'date-fns';
 
 export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
   practiceSets,
   onSelectSet,
   selectedSetId
 }) => {
-  const [sortedSets, setSortedSets] = useState<PracticeSet[]>([])
-  const [hoverSetId, setHoverSetId] = useState<string | null>(null)
-  const [selectedRingId, setSelectedRingId] = useState<string | null>(null)
-  const [groupedSetsByMonth, setGroupedSetsByMonth] = useState<Record<string, PracticeSet[]>>({})
-  const [ringAnimations, setRingAnimations] = useState<boolean>(false)
-  const svgRef = useRef<SVGSVGElement>(null)
+  const [sortedSets, setSortedSets] = useState<PracticeSet[]>([]);
+  const [hoverSetId, setHoverSetId] = useState<string | null>(null);
+  const [selectedRingId, setSelectedRingId] = useState<string | null>(null);
+  const [groupedSetsByMonth, setGroupedSetsByMonth] = useState<Record<string, PracticeSet[]>>({});
+  const [ringAnimations, setRingAnimations] = useState<boolean>(false);
+  const svgRef = useRef<SVGSVGElement>(null);
 
   // Process and group practice sets
   useEffect(() => {
     // Sort sets by date (oldest to newest)
-    const sorted = [...practiceSets].sort((a, b) => 
-      new Date(a.dateCompleted).getTime() - new Date(b.dateCompleted).getTime()
-    )
-    setSortedSets(sorted)
-    
+    const sorted = [...practiceSets].sort((a, b) =>
+    new Date(a.dateCompleted).getTime() - new Date(b.dateCompleted).getTime()
+    );
+    setSortedSets(sorted);
+
     // Group by month
-    const grouped: Record<string, PracticeSet[]> = {}
-    sorted.forEach(set => {
-      const date = parseISO(set.dateCompleted)
-      const monthYear = format(date, 'MMMM yyyy')
-      
+    const grouped: Record<string, PracticeSet[]> = {};
+    sorted.forEach((set) => {
+      const date = parseISO(set.dateCompleted);
+      const monthYear = format(date, 'MMMM yyyy');
+
       if (!grouped[monthYear]) {
-        grouped[monthYear] = []
+        grouped[monthYear] = [];
       }
-      
-      grouped[monthYear].push(set)
-    })
-    
-    setGroupedSetsByMonth(grouped)
-    
+
+      grouped[monthYear].push(set);
+    });
+
+    setGroupedSetsByMonth(grouped);
+
     // Start ring animations after a short delay
     setTimeout(() => {
-      setRingAnimations(true)
-    }, 300)
-  }, [practiceSets])
+      setRingAnimations(true);
+    }, 300);
+  }, [practiceSets]);
 
   // Calculate ring properties for visualization
   const calculateRingProperties = () => {
-    const centerX = 500 // SVG center X coordinate
-    const centerY = 500 // SVG center Y coordinate
-    const innerRadius = 100 // Smallest ring (core)
-    const maxRadius = 450 // Largest ring
-    
+    const centerX = 500; // SVG center X coordinate
+    const centerY = 500; // SVG center Y coordinate
+    const innerRadius = 100; // Smallest ring (core)
+    const maxRadius = 450; // Largest ring
+
     const ringProperties: {
-      id: string,
-      label: string,
-      radius: number,
-      color: string,
-      width: number,
-      dashArray: string,
-      rotation: number,
-      isSelected: boolean,
-      isHovered: boolean,
-      set: PracticeSet
-    }[] = []
-    
+      id: string;
+      label: string;
+      radius: number;
+      color: string;
+      width: number;
+      dashArray: string;
+      rotation: number;
+      isSelected: boolean;
+      isHovered: boolean;
+      set: PracticeSet;
+    }[] = [];
+
     // Calculate available radius space
-    const availableRadius = maxRadius - innerRadius
-    const ringCount = sortedSets.length
-    
+    const availableRadius = maxRadius - innerRadius;
+    const ringCount = sortedSets.length;
+
     // Calculate individual ring properties
     sortedSets.forEach((set, index) => {
-      const position = index / (ringCount || 1) // normalized position 0-1
-      const radius = innerRadius + (position * availableRadius)
-      
+      const position = index / (ringCount || 1); // normalized position 0-1
+      const radius = innerRadius + position * availableRadius;
+
       // Generate color based on subject
-      const color = set.subject === 'Math' ? '#3b82f6' : 
-                  set.subject === 'Reading' ? '#10b981' : 
-                  set.subject === 'Writing' ? '#f59e0b' : 
-                  '#64748b'
-      
+      const color = set.subject === 'Math' ? '#3b82f6' :
+      set.subject === 'Reading' ? '#10b981' :
+      set.subject === 'Writing' ? '#f59e0b' :
+      '#64748b';
+
       // Calculate ring width based on question count (more questions = wider ring)
-      const baseWidth = 4 // base width in pixels
-      const questionFactor = Math.min(set.questions.length / 10, 2.5) // cap at 2.5x base width
-      const width = baseWidth * (1 + questionFactor)
-      
+      const baseWidth = 4; // base width in pixels
+      const questionFactor = Math.min(set.questions.length / 10, 2.5); // cap at 2.5x base width
+      const width = baseWidth * (1 + questionFactor);
+
       // Generate dash array based on accuracy (higher accuracy = more solid ring)
-      const dashLength = set.accuracy < 60 ? '4 2' : 
-                        set.accuracy < 75 ? '8 2' : 
-                        set.accuracy < 90 ? '12 1' : 
-                        'none' // solid ring for high accuracy
-      
+      const dashLength = set.accuracy < 60 ? '4 2' :
+      set.accuracy < 75 ? '8 2' :
+      set.accuracy < 90 ? '12 1' :
+      'none'; // solid ring for high accuracy
+
       // Calculate rotation based on date
-      const dateObj = parseISO(set.dateCompleted)
-      const dayOfYear = differenceInDays(dateObj, new Date(dateObj.getFullYear(), 0, 1))
-      const rotation = (dayOfYear / 365) * 360 // convert to degrees
-      
+      const dateObj = parseISO(set.dateCompleted);
+      const dayOfYear = differenceInDays(dateObj, new Date(dateObj.getFullYear(), 0, 1));
+      const rotation = dayOfYear / 365 * 360; // convert to degrees
+
       // Check if selected
-      const isSelected = set.id === selectedSetId
-      const isHovered = set.id === hoverSetId
-      
+      const isSelected = set.id === selectedSetId;
+      const isHovered = set.id === hoverSetId;
+
       // Generate ring label
-      const label = `${set.subject}: ${set.type}`
-      
+      const label = `${set.subject}: ${set.type}`;
+
       // Add to properties array
       ringProperties.push({
         id: set.id,
@@ -116,34 +116,34 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
         isSelected,
         isHovered,
         set
-      })
-    })
-    
-    return ringProperties
-  }
+      });
+    });
+
+    return ringProperties;
+  };
 
   // Draw a single tree ring
   const drawRing = (props: {
-    id: string,
-    radius: number,
-    color: string,
-    width: number,
-    dashArray: string,
-    rotation: number,
-    isSelected: boolean,
-    isHovered: boolean
+    id: string;
+    radius: number;
+    color: string;
+    width: number;
+    dashArray: string;
+    rotation: number;
+    isSelected: boolean;
+    isHovered: boolean;
   }) => {
-    const { id, radius, color, width, dashArray, rotation, isSelected, isHovered } = props
-    const centerX = 500
-    const centerY = 500
-    
+    const { id, radius, color, width, dashArray, rotation, isSelected, isHovered } = props;
+    const centerX = 500;
+    const centerY = 500;
+
     // Create ring path
     return (
-      <g 
-        key={id} 
+      <g
+        key={id}
         className="tree-ring"
-        transform={`rotate(${rotation}, ${centerX}, ${centerY})`}
-      >
+        transform={`rotate(${rotation}, ${centerX}, ${centerY})`}>
+
         <circle
           id={`ring-${id}`}
           cx={centerX}
@@ -156,8 +156,8 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
           opacity={isSelected ? 1 : isHovered ? 0.9 : 0.7}
           className={`${isSelected ? 'ring-glow' : ''} ${ringAnimations ? 'animate-ring-grow' : ''}`}
           onClick={() => {
-            onSelectSet?.(id)
-            setSelectedRingId(id)
+            onSelectSet?.(id);
+            setSelectedRingId(id);
           }}
           onMouseEnter={() => setHoverSetId(id)}
           onMouseLeave={() => setHoverSetId(null)}
@@ -165,44 +165,44 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
             cursor: 'pointer',
             filter: isSelected ? `drop-shadow(0 0 3px ${color})` : 'none',
             strokeWidth: isSelected || isHovered ? width * 1.5 : width,
-            transition: 'stroke-width 0.3s ease, opacity 0.3s ease',
-          }}
-        />
-      </g>
-    )
-  }
+            transition: 'stroke-width 0.3s ease, opacity 0.3s ease'
+          }} />
+
+      </g>);
+
+  };
 
   // Generate growth nodes (smaller circles) on rings
   const generateGrowthNodes = (props: {
-    id: string,
-    radius: number,
-    color: string,
-    set: PracticeSet,
-    isSelected: boolean
+    id: string;
+    radius: number;
+    color: string;
+    set: PracticeSet;
+    isSelected: boolean;
   }) => {
-    const { id, radius, color, set, isSelected } = props
-    const centerX = 500
-    const centerY = 500
-    const nodes = []
-    
+    const { id, radius, color, set, isSelected } = props;
+    const centerX = 500;
+    const centerY = 500;
+    const nodes = [];
+
     // Generate 3-5 nodes based on accuracy
-    const nodeCount = Math.ceil(set.accuracy / 25) + 2 // 3-5 nodes
-    
+    const nodeCount = Math.ceil(set.accuracy / 25) + 2; // 3-5 nodes
+
     for (let i = 0; i < nodeCount; i++) {
       // Position nodes at random angles
-      const angle = (i / nodeCount) * Math.PI * 2 // distribute evenly
-      const jitter = (Math.random() - 0.5) * 0.2 // add slight randomness
-      const finalAngle = angle + jitter
-      
+      const angle = i / nodeCount * Math.PI * 2; // distribute evenly
+      const jitter = (Math.random() - 0.5) * 0.2; // add slight randomness
+      const finalAngle = angle + jitter;
+
       // Calculate node position
-      const x = centerX + Math.cos(finalAngle) * radius
-      const y = centerY + Math.sin(finalAngle) * radius
-      
+      const x = centerX + Math.cos(finalAngle) * radius;
+      const y = centerY + Math.sin(finalAngle) * radius;
+
       // Node size based on question count for that subject
-      const questionsOfType = set.questions.filter(q => q.topic === set.type).length
-      const baseSize = 2
-      const size = baseSize + (questionsOfType / 10)
-      
+      const questionsOfType = set.questions.filter((q) => q.topic === set.type).length;
+      const baseSize = 2;
+      const size = baseSize + questionsOfType / 10;
+
       nodes.push(
         <circle
           key={`node-${id}-${i}`}
@@ -211,63 +211,63 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
           r={size}
           fill={color}
           opacity={isSelected ? 1 : 0.8}
-          className={isSelected ? 'animate-pulse' : ''}
-        />
-      )
+          className={isSelected ? 'animate-pulse' : ''} />
+
+      );
     }
-    
-    return nodes
-  }
+
+    return nodes;
+  };
 
   // Format date for display
   const formatDate = (dateString: string) => {
-    const date = parseISO(dateString)
-    return format(date, 'MMM d, yyyy')
-  }
+    const date = parseISO(dateString);
+    return format(date, 'MMM d, yyyy');
+  };
 
   // Get growth condition text based on accuracy
   const getGrowthCondition = (accuracy: number) => {
-    if (accuracy >= 90) return 'Optimal Growth'
-    if (accuracy >= 75) return 'Healthy Growth'
-    if (accuracy >= 60) return 'Moderate Growth'
-    return 'Stunted Growth'
-  }
+    if (accuracy >= 90) return 'Optimal Growth';
+    if (accuracy >= 75) return 'Healthy Growth';
+    if (accuracy >= 60) return 'Moderate Growth';
+    return 'Stunted Growth';
+  };
 
   // Get season based on month
   const getSeason = (dateString: string) => {
-    const date = parseISO(dateString)
-    const month = date.getMonth()
-    
+    const date = parseISO(dateString);
+    const month = date.getMonth();
+
     // Northern hemisphere seasons
-    if (month >= 2 && month <= 4) return 'Spring'
-    if (month >= 5 && month <= 7) return 'Summer'
-    if (month >= 8 && month <= 10) return 'Fall'
-    return 'Winter'
-  }
+    if (month >= 2 && month <= 4) return 'Spring';
+    if (month >= 5 && month <= 7) return 'Summer';
+    if (month >= 8 && month <= 10) return 'Fall';
+    return 'Winter';
+  };
 
   // Get ring pattern description based on properties
   const getRingPattern = (set: PracticeSet) => {
-    const patterns = []
-    
+    const patterns = [];
+
     // Accuracy affects ring density
-    if (set.accuracy >= 90) patterns.push('dense')
-    else if (set.accuracy >= 75) patterns.push('healthy')
-    else if (set.accuracy >= 60) patterns.push('normal')
-    else patterns.push('sparse')
-    
+    if (set.accuracy >= 90) patterns.push('dense');else
+    if (set.accuracy >= 75) patterns.push('healthy');else
+    if (set.accuracy >= 60) patterns.push('normal');else
+    patterns.push('sparse');
+
     // Difficulty affects ring evenness
-    if (set.difficulty === 'Easy') patterns.push('even')
-    else if (set.difficulty === 'Medium') patterns.push('slightly varied')
-    else patterns.push('uneven')
-    
+    if (set.difficulty === 'Easy') patterns.push('even');else
+    if (set.difficulty === 'Medium') patterns.push('slightly varied');else
+    patterns.push('uneven');
+
     // Pace affects ring width
-    if (set.pace === 'Fast') patterns.push('thin')
-    else if (set.pace === 'Slow') patterns.push('thick')
-    else patterns.push('medium-width')
-    
-    return patterns.join(', ')
-  }
-  
+    if (set.pace === 'Fast') patterns.push('thin');else
+    if (set.pace === 'Slow') patterns.push('thick');else
+    patterns.push('medium-width');
+
+    return patterns.join(', ');
+  };
+
   // Get colors for the tree cross-section based on subjects
   const getTreeColors = () => {
     const subjectCounts = {
@@ -275,52 +275,52 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
       Reading: 0,
       Writing: 0,
       Other: 0
-    }
-    
-    practiceSets.forEach(set => {
-      if (set.subject === 'Math') subjectCounts.Math++
-      else if (set.subject === 'Reading') subjectCounts.Reading++
-      else if (set.subject === 'Writing') subjectCounts.Writing++
-      else subjectCounts.Other++
-    })
-    
-    const total = Object.values(subjectCounts).reduce((sum, count) => sum + count, 0)
-    if (total === 0) return { heartwood: '#8B4513', sapwood: '#D2B48C' }
-    
+    };
+
+    practiceSets.forEach((set) => {
+      if (set.subject === 'Math') subjectCounts.Math++;else
+      if (set.subject === 'Reading') subjectCounts.Reading++;else
+      if (set.subject === 'Writing') subjectCounts.Writing++;else
+      subjectCounts.Other++;
+    });
+
+    const total = Object.values(subjectCounts).reduce((sum, count) => sum + count, 0);
+    if (total === 0) return { heartwood: '#8B4513', sapwood: '#D2B48C' };
+
     // Determine dominant subject for heartwood color
-    const dominant = Object.entries(subjectCounts)
-      .sort(([, countA], [, countB]) => countB - countA)[0][0]
-    
+    const dominant = Object.entries(subjectCounts).
+    sort(([, countA], [, countB]) => countB - countA)[0][0];
+
     // Set colors based on dominant subject
     const colors = {
-      heartwood: dominant === 'Math' ? '#1d4ed8' : 
-                dominant === 'Reading' ? '#065f46' : 
-                dominant === 'Writing' ? '#b45309' : 
-                '#8B4513',
-      sapwood: dominant === 'Math' ? '#93c5fd' : 
-              dominant === 'Reading' ? '#6ee7b7' : 
-              dominant === 'Writing' ? '#fcd34d' : 
-              '#D2B48C'
-    }
-    
-    return colors
-  }
-  
+      heartwood: dominant === 'Math' ? '#1d4ed8' :
+      dominant === 'Reading' ? '#065f46' :
+      dominant === 'Writing' ? '#b45309' :
+      '#8B4513',
+      sapwood: dominant === 'Math' ? '#93c5fd' :
+      dominant === 'Reading' ? '#6ee7b7' :
+      dominant === 'Writing' ? '#fcd34d' :
+      '#D2B48C'
+    };
+
+    return colors;
+  };
+
   // Generate tree bark texture pattern
   const generateBarkPattern = () => {
-    const barkLines = []
-    const lineCount = 40
-    
+    const barkLines = [];
+    const lineCount = 40;
+
     for (let i = 0; i < lineCount; i++) {
       // Randomize bark line properties
-      const startX = Math.random() * 1000
-      const startY = Math.random() * 1000
-      const length = 20 + Math.random() * 80
-      const angle = Math.random() * Math.PI
-      const endX = startX + Math.cos(angle) * length
-      const endY = startY + Math.sin(angle) * length
-      const width = 1 + Math.random() * 2
-      
+      const startX = Math.random() * 1000;
+      const startY = Math.random() * 1000;
+      const length = 20 + Math.random() * 80;
+      const angle = Math.random() * Math.PI;
+      const endX = startX + Math.cos(angle) * length;
+      const endY = startY + Math.sin(angle) * length;
+      const width = 1 + Math.random() * 2;
+
       barkLines.push(
         <line
           key={`bark-${i}`}
@@ -330,27 +330,27 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
           y2={endY}
           stroke="#5d4037"
           strokeWidth={width}
-          opacity={0.6 + Math.random() * 0.4}
-        />
-      )
+          opacity={0.6 + Math.random() * 0.4} />
+
+      );
     }
-    
+
     return (
       <pattern
         id="barkPattern"
         patternUnits="userSpaceOnUse"
         width="100"
-        height="100"
-      >
+        height="100">
+
         <rect width="100" height="100" fill="#8B4513" />
         {barkLines}
-      </pattern>
-    )
-  }
+      </pattern>);
+
+  };
 
   // Render view
-  const ringProperties = calculateRingProperties()
-  const treeColors = getTreeColors()
+  const ringProperties = calculateRingProperties();
+  const treeColors = getTreeColors();
 
   return (
     <div className="tree-rings-timeline space-y-6 pb-8">
@@ -462,12 +462,12 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
         {/* Tree rings visualization */}
         <div className="tree-visualization lg:col-span-2 bg-white dark:bg-slate-800 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
           <div className="relative">
-            <svg 
-              ref={svgRef} 
-              width="100%" 
-              viewBox="0 0 1000 1000" 
-              className="max-h-[700px]"
-            >
+            <svg
+              ref={svgRef}
+              width="100%"
+              viewBox="0 0 1000 1000"
+              className="max-h-[700px]">
+
               {/* Define patterns */}
               <defs>
                 {generateBarkPattern()}
@@ -479,8 +479,8 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
                 cy="500"
                 r="480"
                 fill="url(#barkPattern)"
-                className="bark-ring"
-              />
+                className="bark-ring" />
+
               
               {/* Sapwood layer */}
               <circle
@@ -490,8 +490,8 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
                 fill={treeColors.sapwood}
                 opacity="0.8"
                 className={ringAnimations ? 'animate-ring-grow' : ''}
-                style={{ animationDelay: '0.3s' }}
-              />
+                style={{ animationDelay: '0.3s' }} />
+
               
               {/* Heartwood */}
               <circle
@@ -501,14 +501,14 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
                 fill={treeColors.heartwood}
                 opacity="0.6"
                 className={ringAnimations ? 'animate-ring-grow' : ''}
-                style={{ animationDelay: '0.6s' }}
-              />
+                style={{ animationDelay: '0.6s' }} />
+
               
               {/* Tree rings */}
-              {ringProperties.map(props => drawRing(props))}
+              {ringProperties.map((props) => drawRing(props))}
               
               {/* Growth nodes */}
-              {ringProperties.map(props => generateGrowthNodes(props))}
+              {ringProperties.map((props) => generateGrowthNodes(props))}
             </svg>
           </div>
         </div>
@@ -517,25 +517,25 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
         <div className="timeline-details col-span-1">
           {/* Month sections */}
           <div className="space-y-6">
-            {Object.entries(groupedSetsByMonth).map(([month, sets]) => (
-              <div 
-                key={month} 
-                className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden"
-              >
+            {Object.entries(groupedSetsByMonth).map(([month, sets]) =>
+            <div
+              key={month}
+              className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+
                 <div className="px-4 py-3 bg-slate-100 dark:bg-slate-700">
                   <h3 className="font-medium text-slate-800 dark:text-slate-200">{month} Growth</h3>
                 </div>
                 
                 <div className="divide-y divide-slate-200 dark:divide-slate-700">
-                  {sets.map(set => (
-                    <div 
-                      key={set.id}
-                      className={`px-4 py-3 transition-colors cursor-pointer
+                  {sets.map((set) =>
+                <div
+                  key={set.id}
+                  className={`px-4 py-3 transition-colors cursor-pointer
                         ${set.id === selectedSetId ? 'bg-amber-50 dark:bg-amber-900/20' : 'hover:bg-slate-50 dark:hover:bg-slate-700/50'}`}
-                      onClick={() => onSelectSet?.(set.id)}
-                      onMouseEnter={() => setHoverSetId(set.id)}
-                      onMouseLeave={() => setHoverSetId(null)}
-                    >
+                  onClick={() => onSelectSet?.(set.id)}
+                  onMouseEnter={() => setHoverSetId(set.id)}
+                  onMouseLeave={() => setHoverSetId(null)}>
+
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="font-medium text-slate-800 dark:text-slate-200">
@@ -547,12 +547,12 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
                         </div>
                         
                         <div className="flex flex-col items-end">
-                          <div 
-                            className={`px-2 py-0.5 rounded text-xs font-medium 
-                              ${set.subject === 'Math' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 
-                               set.subject === 'Reading' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300' : 
-                               'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'}`}
-                          >
+                          <div
+                        className={`px-2 py-0.5 rounded text-xs font-medium 
+                              ${set.subject === 'Math' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
+                        set.subject === 'Reading' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300' :
+                        'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'}`}>
+
                             {getGrowthCondition(set.accuracy)}
                           </div>
                           <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -562,8 +562,8 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
                       </div>
                       
                       {/* Extended details when selected */}
-                      {set.id === selectedSetId && (
-                        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
+                      {set.id === selectedSetId &&
+                  <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <div className="text-xs text-slate-500 dark:text-slate-400">Ring Pattern</div>
@@ -587,26 +587,26 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
                           <div className="mt-3">
                             <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">Growth Challenges</div>
                             <div className="space-x-2">
-                              {set.mistakeTypes.conceptual > 0 && (
-                                <span className="inline-block px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 text-xs rounded">
+                              {set.mistakeTypes.conceptual > 0 &&
+                        <span className="inline-block px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 text-xs rounded">
                                   {set.mistakeTypes.conceptual} Conceptual
                                 </span>
-                              )}
-                              {set.mistakeTypes.careless > 0 && (
-                                <span className="inline-block px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 text-xs rounded">
+                        }
+                              {set.mistakeTypes.careless > 0 &&
+                        <span className="inline-block px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 text-xs rounded">
                                   {set.mistakeTypes.careless} Careless
                                 </span>
-                              )}
-                              {set.mistakeTypes.timeManagement > 0 && (
-                                <span className="inline-block px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded">
+                        }
+                              {set.mistakeTypes.timeManagement > 0 &&
+                        <span className="inline-block px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded">
                                   {set.mistakeTypes.timeManagement} Time
                                 </span>
-                              )}
-                              {set.mistakeTypes.conceptual === 0 && set.mistakeTypes.careless === 0 && set.mistakeTypes.timeManagement === 0 && (
-                                <span className="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded">
+                        }
+                              {set.mistakeTypes.conceptual === 0 && set.mistakeTypes.careless === 0 && set.mistakeTypes.timeManagement === 0 &&
+                        <span className="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded">
                                   No growth challenges
                                 </span>
-                              )}
+                        }
                             </div>
                           </div>
                           
@@ -615,31 +615,31 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
                             <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">Growth Phases</div>
                             <div className="flex items-center space-x-1">
                               <div className="bg-slate-100 dark:bg-slate-700 h-4 flex-grow rounded-l-full overflow-hidden">
-                                <div 
-                                  className={`h-full 
-                                    ${set.subject === 'Math' ? 'bg-blue-500' 
-                                     : set.subject === 'Reading' ? 'bg-emerald-500' 
-                                     : 'bg-amber-500'}`}
-                                  style={{ width: `${set.sessionFatigue.earlyAccuracy}%` }}
-                                ></div>
+                                <div
+                            className={`h-full 
+                                    ${set.subject === 'Math' ? 'bg-blue-500' :
+                            set.subject === 'Reading' ? 'bg-emerald-500' :
+                            'bg-amber-500'}`}
+                            style={{ width: `${set.sessionFatigue.earlyAccuracy}%` }}>
+                          </div>
                               </div>
                               <div className="bg-slate-100 dark:bg-slate-700 h-4 flex-grow overflow-hidden">
-                                <div 
-                                  className={`h-full 
-                                    ${set.subject === 'Math' ? 'bg-blue-400' 
-                                     : set.subject === 'Reading' ? 'bg-emerald-400' 
-                                     : 'bg-amber-400'}`}
-                                  style={{ width: `${(set.sessionFatigue.earlyAccuracy + set.sessionFatigue.lateAccuracy) / 2}%` }}
-                                ></div>
+                                <div
+                            className={`h-full 
+                                    ${set.subject === 'Math' ? 'bg-blue-400' :
+                            set.subject === 'Reading' ? 'bg-emerald-400' :
+                            'bg-amber-400'}`}
+                            style={{ width: `${(set.sessionFatigue.earlyAccuracy + set.sessionFatigue.lateAccuracy) / 2}%` }}>
+                          </div>
                               </div>
                               <div className="bg-slate-100 dark:bg-slate-700 h-4 flex-grow rounded-r-full overflow-hidden">
-                                <div 
-                                  className={`h-full 
-                                    ${set.subject === 'Math' ? 'bg-blue-300' 
-                                     : set.subject === 'Reading' ? 'bg-emerald-300' 
-                                     : 'bg-amber-300'}`}
-                                  style={{ width: `${set.sessionFatigue.lateAccuracy}%` }}
-                                ></div>
+                                <div
+                            className={`h-full 
+                                    ${set.subject === 'Math' ? 'bg-blue-300' :
+                            set.subject === 'Reading' ? 'bg-emerald-300' :
+                            'bg-amber-300'}`}
+                            style={{ width: `${set.sessionFatigue.lateAccuracy}%` }}>
+                          </div>
                               </div>
                             </div>
                             <div className="flex justify-between mt-1 text-[10px] text-slate-500 dark:text-slate-400">
@@ -651,21 +651,21 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
                           
                           {/* Dendrologist's notes */}
                           <div className="mt-3 text-xs text-slate-600 dark:text-slate-400 bg-amber-50 dark:bg-amber-900/10 p-2 rounded italic">
-                            {set.accuracy >= 90 ? 
-                              "Exceptional growth pattern indicates optimal conditions. This ring shows remarkable cellular integrity and density." : 
-                             set.accuracy >= 75 ? 
-                              "Healthy growth pattern with good cellular structure. Minor variations indicate slight environmental stressors." : 
-                             set.accuracy >= 60 ? 
-                              "Moderate growth with visible structural variations. Environmental factors have impacted cellular development." : 
-                              "Irregular growth pattern indicates significant challenges. Cellular structure shows stress adaptation."}
+                            {set.accuracy >= 90 ?
+                      "Exceptional growth pattern indicates optimal conditions. This ring shows remarkable cellular integrity and density." :
+                      set.accuracy >= 75 ?
+                      "Healthy growth pattern with good cellular structure. Minor variations indicate slight environmental stressors." :
+                      set.accuracy >= 60 ?
+                      "Moderate growth with visible structural variations. Environmental factors have impacted cellular development." :
+                      "Irregular growth pattern indicates significant challenges. Cellular structure shows stress adaptation."}
                           </div>
                         </div>
-                      )}
+                  }
                     </div>
-                  ))}
+                )}
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
@@ -706,6 +706,6 @@ export const TreeRingsTimeline: React.FC<TimelineViewProps> = ({
           filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.7));
         }
       `}</style>
-    </div>
-  )
-}
+    </div>);
+
+};

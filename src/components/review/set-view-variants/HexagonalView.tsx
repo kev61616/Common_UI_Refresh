@@ -1,29 +1,29 @@
-'use client'
+'use client';
 
-import { SetViewProps } from './types'
+import { SetViewProps } from './types';
 
 export function HexagonalView({ practiceSets, onSelectSet, selectedSetId }: SetViewProps) {
   return (
-    <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
-      <h3 className="text-xl font-bold mb-6 text-center">12. Hexagonal Grid View</h3>
-      <div className="flex justify-center">
-        <div className="honeycomb">
-          {practiceSets.slice(0, 12).map((set, index) => (
-            <div 
-              key={set.id} 
-              className={`honeycomb-cell ${index % 3 === 0 ? 'reading' : index % 3 === 1 ? 'math' : 'writing'}`}
-              onClick={() => onSelectSet && onSelectSet(set.id)}
-            >
-              <div className={`honeycomb-content ${selectedSetId === set.id ? 'selected' : ''}`}>
-                <h3 className="text-sm font-semibold">{set.subject}</h3>
-                <div className="text-xs">{set.type}</div>
-                <div className="text-lg font-bold mt-2">{set.accuracy}%</div>
+    <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm" data-oid="i:wfj3_">
+      <h3 className="text-xl font-bold mb-6 text-center" data-oid="1ybf6u8">12. Hexagonal Grid View</h3>
+      <div className="flex justify-center" data-oid="_kwuglh">
+        <div className="honeycomb" data-oid="-bpc85u">
+          {practiceSets.slice(0, 12).map((set, index) =>
+          <div
+            key={set.id}
+            className={`honeycomb-cell ${index % 3 === 0 ? 'reading' : index % 3 === 1 ? 'math' : 'writing'}`}
+            onClick={() => onSelectSet && onSelectSet(set.id)} data-oid="i-7qije">
+
+              <div className={`honeycomb-content ${selectedSetId === set.id ? 'selected' : ''}`} data-oid="x24xuk6">
+                <h3 className="text-sm font-semibold" data-oid="_zbw_px">{set.subject}</h3>
+                <div className="text-xs" data-oid="7t4noqi">{set.type}</div>
+                <div className="text-lg font-bold mt-2" data-oid="0q78ct.">{set.accuracy}%</div>
               </div>
             </div>
-          ))}
+          )}
         </div>
       </div>
-      <style jsx global>{`
+      <style jsx global data-oid=":ef.4fa">{`
         .honeycomb {
           display: flex;
           flex-wrap: wrap;
@@ -81,6 +81,6 @@ export function HexagonalView({ practiceSets, onSelectSet, selectedSetId }: SetV
           }
         }
       `}</style>
-    </div>
-  )
+    </div>);
+
 }

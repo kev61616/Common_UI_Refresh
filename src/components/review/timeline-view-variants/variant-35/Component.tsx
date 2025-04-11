@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { PinballMachineTimeline } from '../PinballMachineTimeline'
+import { PinballMachineTimeline } from '../PinballMachineTimeline';
 
 // Export the component directly
-export default PinballMachineTimeline
+export default PinballMachineTimeline;

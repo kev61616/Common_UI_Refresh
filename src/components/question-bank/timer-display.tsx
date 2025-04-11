@@ -34,28 +34,28 @@ export function TimerDisplay({
     return (
       <div
         className={getVariantClassName()}
-        {...props}
-      >
+        {...props} data-oid="1xjmv0q">
+
         <svg
           className="w-4 h-4"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="currentColor"
-        >
-          <circle cx="12" cy="12" r="10" strokeWidth="2" />
-          <path d="M12 6v6l4 2" strokeWidth="2" />
+          stroke="currentColor" data-oid="09pvp94">
+
+          <circle cx="12" cy="12" r="10" strokeWidth="2" data-oid="ve0i4m." />
+          <path d="M12 6v6l4 2" strokeWidth="2" data-oid="ab-nf0i" />
         </svg>
         {time}
-      </div>
-    );
+      </div>);
+
   }
 
   return (
     <div
       className={`${getVariantClassName()} transition-all duration-300`}
-      {...props}
-    >
+      {...props} data-oid="zxfrdp1">
+
       {time}
-    </div>
-  );
+    </div>);
+
 }

@@ -1,5 +1,5 @@
-'use client'
+'use client';
 
-import { QuantumPhysicsView } from '../QuantumPhysicsView'
+import { QuantumPhysicsView } from '../QuantumPhysicsView';
 
-export default QuantumPhysicsView
+export default QuantumPhysicsView;

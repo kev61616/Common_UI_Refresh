@@ -1,43 +1,43 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect, useRef } from 'react'
-import { PracticeSet } from '@/lib/mockData'
-import { TimelineViewProps } from './types'
-import { format, parseISO, differenceInDays } from 'date-fns'
+import React, { useState, useEffect, useRef } from 'react';
+import { PracticeSet } from '@/lib/mockData';
+import { TimelineViewProps } from './types';
+import { format, parseISO, differenceInDays } from 'date-fns';
 
 export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
   practiceSets,
   onSelectSet,
   selectedSetId
 }) => {
-  const [groupedSets, setGroupedSets] = useState<Record<string, PracticeSet[]>>({})
-  const [hoverSetId, setHoverSetId] = useState<string | null>(null)
-  const [animatingTrain, setAnimatingTrain] = useState<string | null>(null)
-  const [trainPosition, setTrainPosition] = useState<number>(0)
-  const timelineRef = useRef<HTMLDivElement>(null)
+  const [groupedSets, setGroupedSets] = useState<Record<string, PracticeSet[]>>({});
+  const [hoverSetId, setHoverSetId] = useState<string | null>(null);
+  const [animatingTrain, setAnimatingTrain] = useState<string | null>(null);
+  const [trainPosition, setTrainPosition] = useState<number>(0);
+  const timelineRef = useRef<HTMLDivElement>(null);
 
   // Group practice sets by month
   useEffect(() => {
-    const grouped: Record<string, PracticeSet[]> = {}
-    
+    const grouped: Record<string, PracticeSet[]> = {};
+
     // Sort sets by date first
-    const sortedSets = [...practiceSets].sort((a, b) => 
-      new Date(a.dateCompleted).getTime() - new Date(b.dateCompleted).getTime()
-    )
-    
-    sortedSets.forEach(set => {
-      const date = parseISO(set.dateCompleted)
-      const monthYear = format(date, 'MMMM yyyy')
-      
+    const sortedSets = [...practiceSets].sort((a, b) =>
+    new Date(a.dateCompleted).getTime() - new Date(b.dateCompleted).getTime()
+    );
+
+    sortedSets.forEach((set) => {
+      const date = parseISO(set.dateCompleted);
+      const monthYear = format(date, 'MMMM yyyy');
+
       if (!grouped[monthYear]) {
-        grouped[monthYear] = []
+        grouped[monthYear] = [];
       }
-      
-      grouped[monthYear].push(set)
-    })
-    
-    setGroupedSets(grouped)
-  }, [practiceSets])
+
+      grouped[monthYear].push(set);
+    });
+
+    setGroupedSets(grouped);
+  }, [practiceSets]);
 
   // Get subject-specific styles
   const getSubjectStyles = (subject: string) => {
@@ -53,7 +53,7 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
           trackColor: '#93c5fd',
           trainColor: '#1d4ed8',
           smokeColor: '#bfdbfe'
-        }
+        };
       case 'Reading':
         return {
           bg: 'bg-emerald-500',
@@ -65,7 +65,7 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
           trackColor: '#6ee7b7',
           trainColor: '#065f46',
           smokeColor: '#d1fae5'
-        }
+        };
       case 'Writing':
         return {
           bg: 'bg-amber-500',
@@ -77,7 +77,7 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
           trackColor: '#fcd34d',
           trainColor: '#b45309',
           smokeColor: '#fef3c7'
-        }
+        };
       default:
         return {
           bg: 'bg-slate-500',
@@ -89,114 +89,114 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
           trackColor: '#cbd5e1',
           trainColor: '#475569',
           smokeColor: '#f1f5f9'
-        }
+        };
     }
-  }
+  };
 
   // Format date for display
   const formatDate = (dateString: string) => {
-    const date = parseISO(dateString)
-    return format(date, 'MMM d')
-  }
+    const date = parseISO(dateString);
+    return format(date, 'MMM d');
+  };
 
   // Get station name from practice set
   const getStationName = (set: PracticeSet) => {
-    return `${set.type} Station`
-  }
+    return `${set.type} Station`;
+  };
 
   // Get train class based on difficulty
   const getTrainClass = (set: PracticeSet) => {
     switch (set.difficulty) {
-      case 'Hard': return 'express'
-      case 'Medium': return 'passenger'
-      case 'Easy': return 'local'
-      default: return 'passenger'
+      case 'Hard':return 'express';
+      case 'Medium':return 'passenger';
+      case 'Easy':return 'local';
+      default:return 'passenger';
     }
-  }
+  };
 
   // Get train speed based on pace
   const getTrainSpeed = (set: PracticeSet) => {
     switch (set.pace) {
-      case 'Fast': return 'high-speed'
-      case 'Normal': return 'standard'
-      case 'Slow': return 'scenic'
-      default: return 'standard'
+      case 'Fast':return 'high-speed';
+      case 'Normal':return 'standard';
+      case 'Slow':return 'scenic';
+      default:return 'standard';
     }
-  }
+  };
 
   // Get platform number based on questions count
   const getPlatformNumber = (set: PracticeSet) => {
-    const count = set.questions.length
-    if (count <= 10) return 1
-    if (count <= 20) return 2
-    if (count <= 30) return 3
-    return 4
-  }
+    const count = set.questions.length;
+    if (count <= 10) return 1;
+    if (count <= 20) return 2;
+    if (count <= 30) return 3;
+    return 4;
+  };
 
   // Handle train animation
   const animateTrain = (setId: string) => {
-    setAnimatingTrain(setId)
-    setTrainPosition(0)
-    
+    setAnimatingTrain(setId);
+    setTrainPosition(0);
+
     // Get the train element
-    const trainElement = document.getElementById(`train-${setId}`)
-    const trackElement = document.getElementById(`track-${setId}`)
-    
+    const trainElement = document.getElementById(`train-${setId}`);
+    const trackElement = document.getElementById(`track-${setId}`);
+
     if (trainElement && trackElement) {
-      const trackWidth = trackElement.getBoundingClientRect().width
-      
+      const trackWidth = trackElement.getBoundingClientRect().width;
+
       // Animate train moving across the track
-      const duration = 3000 // 3 seconds
-      const startTime = Date.now()
-      
+      const duration = 3000; // 3 seconds
+      const startTime = Date.now();
+
       const animate = () => {
-        const elapsed = Date.now() - startTime
-        const progress = Math.min(elapsed / duration, 1)
-        setTrainPosition(progress * 100)
-        
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        setTrainPosition(progress * 100);
+
         if (progress < 1) {
-          requestAnimationFrame(animate)
+          requestAnimationFrame(animate);
         } else {
           // Animation complete
           setTimeout(() => {
-            setAnimatingTrain(null)
-          }, 500)
+            setAnimatingTrain(null);
+          }, 500);
         }
-      }
-      
-      requestAnimationFrame(animate)
+      };
+
+      requestAnimationFrame(animate);
     }
-  }
+  };
 
   // Generate smoke particles for animated train
   const generateSmokeParticles = (count: number, trainId: string, styles: ReturnType<typeof getSubjectStyles>) => {
-    const particles = []
-    
+    const particles = [];
+
     for (let i = 0; i < count; i++) {
-      const delay = i * 0.2
-      const size = Math.random() * 10 + 5
-      const offsetX = Math.random() * 10 - 5
-      const offsetY = Math.random() * -10 - 5
-      
+      const delay = i * 0.2;
+      const size = Math.random() * 10 + 5;
+      const offsetX = Math.random() * 10 - 5;
+      const offsetY = Math.random() * -10 - 5;
+
       particles.push(
-        <div 
+        <div
           key={`smoke-${trainId}-${i}`}
           className="absolute rounded-full opacity-0 animate-smoke"
-          style={{ 
-            width: `${size}px`, 
-            height: `${size}px`, 
+          style={{
+            width: `${size}px`,
+            height: `${size}px`,
             backgroundColor: styles.smokeColor,
             left: `5px`,
             top: '5px',
             transform: `translate(${offsetX}px, ${offsetY}px)`,
             animationDelay: `${delay}s`
-          }}
-        ></div>
-      )
+          }}>
+        </div>
+      );
     }
-    
-    return particles
-  }
+
+    return particles;
+  };
 
   return (
     <div className="train-journey-timeline space-y-6 pb-8">
@@ -252,8 +252,8 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
         <div className="central-track absolute left-24 top-0 bottom-0 w-2 bg-slate-300 dark:bg-slate-700"></div>
         
         {/* Month sections */}
-        {Object.entries(groupedSets).map(([month, sets]) => (
-          <div key={month} className="month-section relative">
+        {Object.entries(groupedSets).map(([month, sets]) =>
+        <div key={month} className="month-section relative">
             {/* Month station */}
             <div className="month-station absolute left-0 top-0 flex items-center">
               <div className="station-platform w-20 h-14 bg-slate-200 dark:bg-slate-700 rounded-lg flex items-center justify-center">
@@ -268,39 +268,39 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
             {/* Practice sets as train stations */}
             <div className="sets-container ml-28 space-y-16">
               {sets.map((set, index) => {
-                const styles = getSubjectStyles(set.subject)
-                const isSelected = set.id === selectedSetId
-                const isHovered = set.id === hoverSetId
-                const isAnimating = animatingTrain === set.id
-                const trainClass = getTrainClass(set)
-                const trainSpeed = getTrainSpeed(set)
-                const platformNumber = getPlatformNumber(set)
-                
-                return (
-                  <div key={set.id} className="relative">
+              const styles = getSubjectStyles(set.subject);
+              const isSelected = set.id === selectedSetId;
+              const isHovered = set.id === hoverSetId;
+              const isAnimating = animatingTrain === set.id;
+              const trainClass = getTrainClass(set);
+              const trainSpeed = getTrainSpeed(set);
+              const platformNumber = getPlatformNumber(set);
+
+              return (
+                <div key={set.id} className="relative">
                     {/* Track connecting to central railway */}
-                    <div 
-                      id={`track-${set.id}`}
-                      className="station-track absolute -left-[104px] top-1/2 h-2 w-28 -translate-y-1/2"
-                      style={{ 
-                        backgroundColor: styles.trackColor,
-                        opacity: isSelected || isHovered || isAnimating ? 1 : 0.6
-                      }}
-                    ></div>
+                    <div
+                    id={`track-${set.id}`}
+                    className="station-track absolute -left-[104px] top-1/2 h-2 w-28 -translate-y-1/2"
+                    style={{
+                      backgroundColor: styles.trackColor,
+                      opacity: isSelected || isHovered || isAnimating ? 1 : 0.6
+                    }}>
+                  </div>
                     
                     {/* Station */}
-                    <div 
-                      className={`train-station p-4 rounded-lg border border-slate-200 dark:border-slate-700 transition-all duration-300
+                    <div
+                    className={`train-station p-4 rounded-lg border border-slate-200 dark:border-slate-700 transition-all duration-300
                         ${isSelected ? `ring-2 ${styles.ringColor} shadow-lg scale-102` : 'hover:shadow-md'}
                         ${isHovered ? 'shadow-md' : ''}
                         ${isSelected || isHovered || isAnimating ? styles.lightBg : 'bg-white dark:bg-slate-800'}`}
-                      onClick={() => {
-                        onSelectSet?.(set.id)
-                        animateTrain(set.id)
-                      }}
-                      onMouseEnter={() => setHoverSetId(set.id)}
-                      onMouseLeave={() => setHoverSetId(null)}
-                    >
+                    onClick={() => {
+                      onSelectSet?.(set.id);
+                      animateTrain(set.id);
+                    }}
+                    onMouseEnter={() => setHoverSetId(set.id)}
+                    onMouseLeave={() => setHoverSetId(null)}>
+
                       {/* Station header */}
                       <div className="flex justify-between items-start mb-3">
                         <div>
@@ -336,8 +336,8 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
                       </div>
                       
                       {/* Expanded panel when selected */}
-                      {isSelected && (
-                        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                      {isSelected &&
+                    <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Journey Details</h4>
@@ -383,10 +383,10 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
                                 <div className="flex justify-between">
                                   <span className="text-slate-600 dark:text-slate-400">Satisfaction</span>
                                   <span className="text-slate-800 dark:text-slate-200">
-                                    {set.accuracy >= 90 ? 'Outstanding' : 
-                                     set.accuracy >= 75 ? 'Satisfied' : 
-                                     set.accuracy >= 60 ? 'Acceptable' : 
-                                     'Needs Improvement'}
+                                    {set.accuracy >= 90 ? 'Outstanding' :
+                                set.accuracy >= 75 ? 'Satisfied' :
+                                set.accuracy >= 60 ? 'Acceptable' :
+                                'Needs Improvement'}
                                   </span>
                                 </div>
                               </div>
@@ -409,8 +409,8 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
                               
                               <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden flex">
                                 <div className="h-full bg-emerald-500" style={{ width: `${set.sessionFatigue.earlyAccuracy}%` }}></div>
-                                <div className="h-full bg-amber-500" style={{ width: `${(100 - set.sessionFatigue.earlyAccuracy - (100 - set.sessionFatigue.lateAccuracy))}%` }}></div>
-                                <div className="h-full bg-red-500" style={{ width: `${(100 - set.sessionFatigue.lateAccuracy)}%` }}></div>
+                                <div className="h-full bg-amber-500" style={{ width: `${100 - set.sessionFatigue.earlyAccuracy - (100 - set.sessionFatigue.lateAccuracy)}%` }}></div>
+                                <div className="h-full bg-red-500" style={{ width: `${100 - set.sessionFatigue.lateAccuracy}%` }}></div>
                               </div>
                               
                               <div className="flex justify-between mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -421,26 +421,26 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
                             </div>
                           </div>
                         </div>
-                      )}
+                    }
                     </div>
                     
                     {/* Animated train */}
-                    {(isAnimating || isSelected) && (
-                      <div 
-                        id={`train-${set.id}`}
-                        className="absolute -left-[104px] top-1/2 -translate-y-1/2 -translate-x-full transition-transform duration-1000 ease-in-out"
-                        style={{ 
-                          transform: `translateY(-50%) translateX(${isAnimating ? trainPosition : 100}%)`,
-                          zIndex: 10
-                        }}
-                      >
+                    {(isAnimating || isSelected) &&
+                  <div
+                    id={`train-${set.id}`}
+                    className="absolute -left-[104px] top-1/2 -translate-y-1/2 -translate-x-full transition-transform duration-1000 ease-in-out"
+                    style={{
+                      transform: `translateY(-50%) translateX(${isAnimating ? trainPosition : 100}%)`,
+                      zIndex: 10
+                    }}>
+
                         {/* Train body */}
                         <div className="relative">
                           {/* Engine */}
-                          <div 
-                            className="train-engine w-16 h-8 rounded-r-md"
-                            style={{ backgroundColor: styles.trainColor }}
-                          >
+                          <div
+                        className="train-engine w-16 h-8 rounded-r-md"
+                        style={{ backgroundColor: styles.trainColor }}>
+
                             {/* Train windows */}
                             <div className="absolute top-1 left-4 w-2 h-2 bg-yellow-200 rounded-sm"></div>
                             <div className="absolute top-1 left-8 w-2 h-2 bg-yellow-200 rounded-sm"></div>
@@ -462,13 +462,13 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
                           <div className="absolute -bottom-1.5 left-9 w-3 h-3 rounded-full bg-slate-700 border border-slate-400"></div>
                         </div>
                       </div>
-                    )}
-                  </div>
-                )
-              })}
+                  }
+                  </div>);
+
+            })}
             </div>
           </div>
-        ))}
+        )}
       </div>
       
       {/* CSS for animations */}
@@ -496,6 +496,6 @@ export const TrainJourneyTimeline: React.FC<TimelineViewProps> = ({
           transform: scale(1.02);
         }
       `}</style>
-    </div>
-  )
-}
+    </div>);
+
+};

@@ -1,5 +1,5 @@
-'use client'
+'use client';
 
-import { DeepOceanView } from '../DeepOceanView'
+import { DeepOceanView } from '../DeepOceanView';
 
-export default DeepOceanView
+export default DeepOceanView;

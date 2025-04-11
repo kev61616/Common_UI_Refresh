@@ -15,23 +15,23 @@ export function ResourcesSection() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link 
-              href="/courses" 
-              className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg shadow-md hover:shadow-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300"
-            >
+            <Link
+              href="/courses"
+              className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg shadow-md hover:shadow-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300">
+
               <span>Browse Courses</span>
               <ArrowUpRight className="h-4 w-4 ml-2" />
             </Link>
-            <Link 
-              href="/resources/study-tips" 
-              className="inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-800 dark:text-white rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-300"
-            >
+            <Link
+              href="/resources/study-tips"
+              className="inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-800 dark:text-white rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-300">
+
               <span>Study Tips</span>
               <ChevronRight className="h-4 w-4 ml-2" />
             </Link>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

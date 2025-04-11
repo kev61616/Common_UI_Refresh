@@ -7,9 +7,9 @@ interface ToolWindowProps {
   id: string;
   title: string;
   url: string;
-  position: { x: number; y: number };
+  position: {x: number;y: number;};
   onClose: () => void;
-  onPositionChange: (position: { x: number; y: number }) => void;
+  onPositionChange: (position: {x: number;y: number;}) => void;
 }
 
 export function ToolWindow({
@@ -32,7 +32,7 @@ export function ToolWindow({
         const rect = windowRef.current.getBoundingClientRect();
         setDragOffset({
           x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
+          y: e.clientY - rect.top
         });
         setIsDragging(true);
       }
@@ -45,7 +45,7 @@ export function ToolWindow({
       if (isDragging) {
         const newPosition = {
           x: e.clientX - dragOffset.x,
-          y: e.clientY - dragOffset.y,
+          y: e.clientY - dragOffset.y
         };
         onPositionChange(newPosition);
       }
@@ -87,10 +87,10 @@ export function ToolWindow({
         borderRadius: "0.5rem",
         boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
         overflow: "hidden",
-        resize: "both",
+        resize: "both"
       }}
-      {...props}
-    >
+      {...props}>
+
       <div
         onMouseDown={handleMouseDown}
         style={{
@@ -100,15 +100,15 @@ export function ToolWindow({
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          cursor: "move",
-        }}
-      >
+          cursor: "move"
+        }}>
+
         <div
           style={{
             fontWeight: 500,
-            fontSize: "0.875rem",
-          }}
-        >
+            fontSize: "0.875rem"
+          }}>
+
           {title}
         </div>
         <button
@@ -120,9 +120,9 @@ export function ToolWindow({
             padding: "0.25rem",
             borderRadius: "0.25rem",
             backgroundColor: "transparent",
-            transition: "background-color 0.2s",
-          }}
-        >
+            transition: "background-color 0.2s"
+          }}>
+
           <X size={16} />
           <span className="sr-only">Close</span>
         </button>
@@ -134,10 +134,10 @@ export function ToolWindow({
           style={{
             width: "100%",
             height: "100%",
-            border: "none",
-          }}
-        />
+            border: "none"
+          }} />
+
       </div>
-    </div>
-  );
+    </div>);
+
 }
