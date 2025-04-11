@@ -4,28 +4,65 @@ This project is a Next.js-based education platform with advanced features for st
 
 ## Documentation
 
-This project aims to maintain comprehensive documentation to aid development and understanding. Key documentation resources include:
+This project aims to maintain comprehensive documentation to aid development and understanding. Our documentation has been reorganized for better accessibility and consistency.
+
+### Documentation Index
+
+The [**Documentation Index**](docs/documentation-index.md) serves as the central reference point for all documentation, organized by category.
+
+### Key Documentation Resources
 
 *   **[`CONTRIBUTING.md`](CONTRIBUTING.md)**: Guidelines for contributing to the project.
-*   **`/docs` Directory**: Contains detailed guides on specific topics.
-    *   [`docs/architecture.md`](docs/architecture.md): (WIP) Overview of application architecture, patterns, and best practices.
-    *   [`docs/profile-section.md`](docs/profile-section.md): (WIP) Documentation for the user Profile section features.
-    *   [`docs/markdoc-usage.md`](docs/markdoc-usage.md): (WIP) Guide on how Markdoc is used for documentation pages.
-    *   [`docs/typography.md`](docs/typography.md): Guidelines and examples for the typography system (Updated).
-    *   [`docs/colors.md`](docs/colors.md): Guide to the color system, palettes, and CSS variable usage.
-    *   [`docs/use-search-params-guide.md`](docs/use-search-params-guide.md): Best practices for using the `useSearchParams` hook.
-    *   [`docs/view-planning.md`](docs/view-planning.md): High-level planning and design philosophy for UI views.
-    *   [`docs/HYDRATION_ERRORS.md`](docs/HYDRATION_ERRORS.md): Guide to understanding and fixing hydration errors (may need updates for latest patterns).
-    *   [`docs/page-structure.md`](docs/page-structure.md): Overview of the application's page structure.
-*   **This README**: Provides a high-level overview and a detailed changelog of recent updates.
+*   **Documentation Categories**:
+    *   **Architecture & Design**: System architecture, page structure, design systems
+    *   **Feature Documentation**: Component APIs and implementation details by feature
+    *   **Development Guides**: Best practices and solutions to common issues
+    *   **Migration Guides**: Support for codebase transitions and upgrades
+    *   **Planning Documents**: Strategic plans for future development
+
+### Documentation Highlights
+
+*   [**Template Migration Guide**](docs/template-migration-guide.md): Comprehensive guide for migrating site structure to a new template
+*   [**Documentation Template**](docs/documentation-template.md): Standardized format for all documentation files
+*   [**Course Data Architecture**](docs/course-data-architecture.md): Data models and relationships for the Course section
+*   [**Course Components**](docs/course-components.md): UI components for the Course section with API documentation
+*   [**Typography & Colors**](docs/typography.md): Design system guidelines and implementation
 
 **Areas for Further Development:**
 
-*   Completing the WIP documentation files (`architecture.md`, `profile-section.md`, `markdoc-usage.md`).
-*   Reviewing and updating existing guides (e.g., `HYDRATION_ERRORS.md`).
-*   Adding documentation for core **Reusable Components**.
+*   Completing the WIP documentation files (`architecture.md`, `profile-section.md`, `markdoc-usage.md`)
+*   Migrating existing documentation to the new standardized format
+*   Enriching component documentation with more visual examples
+*   Developing comprehensive API documentation for core components
+*   Creating visual component relationship diagrams for each feature section
+
+*   **`/planning` Directory**: Contains planning documents for upcoming features and improvements.
+    *   [`planning/frontend-architecture-plan.md`](planning/frontend-architecture-plan.md): Plan for improving code quality and architecture.
+    *   [`planning/performance-optimization-plan.md`](planning/performance-optimization-plan.md): Plan for optimizing performance and load times.
+    *   [`planning/ui-ux-design-system-plan.md`](planning/ui-ux-design-system-plan.md): Plan for enhancing the design system and UI/UX.
+    *   [`planning/course-section-plan.md`](planning/course-section-plan.md): Implementation plan for the Course section.
 
 ## Recent Updates
+
+- **April 9, 2025**:
+  - **Documentation Restructuring**:
+    - Created centralized Documentation Index with clear categorization of all resources
+    - Developed comprehensive Template Migration Guide with component dependencies and step-by-step process
+    - Established standardized documentation template for consistent documentation format
+    - Added detailed migration considerations for component relationships and state management
+    - Improved documentation organization with logical hierarchy and cross-references
+    - Enhanced documentation with visual diagrams for clearer structure representation
+    - Created component migration reference with priority guidelines
+
+- **April 5, 2025**:
+  - **Course Section Planning**:
+    - Created comprehensive planning documents for the Course section implementation
+    - Designed detailed data architecture with TypeScript interfaces for Course, Module, Lesson, and UserProgress
+    - Developed component specifications for course-specific UI elements with accessibility considerations
+    - Planned routing structure and page hierarchy for intuitive course navigation
+    - Outlined implementation approach for different content types (video, text, quiz, exercise)
+    - Documented entity relationships and access patterns for efficient data management
+    - Prioritized implementation tasks with clear dependencies and measurable goals
 
 - **April 2, 2025**:
   - **New Profile Section**:
