@@ -1,20 +1,8 @@
 export const navigation = [
   {
-    title: 'Overview',
-    links: [
-      { title: 'Dashboard', href: '/' },
-      { title: 'Reading', href: '/overview/reading' },
-      { title: 'Writing', href: '/overview/writing' },
-      { title: 'Math', href: '/overview/math' },
-    ],
-  },
-  {
     title: 'Profile',
     links: [
-      { title: 'Brain Overview', href: '/profile' },
-      { title: 'Achievements', href: '/profile/achievements' },
-      { title: 'Mastery Map', href: '/profile/mastery' },
-      { title: 'Progress Timeline', href: '/profile/timeline' },
+      { title: 'Profile', href: '/profile' },
     ],
   },
   {
