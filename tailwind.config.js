@@ -1,8 +1,5 @@
-const { fontFamily } = require("tailwindcss/defaultTheme");
-const path = require('path');
-const typographyPath = path.resolve('./src/config/typography.mjs');
+import tailwindcssAnimate from 'tailwindcss-animate';
 
-// Dynamic import for ESM module
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: [
@@ -20,9 +17,35 @@ const config = {
       },
     },
     extend: {
-      // We'll populate these from the typography module in the plugins section
-      fontFamily: {},
-      fontSize: {},
+      fontFamily: {
+        sans: ["Inter", "var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Inter", "var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["Inter", "var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "monospace"],
+      },
+      fontSize: {
+        'xs':   ['0.75rem',  { lineHeight: '1rem' }],
+        'sm':   ['0.875rem', { lineHeight: '1.25rem' }],
+        'base': ['1rem',     { lineHeight: '1.75rem' }],
+        'lg':   ['1.125rem', { lineHeight: '1.75rem' }],
+        'xl':   ['1.25rem',  { lineHeight: '1.75rem' }],
+        '2xl':  ['1.5rem',   { lineHeight: '2rem' }],
+        '3xl':  ['1.75rem',  { lineHeight: '2.25rem' }],
+        '4xl':  ['2rem',     { lineHeight: '2.5rem' }],
+        '5xl':  ['2.5rem',   { lineHeight: '3rem' }],
+        // Legacy named sizes
+        h1: ['2.5rem',   { lineHeight: '3rem', fontWeight: 700 }],
+        h2: ['2rem',     { lineHeight: '2.5rem', fontWeight: 600 }],
+        h3: ['1.75rem',  { lineHeight: '2.25rem', fontWeight: 600 }],
+        h4: ['1.5rem',   { lineHeight: '2rem', fontWeight: 600 }],
+        h5: ['1.25rem',  { lineHeight: '1.75rem', fontWeight: 600 }],
+        h6: ['1.125rem', { lineHeight: '1.5rem', fontWeight: 600 }],
+        p1: ['1.125rem', { lineHeight: '1.75rem' }],
+        p2: ['1.125rem', { lineHeight: '1.75rem' }],
+        p3: ['1rem',     { lineHeight: '1.75rem' }],
+        p4: ['0.875rem', { lineHeight: '1.25rem' }],
+        '2xs': ['0.75rem', { lineHeight: '1rem' }],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -172,65 +195,8 @@ const config = {
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
-    // Using a plugin to load the ESM typography module
-    async function({ addBase, theme }) {
-      // Load font sizes from the JS module
-      try {
-        // Import the values from our typography configuration
-        const fs = require('fs');
-        const typographyContent = fs.readFileSync(typographyPath, 'utf8');
-        
-        // Extract the font families
-        const sansMatch = typographyContent.match(/sans: \[(.*?)\]/s);
-        const monoMatch = typographyContent.match(/mono: \[(.*?)\]/s);
-        
-        // Hard-code the font families based on what we know from the module
-        config.theme.extend.fontFamily = {
-          sans: ["Inter", "var(--font-sans)", ...fontFamily.sans],
-          display: ["Inter", "var(--font-sans)", ...fontFamily.sans],
-          heading: ["Inter", "var(--font-sans)", ...fontFamily.sans],
-          mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", ...fontFamily.mono],
-        };
-        
-        // Hard-code the font sizes based on what we know from the module
-        config.theme.extend.fontSize = {
-          'xs':   ['0.75rem',  { lineHeight: '1rem' }],
-          'sm':   ['0.875rem', { lineHeight: '1.25rem' }],
-          'base': ['1rem',     { lineHeight: '1.75rem' }],
-          'lg':   ['1.125rem', { lineHeight: '1.75rem' }],
-          'xl':   ['1.25rem',  { lineHeight: '1.75rem' }],
-          '2xl':  ['1.5rem',   { lineHeight: '2rem' }],
-          '3xl':  ['1.75rem',  { lineHeight: '2.25rem' }],
-          '4xl':  ['2rem',     { lineHeight: '2.5rem' }],
-          '5xl':  ['2.5rem',   { lineHeight: '3rem' }],
-          // Legacy named sizes
-          h1: ['2.5rem',   { lineHeight: '3rem', fontWeight: 700 }],
-          h2: ['2rem',     { lineHeight: '2.5rem', fontWeight: 600 }],
-          h3: ['1.75rem',  { lineHeight: '2.25rem', fontWeight: 600 }],
-          h4: ['1.5rem',   { lineHeight: '2rem', fontWeight: 600 }],
-          h5: ['1.25rem',  { lineHeight: '1.75rem', fontWeight: 600 }],
-          h6: ['1.125rem', { lineHeight: '1.5rem', fontWeight: 600 }],
-          p1: ['1.125rem', { lineHeight: '1.75rem' }],
-          p2: ['1.125rem', { lineHeight: '1.75rem' }],
-          p3: ['1rem',     { lineHeight: '1.75rem' }],
-          p4: ['0.875rem', { lineHeight: '1.25rem' }],
-          '2xs': ['0.75rem', { lineHeight: '1rem' }],
-        };
-        
-        // Add CSS variables for typography settings
-        addBase({
-          ':root': {
-            '--letter-spacing': '0.04em',
-            '--base-font-size': '16px',
-            '--mobile-font-size': '18px',
-          }
-        });
-      } catch (e) {
-        console.error('Error loading typography configuration:', e);
-      }
-    }
+    tailwindcssAnimate,
   ],
 };
 
-module.exports = config;
+export default config;

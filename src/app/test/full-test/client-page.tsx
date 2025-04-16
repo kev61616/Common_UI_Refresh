@@ -4,7 +4,7 @@ import { usePageLoadAnimation } from "@/hooks/useAnimatedEffects";
 import { TestCard } from "@/components/test/full-test/TestCard";
 import { fullTestOptions } from "@/components/test/full-test/TestOptions";
 import { IntroSection } from "@/components/test/full-test/IntroSection";
-import { TipsSection, WeeklyChallengeBanner } from "@/components/test/full-test/TipsSection";
+import { WeeklyChallengeBanner } from "@/components/test/full-test/TipsSection";
 
 export default function FullTestClient() {
   const { containerRef } = usePageLoadAnimation();
@@ -32,16 +32,12 @@ export default function FullTestClient() {
           <TestCard
             key={test.title}
             {...test} data-oid="lpf-ixz" />
-
           )}
         </div>
-        
-        {/* Tips Section */}
-        <TipsSection data-oid="yvne6_u" />
         
         {/* Weekly Challenge Banner */}
         <WeeklyChallengeBanner data-oid="9h73sci" />
       </div>
-    </div>);
-
+    </div>
+  );
 }

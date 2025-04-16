@@ -197,24 +197,7 @@ export function StudyStreak({
         </div>
       </div>
 
-      {/* Achievements section */}
-      <div className="mt-auto px-6 pt-4 pb-6 border-t border-slate-100 dark:border-slate-700" data-oid="y5_xwxg">
-        <h4 className="text-base font-medium text-slate-800 dark:text-slate-200 mb-3" data-oid=".9xt_q.">Achievements</h4>
-        <div className="flex space-x-4" data-oid="5n2kuwf">
-          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center shadow-sm" data-oid="ayqs-mj">
-            <span className="text-white text-lg" data-oid="9y8:q3y">🔥</span>
-          </div>
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center shadow-sm" data-oid="z3isc1k">
-            <span className="text-white text-lg" data-oid="ze:uf2j">⭐</span>
-          </div>
-          <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600" data-oid="v-znydw">
-            <span className="text-slate-400 dark:text-slate-500 text-xl" data-oid="6y.98xg">?</span>
-          </div>
-          <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600" data-oid="to38.kx">
-            <span className="text-slate-400 dark:text-slate-500 text-xl" data-oid="3gkxqac">?</span>
-          </div>
-        </div>
-      </div>
+      {/* No achievements section as requested */}
     </div>);
 
 }

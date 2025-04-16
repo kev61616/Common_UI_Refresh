@@ -74,6 +74,11 @@ We applied a multi-faceted approach to solve the hydration errors:
    - Mark components with browser-specific APIs as 'use client'
    - Keep server components pure and deterministic
 
+4. **Avoid non-deterministic functions in rendering**
+   - Avoid using `Math.random()`, `Date.now()`, or other functions that return different values between server and client renders
+   - Use fixed values for animations, transitions, and visual elements initially, then apply dynamic behavior in useEffect
+   - For skeleton loaders or placeholders, use predictable values rather than random ones
+
 4. **Create stable state initialization**
    - Use stable default values
    - Defer variable values to client-side effects
@@ -81,3 +86,7 @@ We applied a multi-faceted approach to solve the hydration errors:
 5. **Debug with React hydration error info**
    - Check the elements flagged in the error message
    - Look for subtle differences in classes, attributes, or text content
+
+6. **Use Client Components Correctly**
+   - Always mark components using React hooks with `"use client"` directive
+   - See detailed guidance in [Client Components Guide](./profile/client-components-guide.md)
