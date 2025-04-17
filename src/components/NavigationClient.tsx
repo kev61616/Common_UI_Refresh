@@ -118,8 +118,8 @@ export default function NavigationClient() {
             <div className="flex-1 flex items-center justify-center" data-oid="ntc_ggh">
               <nav ref={navbarRef} className="flex space-x-8 mx-8" data-oid="93rm6_y">
                 {navigation.map((section) => {
-                  // Check if this is the Profile section which should be a direct link
-                  if (section.title === "Profile") {
+                  // Check if this is the Profile or Course section which should be a direct link
+                  if (section.title === "Profile" || section.title === "Course") {
                     return (
                       <Link 
                         key={section.title}
@@ -128,8 +128,8 @@ export default function NavigationClient() {
                           ${isSectionActive(section.title) ?
                           'text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-slate-800' :
                           'text-slate-700 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400'}`}
-                        data-oid="profile-direct-link">
-                        {/* Icon for Profile */}
+                        data-oid={`${section.title.toLowerCase()}-direct-link`}>
+                        {/* Icon for Section */}
                         <div className="w-5 h-5 mr-2">
                           {SectionIcons[section.title]}
                         </div>

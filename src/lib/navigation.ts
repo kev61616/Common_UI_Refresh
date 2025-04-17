@@ -22,9 +22,7 @@ export const navigation = [
   {
     title: 'Course',
     links: [
-      { title: 'Course overview', href: '/course/course-overview' },
-      { title: 'Schedule', href: '/course/schedule' },
-      { title: 'Materials', href: '/course/materials' },
+      { title: 'Course', href: '/course' },
     ],
   },
 ]
