@@ -49,6 +49,21 @@ export default function NavigationClient() {
     };
   }, []);
 
+  // Helper function to check if a path belongs to a section's route
+  const isSectionActive = (sectionTitle: string): boolean => {
+    if (!pathname) return false;
+    
+    // For each section, get the base path from the first part of any link
+    const section = navigation.find(section => section.title === sectionTitle);
+    if (!section) return false;
+    
+    // Extract section base path, e.g., '/test' from '/test/continuous-practice'
+    const sectionBasePath = section.links[0]?.href.split('/').slice(0, 2).join('/');
+    
+    // Check if current path starts with the section's base path
+    return pathname.startsWith(sectionBasePath);
+  };
+
   // Get current page details for breadcrumb, more reactive to the current selection
   let currentPageTitle = '';
   let parentTitle = '';
@@ -110,7 +125,7 @@ export default function NavigationClient() {
                         key={section.title}
                         href={section.links[0].href}
                         className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200
-                          ${pathname === section.links[0].href || pathname?.startsWith(section.links[0].href + '/') ?
+                          ${isSectionActive(section.title) ?
                           'text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-slate-800' :
                           'text-slate-700 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400'}`}
                         data-oid="profile-direct-link">
@@ -129,7 +144,7 @@ export default function NavigationClient() {
                       <div className="flex items-center" data-oid="u:tegn5">
                         <button
                           className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:text-sky-600 group-hover:text-sky-600 dark:hover:text-sky-400 dark:group-hover:text-sky-400 ${
-                          activeSection === section.title ?
+                          activeSection === section.title || isSectionActive(section.title) ?
                           'text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-slate-800' :
                           'text-slate-700 dark:text-slate-300'}`
                           }

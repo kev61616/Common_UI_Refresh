@@ -1,54 +1,62 @@
-# Syntax Documentation Index
+# BrainBox Learning Documentation Index
 
-This index organizes all documentation for the Syntax education platform into logical categories for easier navigation and reference.
+## Core Documentation
 
-## Getting Started
+- [Architecture Overview](./architecture.md)
+- [Page Structure](./page-structure.md)
+- [State Management Patterns](./state-management-patterns.md)
+- [Typography](./typography.md)
+- [Colors](./colors.md)
 
-- [README.md](../README.md) - Project overview and recent updates
-- [CONTRIBUTING.md](../CONTRIBUTING.md) - Guidelines for contributing to the project
+## Component Documentation
 
-## Architecture & Design
+- [Profile Card System](./profile-card-system.md)
+- [Profile Drag and Drop](./profile-drag-and-drop.md)
+- [Card Grid System](./card-grid-system.md)
+- [User Profile](./user-profile.md) - User account, subscription, and billing management
+- [User Profile Implementation](./user-profile-implementation.md) - Technical implementation guide for the user profile
 
-- [Architecture Overview](architecture.md) - Application architecture, patterns, and best practices
-- [State Management Patterns](state-management-patterns.md) - Guide to state management approaches used in the application
-- [Page Structure](page-structure.md) - Overview of the application's page structure
-- [View Planning](view-planning.md) - High-level planning and design philosophy for UI views
-- [Typography](typography.md) - Guidelines and examples for the typography system
-- [Colors](colors.md) - Guide to the color system, palettes, and CSS variable usage
+## Profile Section
 
-## Feature Documentation
+- [Profile Overview](./profile/index.md)
+- [Profile Layout](./profile/layout.md)
+- [Client Components Guide](./profile/client-components-guide.md)
+- [Data Visualization](./profile/data-visualization-improvements.md)
+- [Visualization Implementation Plan](./profile/visualization-implementation-plan.md)
 
-### Course Section
+### Tabs
+- [Overview Tab](./profile/overview-tab/index.md)
+  - [Card System](./profile/overview-tab/card-system.md)
+  - [Drag and Drop](./profile/overview-tab/drag-and-drop.md)
+  - [Grid Layout](./profile/overview-tab/grid-layout.md)
+  
+- [Reading Tab](./profile/reading-tab/index.md)
+  - [Layout](./profile/reading-tab/layout.md)
+  - [Skills](./profile/reading-tab/skills.md)
+  - [Progress Tracking](./profile/reading-tab/progress-tracking.md)
+  
+- [Writing Tab](./profile/writing-tab/index.md)
+  - [Layout](./profile/writing-tab/layout.md)
+  - [Skills](./profile/writing-tab/skills.md)
+  - [Progress Tracking](./profile/writing-tab/progress-tracking.md)
+  
+- [Math Tab](./profile/math-tab/index.md)
+  - [Layout](./profile/math-tab/layout.md)
+  - [Skills](./profile/math-tab/skills.md)
+  - [Progress Tracking](./profile/math-tab/progress-tracking.md)
 
-- [Course Data Architecture](course-data-architecture.md) - Data models, relationships, and access patterns
-- [Course Components](course-components.md) - UI components with API documentation and usage examples
-- [Course Component Relationships](course-component-relationships.md) - Visual representation of component dependencies and state flow
-- [Course Section Plan](../planning/course-section-plan.md) - Implementation plan for the Course section
+## Technical Guides
 
-### User Profile
+- [Markdoc Usage](./markdoc-usage.md)
+- [UseSearchParams Guide](./use-search-params-guide.md)
+- [Hydration Errors](./HYDRATION_ERRORS.md)
+- [Typography Control](./typography-control.md)
 
-- [Profile Section](profile-section.md) - Documentation for user Profile section features
+## Updates and Changes
 
-### Question & Review System
-
-- [Question View Changes](questionviewchanges.md) - Documentation on Question View implementation
-- [Set View Changes](setviewchanges.md) - Documentation on Set View implementation
-- [Timeline Changes](timelinechanges.md) - Documentation on Timeline View implementation
-
-## Development Guides
-
-- [Hydration Errors](HYDRATION_ERRORS.md) - Guide to understanding and fixing hydration errors
-- [Search Params Usage](use-search-params-guide.md) - Best practices for using the `useSearchParams` hook
-- [Markdoc Usage](markdoc-usage.md) - Guide on how Markdoc is used for documentation pages
-
-## Planning Documents
-
-- [Frontend Architecture Plan](../planning/frontend-architecture-plan.md) - Plans for improving code quality and architecture
-- [Performance Optimization Plan](../planning/performance-optimization-plan.md) - Plans for optimizing performance and load times
-- [UI/UX Design System Plan](../planning/ui-ux-design-system-plan.md) - Plans for enhancing the design system and UI/UX
-
-## Migration Guides
-
-- [Template Migration Guide](../migration/template-migration-guide.md) - Guide for migrating site structure to a new template
-- [Migration Checklist Template](../migration/migration-checklist-template.md) - Detailed checklist for migrating individual components
-- [Course Component Relationships](course-component-relationships.md) - Example of component relationship documentation for migration
+- [Board View Fixes](./board-view-fixes.md)
+- [Question View Changes](./questionviewchanges.md)
+- [Set View Changes](./setviewchanges.md)
+- [Timeline Changes](./timelinechanges.md)
+- [Board Click Behavior Update](./board-click-behavior-update.md)
+- [Navigation Padding Fix](./navigation-padding-fix.md)
